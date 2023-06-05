@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ApiController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,7 +13,23 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Get all obtainers
+Route::get('/getAllObtainers',[APIController::class,'getAllObtainer']);
+
+// Get a obtainer
+Route::get('/getObtainerById/{id}',[APIController::class,'getObtainerById']);
+
+
+
+// Get all posts by id
+Route::get('/getAllPosts',[APIController::class,'getAllPost']);
+
+// Get posts by obtainer_id
+Route::get('/getPostByObtainerId/{id}',[APIController::class,'getPostByObtainerId']);
+
+// Get posts by obtainer_id
+Route::get('/getPostByCategoryId/{id}',[APIController::class,'getPostByCategoryId']);

@@ -24,6 +24,8 @@ class ObtainerSeeder extends Seeder
                 'full_name' => $faker->name,
                 'date_of_birth' => $faker->date(),
                 'bio' => $faker->paragraph,
+                'phone_number' => $faker->phoneNumber(),
+                'isActive' => 1,
                 'profile_image_url' => $faker->imageUrl(),
             ]);
         }

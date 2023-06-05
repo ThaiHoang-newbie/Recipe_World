@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->string('website')->nullable();
             $table->string('phone_number')->nullable();
+            $table->boolean('isActive')->default(0);
             $table->unsignedInteger('followers_count')->default(0);
             $table->timestamps();
         });
@@ -30,7 +31,7 @@ return new class extends Migration
             $table->string('name');
             $table->timestamps();
         });
-        
+
         // Create tags table
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
@@ -154,18 +155,18 @@ return new class extends Migration
     public function down()
     {
         // Drop tables in reverse order
-        Schema::dropIfExists('orders');
-        Schema::dropIfExists('order_buyers');
-        Schema::dropIfExists('order_sellers');
         Schema::dropIfExists('likes');
-        Schema::dropIfExists('messages');
-        Schema::dropIfExists('followers');
         Schema::dropIfExists('comments');
+        Schema::dropIfExists('post_images');
+        Schema::dropIfExists('messages');
         Schema::dropIfExists('post_tag');
         Schema::dropIfExists('tags');
-        Schema::dropIfExists('post_images');
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('orders');
+        Schema::dropIfExists('order_sellers');
+        Schema::dropIfExists('order_buyers');
         Schema::dropIfExists('posts');
+        Schema::dropIfExists('categories');
+        Schema::dropIfExists('followers');
         Schema::dropIfExists('obtainers');
     }
 };
