@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Obtainer;
 use App\Models\Post;
 
+// ----------------------------------------------------------------------------
 class ApiController extends Controller
 {
 
@@ -32,10 +34,7 @@ class ApiController extends Controller
             return response()->json(['error' => 'Obtainer not found'], 404);
         }
     }
-
-
-
-
+// ----------------------------------------------------------------------------
 
     // Get all posts by id
     public function getAllPost()
@@ -69,4 +68,45 @@ class ApiController extends Controller
             return response()->json(['error' => `This category hasn't any posts`], 404);
         }
     }
+// ----------------------------------------------------------------------------
+
+
+    // Get all category
+    public function getAllCategory()
+    {
+        $allCategory = Category::all();
+        return response()->json($allCategory);
+    }
+
+
+    // Get category by id
+    public function getCategoryById($id)
+    {
+        $categoryById = Category::find($id);
+
+        if ($categoryById) {
+            return response()->json($categoryById);
+        } else {
+            return response()->json(['error' => 'This category not found'], 404);
+        }
+    }
+
+// ----------------------------------------------------------------------------
+
+
+    // Get the email and password by email and password entered
+    public function login(Request $request)
+    {
+        $email = $request->input('email');
+        $password = $request->input('password');
+    
+        $userToLogin = Obtainer::where('email', $email)->first();
+    
+        if ($userToLogin && password_verify($password, $userToLogin->password)) {
+            return response()->json(['alert' => 'Login successful'], 200);
+        } else {
+            return response()->json(['error' => 'Invalid email or password'], 404);
+        }
+    }
+    
 }

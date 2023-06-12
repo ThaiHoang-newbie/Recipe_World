@@ -24,6 +24,7 @@ return new class extends Migration
             $table->unsignedInteger('followers_count')->default(0);
             $table->timestamps();
         });
+
          // Create categories table
          Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
@@ -37,6 +38,7 @@ return new class extends Migration
             $table->string('name');
             $table->timestamps();
         });
+        
         // Create posts table
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
