@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UsersResource;
 use App\Models\Obtainer;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 
 class UserController extends Controller
@@ -30,21 +32,20 @@ class UserController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-
         if ($validator->fails()) {
-            return response()->json(['error' => "Login không thành công!"], 401);
+            return response()->json(['error' => 'Login unsuccessful!'], 401);
         }
 
-        $obtainer = Obtainer::where("email", $request->email)
-            ->where("password", $request->password)
-            ->first();
+        $obtainer = Obtainer::where('email', $request->email)->first();
 
-        if ($obtainer->count() > 0) {
-            return response()->json(['success' => 1, 'data' => $obtainer[0]]);
+        if ($obtainer && Hash::check($request->password, $obtainer->password)) {
+            session(['obtainer_id' => $obtainer->id]);
+            return response()->json(['success' => 1, 'data' => $obtainer]);
         } else {
-            return response()->json(['error' => 'Login không thành công!'], 401);
+            return response()->json(['error' => 'Login unsuccessful!'], 401);
         }
     }
+
 
 
 
@@ -52,15 +53,14 @@ class UserController extends Controller
     public function onRegister(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required',
+            'username' => 'required|string',
             'email' => 'required|email|unique:users',
             'password' => 'required',
+            'full_name' => 'required|string',
             'confirm_password' => 'required|same:password',
-            'date_of_birth' => 'required|date|before_or_equal:today',
-            'profile_image_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'date_of_birth' => 'required|date',
+            'profile_image_url' => 'required',
         ]);
-
-        // Obtainer::create($request->all()); 
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
@@ -83,13 +83,15 @@ class UserController extends Controller
             'date_of_birth' => $request->date_of_birth,
             'profile_image_url' => $imageName,
 
-            // 'remember_token' => $request->token,
-            'created_at' => Carbon::now('Asia/Da_Nang')->format('Y-m-d H:i:s'),
-            'updated_at' => Carbon::now('Asia/Da_Nang')->format('Y-m-d H:i:s'),
         ]);
         return response()->json(['success' => 1, 'data' => $user], 200);
+    }
 
 
-        // return response()->json([],200);
+    public function onLogout()
+    {
+        Auth::logout();
+
+        return response()->json(['message' => 'Logout successful'], 200);
     }
 }

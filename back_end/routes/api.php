@@ -55,9 +55,6 @@ Route::get('/getPostByCategoryId/{id}',[ApiController::class,'getPostByCategoryI
 //     return Response()->json(array("token"=>$token));
 // });
 
-Route::post('/obtainers/login', [UsersController::class, 'onLogin']);
-
+Route::post('/obtainers/login', [UserController::class, 'onLogin']);
 
 Route::post('obtainers/register',[UserController::class,'onRegister']);
-
-

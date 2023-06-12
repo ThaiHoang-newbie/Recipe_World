@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../svg.css';
 import { axios } from 'axios';
 
@@ -51,6 +51,25 @@ const Register = () => {
         }
     }
 
+    useEffect(() => {
+        const today = () => {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1;
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            today = yyyy + '-' + mm + '-' + dd;
+            document.getElementById('datefield').setAttribute('max', today);
+        };
+
+        today();
+    }, []);
+
     // Hàm xử lý từng bước của form
     const checkState = (value) => {
         if (value === 'inputForm') {
@@ -102,10 +121,7 @@ const Register = () => {
                         alert(JSON.stringify(json.error))
                     }
                 });
-
-
         }
-
     }
 
 
@@ -113,13 +129,14 @@ const Register = () => {
         return (
             <div className="errors" >
                 {dataForm.username === "" && <span>Username must be filled</span>}
+                {dataForm.date_of_birth === "" && <span>Birthday must be filled</span>}
                 {dataForm.full_name === "" && <span>Full name must be filled</span>}
                 {dataForm.username.length <= 2 && <span>Username has at least 3 characters</span>}
                 {!validateEmail(dataForm.email) && <span>Email syntax</span>}
                 {dataForm.password === "" && <span>Password must be filled</span>}
-                {dataForm.password.length < 8 && <span>Password cần 8 ký tự</span>}
+                {dataForm.password.length < 8 && <span>Password has at least 8 characters</span>}
                 {dataForm.confirm_password === "" && <span>Confirm Password must be filled</span>}
-                {dataForm.password !== dataForm.confirm_password && <span>Password not same as </span>}
+                {dataForm.password !== dataForm.confirm_password && <span>Confirm password not same as password</span>}
             </div>
         )
     }
@@ -142,22 +159,6 @@ const Register = () => {
         }
 
     }
-
-    const today = () => {
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1;
-        var yyyy = today.getFullYear();
-        if (dd < 10) {
-            dd = '0' + dd;
-        }
-        if (mm < 10) {
-            mm = '0' + mm;
-        }
-        today = yyyy + '-' + mm + '-' + dd;
-        document.getElementById("datefield").setAttribute("max", today);
-    }
-    // today();
 
 
     const renderFormRegister =

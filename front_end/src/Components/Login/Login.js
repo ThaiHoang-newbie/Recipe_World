@@ -19,12 +19,16 @@ const Login = () => {
                 body: _formData
             };
 
-            fetch('http://127.0.0.1:8000/api/getAllObtainers', requestOptions)
+            fetch('http://127.0.0.1:8000/api/obtainers/login', requestOptions)
                 .then(res => {
                     if (res.ok) {
-                        return res.json();
+                        alert('Login successful!');
+                        
+                        setTimeout(()=> {
+                            window.location = 'http://localhost:3000/';
+                        }, 1000);
                     } else {
-                        alert('Login không thành công!');
+                        alert('Wrong email or password!');
                     }
                 })
                 .catch(error => {

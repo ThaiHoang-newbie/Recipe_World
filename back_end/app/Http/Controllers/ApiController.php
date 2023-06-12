@@ -91,22 +91,4 @@ class ApiController extends Controller
         }
     }
 
-// ----------------------------------------------------------------------------
-
-
-    // Get the email and password by email and password entered
-    public function login(Request $request)
-    {
-        $email = $request->input('email');
-        $password = $request->input('password');
-    
-        $userToLogin = Obtainer::where('email', $email)->first();
-    
-        if ($userToLogin && password_verify($password, $userToLogin->password)) {
-            return response()->json(['alert' => 'Login successful'], 200);
-        } else {
-            return response()->json(['error' => 'Invalid email or password'], 404);
-        }
-    }
-    
 }

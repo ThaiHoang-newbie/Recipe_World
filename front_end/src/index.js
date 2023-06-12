@@ -7,11 +7,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Login_Register from './Login_Register';
 
+
 ReactDOM.render(
 
 
   <React.StrictMode>
+
     <Login_Register></Login_Register>
+    
   </React.StrictMode>,
 
 
