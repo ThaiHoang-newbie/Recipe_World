@@ -46,6 +46,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories');
             $table->string('title');
             $table->text('content');
+            $table->thumbnail('string');
             $table->timestamps();
         });
 
