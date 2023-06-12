@@ -1,6 +1,6 @@
 import './App.css';
-import Admin from '../pages/adminpages/Admin';
-
+import Admin from './components/pages/adminpages/Admin';
+import './assets/css/styles.css'
 function App() {
   return (
     <>

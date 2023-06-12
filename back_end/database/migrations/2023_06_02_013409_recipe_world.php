@@ -11,7 +11,6 @@ return new class extends Migration
         // Create users table
         Schema::create('obtainers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
             $table->string('full_name');
@@ -119,35 +118,26 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Create order_sellers table
-        Schema::create('order_sellers', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('seller_id');
-            $table->unsignedInteger('post_id');
-            $table->foreign('seller_id')->references('id')->on('obtainers');
-            $table->foreign('post_id')->references('id')->on('posts');
-            $table->timestamps();
-        });
 
-        // Create order_buyers table
-        Schema::create('order_buyers', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('buyer_id');
-            $table->unsignedInteger('post_id');
-            $table->foreign('buyer_id')->references('id')->on('obtainers');
-            $table->foreign('post_id')->references('id')->on('posts');
-            $table->timestamps();
-        });
 
         // Create orders table
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('order_seller_id');
-            $table->foreign('order_seller_id')->references('id')->on('order_sellers')->onDelete('cascade');
+            $table->foreign('order_seller_id')->references('id')->on('obtainers')->onDelete('cascade');
             $table->unsignedInteger('order_buyer_id');
-            $table->foreign('order_buyer_id')->references('id')->on('order_buyers')->onDelete('cascade');
+            $table->foreign('order_buyer_id')->references('id')->on('obtainers')->onDelete('cascade');
             $table->double('price');
             $table->boolean('status')->default(false);
+            $table->timestamps();
+        });
+
+        Schema::create('recipes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('post_id');
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->unsignedInteger('seller_id');
+            $table->foreign('seller_id')->references('id')->on('obtainers')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -155,6 +145,7 @@ return new class extends Migration
     public function down()
     {
         // Drop tables in reverse order
+        Schema::dropIfExists('recipes');
         Schema::dropIfExists('likes');
         Schema::dropIfExists('comments');
         Schema::dropIfExists('post_images');
