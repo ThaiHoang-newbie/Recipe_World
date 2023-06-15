@@ -46,7 +46,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories');
             $table->string('title');
             $table->text('content');
-            $table->thumbnail('string');
+            $table->string('thumbnail');
             $table->timestamps();
         });
 
@@ -139,6 +139,7 @@ return new class extends Migration
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->unsignedInteger('seller_id');
             $table->foreign('seller_id')->references('id')->on('obtainers')->onDelete('cascade');
+            $table->string('hidden_post');
             $table->timestamps();
         });
     }
