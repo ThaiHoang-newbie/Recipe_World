@@ -35,15 +35,15 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => 'Login unsuccessful!'], 401);
         }
-
         $obtainer = Obtainer::where('email', $request->email)->first();
 
         if ($obtainer && Hash::check($request->password, $obtainer->password)) {
-            session(['obtainer_id' => $obtainer->id]);
+            Session::post(['obtainer_id' => $obtainer]);
             return response()->json(['success' => 1, 'data' => $obtainer]);
         } else {
             return response()->json(['error' => 'Login unsuccessful!'], 401);
         }
+
     }
 
 
@@ -75,16 +75,18 @@ class UserController extends Controller
             $image->move($destinationPath, $imageName);
         }
 
+        $imagePath = '/upload/images/' . $imageName;
+
         $user = Obtainer::create([
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'full_name' => $request->full_name,
             'date_of_birth' => $request->date_of_birth,
-            'profile_image_url' => $imageName,
+            'profile_image_url' => $imagePath,
 
         ]);
-        return response()->json(['success' => 1, 'data' => $user], 200);
+        return response()->json(['success' => 1, 'data' => $user, 'imagePath' => $imagePath], 200);
     }
 
 

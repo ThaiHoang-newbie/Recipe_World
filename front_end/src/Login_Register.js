@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import Home from './Components/Home';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import App from './App';
 import Login from './Components/Login/Login';
 import Register from './Components/Register/Register';
 function Login_Register() {
@@ -15,10 +15,11 @@ function Login_Register() {
           <div className="menu">
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
+            <Link to="/login">Logout</Link>
           </div>
         </div>
         <Routes>
-          <Route path="/" exact element={<Home></Home>} />
+          <Route path="/" exact element={<App></App>} />
           <Route path="/login" element={<Login></Login>} />
           <Route path="/register" element={<Register></Register>} />
         </Routes>

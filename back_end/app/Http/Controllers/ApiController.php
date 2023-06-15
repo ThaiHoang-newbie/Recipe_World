@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\Obtainer;
 use App\Models\Post;
+use App\Models\PostImage;
 
 // ----------------------------------------------------------------------------
 class ApiController extends Controller
@@ -25,7 +26,6 @@ class ApiController extends Controller
     // Get obtainer by obtainer id
     public function getObtainerById($id)
     {
-        // $obtainer = DB::table('Obtainers')->where('id', $id)->first();
         $obtainerById = Obtainer::find($id);
 
         if ($obtainerById) {
@@ -34,15 +34,31 @@ class ApiController extends Controller
             return response()->json(['error' => 'Obtainer not found'], 404);
         }
     }
+
+
+
+
 // ----------------------------------------------------------------------------
 
-    // Get all posts by id
+    // Get all posts
     public function getAllPost()
     {
-        $allPosts = Post::all();
-        return response()->json($allPosts);
+        $posts = DB::table('posts')
+            ->join('obtainers', 'obtainers.id', '=', 'posts.obtainer_id')
+            ->join('categories', 'posts.category_id', '=', 'categories.id')
+            ->select('obtainers.*', 'posts.*', 'categories.*')
+            ->get();
+        return response()->json($posts);
     }
 
+    public function getAllPostImage()
+    {
+        $posts = DB::table('posts')
+            ->join('post_images', 'posts.id', '=', 'post_images.post_id')
+            ->select('post_images.*', 'posts.*')
+            ->get();
+        return response()->json($posts);
+    }
 
 
     // Get all posts by obtainer_id

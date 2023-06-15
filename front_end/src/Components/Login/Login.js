@@ -8,14 +8,16 @@ const Login = () => {
         "password": ""
     });
 
+
+
     const onLogin = () => {
         if (dataForm.email != "" && dataForm.password != "") {
             const _formData = new FormData();
             _formData.append("email", dataForm.email)
             _formData.append("password", dataForm.password)
-            
+
             const requestOptions = {
-                method: 'POST', 
+                method: 'POST',
                 body: _formData
             };
 
@@ -23,8 +25,7 @@ const Login = () => {
                 .then(res => {
                     if (res.ok) {
                         alert('Login successful!');
-                        
-                        setTimeout(()=> {
+                        setTimeout(() => {
                             window.location = 'http://localhost:3000/';
                         }, 1000);
                     } else {
@@ -38,11 +39,13 @@ const Login = () => {
     }
 
 
+
     return (
         <div className="form-login">
+
             <div className="box-login">
                 <div className="form-group-login">
-                    <h3>Login Admin</h3>
+                    <h3>Login</h3>
                 </div>
                 <div className="form-group-login">
                     <label>Email</label>

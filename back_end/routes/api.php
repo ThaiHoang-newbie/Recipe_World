@@ -27,22 +27,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // ----------------------------------------------------------------------------
 
 // Get all obtainers
-Route::get('/getAllObtainers',[ApiController::class,'getAllObtainer']);
+Route::get('/getAllObtainers', [ApiController::class, 'getAllObtainer']);
 
 // Get a obtainer
-Route::get('/getObtainerById/{id}',[ApiController::class,'getObtainerById']);
+Route::get('/getObtainerById/{id}', [ApiController::class, 'getObtainerById']);
 
 
 // ----------------------------------------------------------------------------
 
-// Get all posts by id
-Route::get('/getAllPosts',[ApiController::class,'getAllPost']);
+// Get all posts
+Route::get('/getAllPosts', [ApiController::class, 'getAllPost']);
+
+// Get all images post
+Route::get('/getAllPostImage', [ApiController::class, 'getAllPostImage']);
 
 // Get posts by obtainer_id
-Route::get('/getPostByObtainerId/{id}',[ApiController::class,'getPostByObtainerId']);
+Route::get('/getPostByObtainerId/{id}', [ApiController::class, 'getPostByObtainerId']);
 
 // Get posts by obtainer_id
-Route::get('/getPostByCategoryId/{id}',[ApiController::class,'getPostByCategoryId']);
+Route::get('/getPostByCategoryId/{id}', [ApiController::class, 'getPostByCategoryId']);
 
 
 
@@ -57,4 +60,8 @@ Route::get('/getPostByCategoryId/{id}',[ApiController::class,'getPostByCategoryI
 
 Route::post('/obtainers/login', [UserController::class, 'onLogin']);
 
-Route::post('obtainers/register',[UserController::class,'onRegister']);
+Route::post('obtainers/register', [UserController::class, 'onRegister']);
+
+Route::get('/session-data', function () {
+    return session()->all();
+});

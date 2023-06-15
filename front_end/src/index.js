@@ -12,9 +12,7 @@ ReactDOM.render(
 
 
   <React.StrictMode>
-
     <Login_Register></Login_Register>
-    
   </React.StrictMode>,
 
 
