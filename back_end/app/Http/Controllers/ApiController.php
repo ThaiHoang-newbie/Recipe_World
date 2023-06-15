@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
 use App\Models\Obtainer;
 use App\Models\Post;
-use App\Models\PostImage;
 
-// ----------------------------------------------------------------------------
 class ApiController extends Controller
 {
 
@@ -26,6 +23,7 @@ class ApiController extends Controller
     // Get obtainer by obtainer id
     public function getObtainerById($id)
     {
+        // $obtainer = DB::table('Obtainers')->where('id', $id)->first();
         $obtainerById = Obtainer::find($id);
 
         if ($obtainerById) {
@@ -38,9 +36,8 @@ class ApiController extends Controller
 
 
 
-// ----------------------------------------------------------------------------
 
-    // Get all posts
+    // Get all posts 
     public function getAllPost()
     {
         $posts = DB::table('posts')
@@ -51,14 +48,18 @@ class ApiController extends Controller
         return response()->json($posts);
     }
 
+
     public function getAllPostImage()
     {
         $posts = DB::table('posts')
             ->join('post_images', 'posts.id', '=', 'post_images.post_id')
-            ->select('post_images.*', 'posts.*')
+            ->select('posts.*', 'post_images.*')
             ->get();
         return response()->json($posts);
     }
+
+    
+
 
 
     // Get all posts by obtainer_id
@@ -84,27 +85,4 @@ class ApiController extends Controller
             return response()->json(['error' => `This category hasn't any posts`], 404);
         }
     }
-// ----------------------------------------------------------------------------
-
-
-    // Get all category
-    public function getAllCategory()
-    {
-        $allCategory = Category::all();
-        return response()->json($allCategory);
-    }
-
-
-    // Get category by id
-    public function getCategoryById($id)
-    {
-        $categoryById = Category::find($id);
-
-        if ($categoryById) {
-            return response()->json($categoryById);
-        } else {
-            return response()->json(['error' => 'This category not found'], 404);
-        }
-    }
-
 }

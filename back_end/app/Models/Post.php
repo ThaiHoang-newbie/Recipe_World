@@ -12,7 +12,7 @@ class Post extends Model
     protected $table = 'posts';
 
     // Các trường fillable
-    protected $fillable = ['obtainers_id', 'content', 'image_url', 'old_price', 'new_price'];
+    protected $fillable = ['obtainers_id', 'content', 'image_url', 'old_price', 'new_price', 'thumbnail'];
 
     // Quan hệ nhiều-bài viết thuộc về một-người dùng
     public function obtainer()
@@ -41,12 +41,12 @@ class Post extends Model
 
     public function orderSellers()
     {
-        return $this->hasMany(OrderSeller::class, 'post_id');
+        return $this->hasMany(Obtainer::class, 'id');
     }
 
 
     public function orderBuyers()
     {
-        return $this->hasMany(OrderBuyer::class, 'post_id');
+        return $this->hasMany(Obtainer::class, 'id');
     }
 }

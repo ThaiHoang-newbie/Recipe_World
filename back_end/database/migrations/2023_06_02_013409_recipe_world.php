@@ -11,7 +11,6 @@ return new class extends Migration
         // Create users table
         Schema::create('obtainers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
             $table->string('full_name');
@@ -21,24 +20,23 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->string('website')->nullable();
             $table->string('phone_number')->nullable();
+            $table->boolean('isActive')->default(0);
             $table->unsignedInteger('followers_count')->default(0);
             $table->timestamps();
         });
-
-         // Create categories table
-         Schema::create('categories', function (Blueprint $table) {
+        // Create categories table
+        Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
         });
-        
+
         // Create tags table
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
         });
-        
         // Create posts table
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
@@ -48,6 +46,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories');
             $table->string('title');
             $table->text('content');
+            $table->string('thumbnail');
             $table->timestamps();
         });
 
@@ -120,35 +119,27 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Create order_sellers table
-        Schema::create('order_sellers', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('seller_id');
-            $table->unsignedInteger('post_id');
-            $table->foreign('seller_id')->references('id')->on('obtainers');
-            $table->foreign('post_id')->references('id')->on('posts');
-            $table->timestamps();
-        });
 
-        // Create order_buyers table
-        Schema::create('order_buyers', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('buyer_id');
-            $table->unsignedInteger('post_id');
-            $table->foreign('buyer_id')->references('id')->on('obtainers');
-            $table->foreign('post_id')->references('id')->on('posts');
-            $table->timestamps();
-        });
 
         // Create orders table
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('order_seller_id');
-            $table->foreign('order_seller_id')->references('id')->on('order_sellers')->onDelete('cascade');
+            $table->foreign('order_seller_id')->references('id')->on('obtainers')->onDelete('cascade');
             $table->unsignedInteger('order_buyer_id');
-            $table->foreign('order_buyer_id')->references('id')->on('order_buyers')->onDelete('cascade');
+            $table->foreign('order_buyer_id')->references('id')->on('obtainers')->onDelete('cascade');
             $table->double('price');
             $table->boolean('status')->default(false);
+            $table->timestamps();
+        });
+
+        Schema::create('recipes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('post_id');
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->unsignedInteger('seller_id');
+            $table->foreign('seller_id')->references('id')->on('obtainers')->onDelete('cascade');
+            $table->string('hidden_post');
             $table->timestamps();
         });
     }
@@ -156,18 +147,19 @@ return new class extends Migration
     public function down()
     {
         // Drop tables in reverse order
-        Schema::dropIfExists('orders');
-        Schema::dropIfExists('order_buyers');
-        Schema::dropIfExists('order_sellers');
+        Schema::dropIfExists('recipes');
         Schema::dropIfExists('likes');
-        Schema::dropIfExists('messages');
-        Schema::dropIfExists('followers');
         Schema::dropIfExists('comments');
+        Schema::dropIfExists('post_images');
+        Schema::dropIfExists('messages');
         Schema::dropIfExists('post_tag');
         Schema::dropIfExists('tags');
-        Schema::dropIfExists('post_images');
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('orders');
+        Schema::dropIfExists('order_sellers');
+        Schema::dropIfExists('order_buyers');
         Schema::dropIfExists('posts');
+        Schema::dropIfExists('categories');
+        Schema::dropIfExists('followers');
         Schema::dropIfExists('obtainers');
     }
 };
