@@ -12,7 +12,9 @@ class Post extends Model
     protected $table = 'posts';
 
     // Các trường fillable
+
     protected $fillable = ['obtainers_id', 'content', 'image_url', 'old_price', 'new_price', 'thumbnail'];
+
 
     // Quan hệ nhiều-bài viết thuộc về một-người dùng
     public function obtainer()
