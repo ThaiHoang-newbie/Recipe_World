@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\ApiController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ApiController;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,19 +21,45 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+// ----------------------------------------------------------------------------
+
 // Get all obtainers
-Route::get('/getAllObtainers',[APIController::class,'getAllObtainer']);
+Route::get('/getAllObtainers', [ApiController::class, 'getAllObtainer']);
 
 // Get a obtainer
-Route::get('/getObtainerById/{id}',[APIController::class,'getObtainerById']);
+Route::get('/getObtainerById/{id}', [ApiController::class, 'getObtainerById']);
 
 
+// ----------------------------------------------------------------------------
 
-// Get all posts by id
-Route::get('/getAllPosts',[APIController::class,'getAllPost']);
+// Get all posts
+Route::get('/getAllPosts', [ApiController::class, 'getAllPost']);
+
+// Get all images post
+Route::get('/getAllPostImage', [ApiController::class, 'getAllPostImage']);
 
 // Get posts by obtainer_id
-Route::get('/getPostByObtainerId/{id}',[APIController::class,'getPostByObtainerId']);
+Route::get('/getPostByObtainerId/{id}', [ApiController::class, 'getPostByObtainerId']);
 
 // Get posts by obtainer_id
-Route::get('/getPostByCategoryId/{id}',[APIController::class,'getPostByCategoryId']);
+Route::get('/getPostByCategoryId/{id}', [ApiController::class, 'getPostByCategoryId']);
+
+
+
+// ----------------------------------------------------------------------------
+
+// Api Register
+// Route::get('token', function (Request $request) {
+//     $token = $request->session()->token();
+//     $token = csrf_token();
+//     return Response()->json(array("token"=>$token));
+// });
+
+Route::post('/obtainers/login', [UserController::class, 'onLogin']);
+
+Route::post('obtainers/register', [UserController::class, 'onRegister']);
+
+Route::get('/session-data', function () {
+    return session()->all();
+});
