@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../../svg.css';
 import { axios } from 'axios';
 
-
 const Register = () => {
 
     const [phantram, setPhanTram] = useState(0);
@@ -13,7 +12,7 @@ const Register = () => {
         "email": "",
         "full_name": "",
         "date_of_birth": "",
-        "username": "",
+        // "username": "",
         "password": "",
         "confirm_password": ""
     });
@@ -73,8 +72,7 @@ const Register = () => {
     // Hàm xử lý từng bước của form
     const checkState = (value) => {
         if (value === 'inputForm') {
-            if (dataForm.username.length > 2
-                && validateEmail(dataForm.email)
+            if (validateEmail(dataForm.email)
                 && dataForm.password.length >= 8
                 && (dataForm.password == dataForm.confirm_password)) {
                 setPhanTram(75)
@@ -128,10 +126,10 @@ const Register = () => {
     const renderCheckValidationForm = () => {
         return (
             <div className="errors" >
-                {dataForm.username === "" && <span>Username must be filled</span>}
+                {/* {dataForm.username === "" && <span>Username must be filled</span>} */}
                 {dataForm.date_of_birth === "" && <span>Birthday must be filled</span>}
                 {dataForm.full_name === "" && <span>Full name must be filled</span>}
-                {dataForm.username.length <= 2 && <span>Username has at least 3 characters</span>}
+                {/* {dataForm.username.length <= 2 && <span>Username has at least 3 characters</span>} */}
                 {!validateEmail(dataForm.email) && <span>Email syntax</span>}
                 {dataForm.password === "" && <span>Password must be filled</span>}
                 {dataForm.password.length < 8 && <span>Password has at least 8 characters</span>}
@@ -161,13 +159,22 @@ const Register = () => {
     }
 
 
+    const checkTokenAndRedirect = () => {
+        const token = sessionStorage.getItem("token");
+        if (token) {
+            setTimeout(() => {
+                window.location = "http://localhost:3000";
+            }, 100)
+        }
+    };
+
+    useEffect(() => {
+        checkTokenAndRedirect();
+    }, []);
+
+
     const renderFormRegister =
         <div className="form-register" >
-
-            <div className="form-label">
-                <label>Name</label>
-                <input type="text" name="username" placeholder="" onChange={(e) => setDataForm({ ...dataForm, "username": e.target.value })} value={dataForm.name} />
-            </div>
 
             <div className="form-label">
                 <label>Full name</label>

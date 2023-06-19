@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -35,15 +36,21 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => 'Login unsuccessful!'], 401);
         }
+
+        $primary_token = Str::random(80);
+        $token = hash('sha256', $primary_token);
+        // $token = csrf_token();
+
+
         $obtainer = Obtainer::where('email', $request->email)->first();
 
         if ($obtainer && Hash::check($request->password, $obtainer->password)) {
-            Session::post(['obtainer_id' => $obtainer]);
-            return response()->json(['success' => 1, 'data' => $obtainer]);
+
+            return response()->json(['success' => 1, 'data' => $obtainer, 'token' => $token], 200);
         } else {
+
             return response()->json(['error' => 'Login unsuccessful!'], 401);
         }
-
     }
 
 
@@ -53,8 +60,8 @@ class UserController extends Controller
     public function onRegister(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string',
-            'email' => 'required|email|unique:users',
+            // 'username' => 'required|string',
+            'email' => 'required|email|unique:obtainers',
             'password' => 'required',
             'full_name' => 'required|string',
             'confirm_password' => 'required|same:password',
@@ -76,24 +83,26 @@ class UserController extends Controller
         }
 
         $imagePath = '/upload/images/' . $imageName;
+        try {
+            $user = Obtainer::create([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'full_name' => $request->full_name,
+                'date_of_birth' => $request->date_of_birth,
+                'profile_image_url' => $imagePath,
 
-        $user = Obtainer::create([
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'full_name' => $request->full_name,
-            'date_of_birth' => $request->date_of_birth,
-            'profile_image_url' => $imagePath,
-
-        ]);
+            ]);
+        } catch (\Illuminate\Database\QueryException $ex) {
+            return response()->json(['error' => $ex->getMessage()], 500);
+        }
         return response()->json(['success' => 1, 'data' => $user, 'imagePath' => $imagePath], 200);
     }
 
 
     public function onLogout()
     {
-        Auth::logout();
-
-        return response()->json(['message' => 'Logout successful'], 200);
+        session()->forget('token');
+        session()->forget('obtainer_id');
+        return redirect('http://localhost:3000/login');
     }
 }

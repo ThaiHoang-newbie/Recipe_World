@@ -8,16 +8,18 @@ import TopCategory from "./Components/TopCategory";
 import ShowProduct from "./Components/ShowProduct";
 import Products from "./Components/Products";
 import Footer from "./Components/Footer";
+import Posting_form from './Components/Posting/Posting_form';
 
 function App() {
   return (
     <div className="container-fluid">
-      <Navbar></Navbar>
+      {/* <Navbar></Navbar>
       <HeroArea></HeroArea>
       <TopCategory />
       <ShowProduct />
       <Products />
-      <Footer />
+      <Footer /> */}
+      {/* <Posting_form></Posting_form> */}
     </div>
   )
 }
