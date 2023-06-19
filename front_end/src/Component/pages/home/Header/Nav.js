@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Search = () => {
+const Nav = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
@@ -40,4 +40,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default Nav;

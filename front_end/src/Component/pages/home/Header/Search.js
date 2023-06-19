@@ -1,8 +1,9 @@
-import React, { Component } from "react";
 
-class Search extends Component {
-  render() {
-    return (
+import React, { useState } from 'react';
+
+
+const Search = () => {
+  return (
       <div className="search-wrapper">
         <div className="close-btn">
           <i className="fa fa-times" aria-hidden="true" />
@@ -25,6 +26,6 @@ class Search extends Component {
       </div>
     );
   }
-}
+
 
 export default Search;
