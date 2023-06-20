@@ -59,11 +59,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
-
-
-
-
         // Create post_tag table for many-to-many relationship between posts and tags
         Schema::create('post_tag', function (Blueprint $table) {
             $table->unsignedInteger('post_id');
