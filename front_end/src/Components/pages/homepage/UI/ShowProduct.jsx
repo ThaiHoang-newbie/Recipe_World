@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+
 import '../../../../assets/style.css';
+
 
 function ShowProduct() {
   const [posts, setPosts] = useState([]);

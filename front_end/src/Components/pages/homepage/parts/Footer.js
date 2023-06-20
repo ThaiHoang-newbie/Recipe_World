@@ -1,6 +1,9 @@
 import React from 'react';
 import '../../../../assets/style.css';
 
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
+
 function Footer() {
     return (
         <footer className="footer-area">

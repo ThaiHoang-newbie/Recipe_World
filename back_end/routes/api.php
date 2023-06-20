@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,7 +53,7 @@ Route::get('/getPostByCategoryId/{id}', [ApiController::class, 'getPostByCategor
 // Api Register
 // Route::get('token', function (Request $request) {
 //     $token = $request->session()->token();
-//     $token = csrf_token();
+    // $token = csrf_token();
 //     return Response()->json(array("token"=>$token));
 // });
 
@@ -60,6 +61,17 @@ Route::post('/obtainers/login', [UserController::class, 'onLogin']);
 
 Route::post('obtainers/register', [UserController::class, 'onRegister']);
 
+// Route::post('obtainers/logout', [UserController::class, 'onLogout']);
+
 Route::get('/session-data', function () {
     return session()->all();
 });
+
+
+
+// ----------------------------------------------------------------------------
+
+// Posting api
+
+
+Route::post('posting', [PostingController::class, 'store']);

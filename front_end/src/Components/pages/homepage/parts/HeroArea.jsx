@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "../../../../App.css"
 
+
 function HeroArea() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
