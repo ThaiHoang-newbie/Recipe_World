@@ -45,8 +45,6 @@ const Posting_form = () => {
         setInputs(newInputs);
     };
 
-
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -72,16 +70,10 @@ const Posting_form = () => {
                 },
             });
 
-            console.log(response.data);
-            alert(response.data);
-
         } catch (error) {
             console.error(error);
         }
     };
-
-
-
 
     return (
         <form onSubmit={handleSubmit}>
@@ -89,18 +81,16 @@ const Posting_form = () => {
                 <div key={index}>
                     <div className="form-group">
                         <label htmlFor={`text-${index}`}>Nội dung:</label>
-
                         <textarea
                             id={`text-${index}`}
                             name={`text-${index}`}
                             value={input.text}
                             onChange={(event) => handleInputChange(event, index)}
-                            className={`form-control ${input.italic ? 'italic-text' : ''} ${input.underline ? 'underline-text' : ''} ${input.strikeThrough ? 'strike-through-text' : ''} ${input.bold ? 'font-weight-bold' : ''}`}
+                            className={`form-control ${input.italic ? 'italic-text' : ''
+                                } ${input.underline ? 'underline-text' : ''} ${input.strikeThrough ? 'strike-through-text' : ''
+                                } ${input.bold ? 'font-weight-bold' : ''}`}
                         />
-
                     </div>
-
-
 
                     <div className="form-group">
                         <div className="form-check form-check-inline">
@@ -112,9 +102,9 @@ const Posting_form = () => {
                                 checked={input.italic || false}
                                 onChange={(event) => handleInputChange(event, index)}
                             />
-                            <label className="form-check-label" htmlFor={`italic-${index}`}>In nghiêng</label>
-
-
+                            <label className="form-check-label" htmlFor={`italic-${index}`}>
+                                In nghiêng
+                            </label>
                         </div>
                         <div className="form-check form-check-inline">
                             <input
@@ -125,9 +115,10 @@ const Posting_form = () => {
                                 checked={input.underline || false}
                                 onChange={(event) => handleInputChange(event, index)}
                             />
-                            <label className="form-check-label" htmlFor={`underline-${index}`}>Gạch chân</label>
+                            <label className="form-check-label" htmlFor={`underline-${index}`}>
+                                Gạch chân
+                            </label>
                         </div>
-
 
                         <div className="form-check form-check-inline">
                             <input
@@ -138,7 +129,9 @@ const Posting_form = () => {
                                 checked={input.strikeThrough || false}
                                 onChange={(event) => handleInputChange(event, index)}
                             />
-                            <label className="form-check-label" htmlFor={`strikeThrough-${index}`}>Gạch ngang</label>
+                            <label className="form-check-label" htmlFor={`strikeThrough-${index}`}>
+                                Gạch ngang
+                            </label>
                         </div>
 
                         <div className="form-check form-check-inline">
@@ -150,7 +143,9 @@ const Posting_form = () => {
                                 checked={input.bold || false}
                                 onChange={(event) => handleInputChange(event, index)}
                             />
-                            <label className="form-check-label" htmlFor={`bold-${index}`}>In đậm</label>
+                            <label className="form-check-label" htmlFor={`bold-${index}`}>
+                                In đậm
+                            </label>
                         </div>
                     </div>
 
@@ -183,7 +178,9 @@ const Posting_form = () => {
             <button type="button" className="btn btn-primary" onClick={handleAddInput}>
                 Thêm
             </button>
-            <button type="submit" className="btn btn-success">Lưu</button>
+            <button type="submit" className="btn btn-success">
+                Lưu
+            </button>
         </form>
     );
 };

@@ -13,8 +13,9 @@ ReactDOM.render(
 
 
   <React.StrictMode>
-    <Login_Register></Login_Register>
+    {/* <Login_Register></Login_Register> */}
     {/* <Posting_form></Posting_form> */}
+    <App></App>
   </React.StrictMode>,
 
 
