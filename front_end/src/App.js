@@ -1,20 +1,25 @@
-import HeroArea from "./components/HeroArea";
-import Navbar from "./components/Navbar";
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import TopCategory from "./components/TopCategory";
-import ShowProduct from "./components/ShowProduct";
-import Products from "./components/Products";
-import Footer from "./components/Footer";
+import React from 'react';
+import './App.css';
+// import Hero
+import Navbar from "./Components/Navbar";
+import HeroArea from './Components/HeroArea';
+// import '@fortawesome/fontawesome-free/css/all.min.css';
+import TopCategory from "./Components/TopCategory";
+import ShowProduct from "./Components/ShowProduct";
+import Products from "./Components/Products";
+import Footer from "./Components/Footer";
+
 function App() {
   return (
-    <div>
+    <div className="container-fluid">
       <Navbar></Navbar>
       <HeroArea></HeroArea>
-      <TopCategory/>
-      <ShowProduct/>
-      <Products/>
-      <Footer/>
+      <TopCategory />
+      <ShowProduct />
+      <Products />
+      <Footer />
     </div>
   )
 }
-export default App
+
+export default App;

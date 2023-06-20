@@ -17,10 +17,11 @@ class PostSeeder extends Seeder
 
         for ($i = 0; $i < 20; $i++) {
             Post::create([
-                'obtainer_id' => $faker->numberBetween(1, 20),
+                'obtainer_id' => $i + 1,
                 'category_id' => $faker->numberBetween(1, 3),
                 'title' => $faker->sentence,
                 'content' => $faker->paragraph,
+                'thumbnail' => $faker->imageUrl()
             ]);
         }
     }
