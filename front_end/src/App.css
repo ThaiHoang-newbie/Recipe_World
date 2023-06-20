@@ -21,6 +21,9 @@
 .previous {
   transform: translateX(-100%);
 } */
+
+
+
 .hero-slides {
   display: flex;
   overflow: hidden;

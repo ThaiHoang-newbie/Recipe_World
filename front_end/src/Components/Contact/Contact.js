@@ -1,14 +1,10 @@
-import ('../../style.css');
+import '../../assets/style.css';
 
 const Contact = () => {
 
     return (
         <div>
             <div>
-                <div id="preloader">
-                    <i className="circle-preloader" />
-                    <img src="img/core-img/salad.png" alt="" />
-                </div>
                 {/* ##### Contact Information Area Start ##### */}
                 <div className="contact-information-area section-padding-80">
                     <div className="container">

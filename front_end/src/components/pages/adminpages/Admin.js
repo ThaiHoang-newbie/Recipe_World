@@ -3,7 +3,7 @@ import React from "react";
 import LeftSidebar from "./parts/LeftSidebar";
 import Header from "./parts/Header";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { routes } from "./routes";
+import { adminPageRoutes } from "../../../routes";
 export default function Admin() {
   const reRenderContent = (paths) =>
     paths.map((path) => (
@@ -26,7 +26,7 @@ export default function Admin() {
             <LeftSidebar />
             <div className="body-wrapper">
             <Header />
-              <Routes>{reRenderContent(routes)}</Routes>
+              <Routes>{reRenderContent(adminPageRoutes)}</Routes>
             </div>
             
             
