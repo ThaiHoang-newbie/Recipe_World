@@ -6,6 +6,7 @@ import Content from "./components/pages/adminpages/parts/Content"
 import Users from "./components/pages/adminpages/UI/Users"
 import Posts from "./components/pages/adminpages/UI/Posts"
 import Categories from "./components/pages/adminpages/UI/Categories"
+import Recipe from "./components/Recipe/Recipe";
 
 export const homepageRoutes = [
   {
@@ -28,6 +29,11 @@ export const homepageRoutes = [
     index: false,
     element: <Contact />
   },
+  {
+    path: '/recipe/:id',
+    index: false,
+    element: <Recipe />
+  }
 ]
 
 export const adminPageRoutes = [

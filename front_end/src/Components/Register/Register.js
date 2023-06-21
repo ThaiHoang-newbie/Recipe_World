@@ -109,7 +109,7 @@ const Register = () => {
           if (json["success"] > 0) {
             alert("Bạn đã đăng ký thành công!");
             setTimeout(() => {
-              window.location = "http://localhost:3000/login";
+              window.location = "http://localhost:3000/sign-in";
             }, 1000);
           } else {
             alert(JSON.stringify(json.error));
@@ -172,7 +172,7 @@ const Register = () => {
   }, []);
 
   const renderFormRegister = (
-    <div className="form-register">
+    <div className="form-register container">
       <div className="input-group mb-3">
         <label
           className="input-group-text bg-success text-light"
@@ -340,7 +340,7 @@ const Register = () => {
     <div>
       <Header />
       <div>
-        <div className="boxState">
+        <div className="boxState container d-flex justify-content-center">
           <div className="box">
             <svg>
               <circle className="" cx="70px" cy="70px" r="70px"></circle>
