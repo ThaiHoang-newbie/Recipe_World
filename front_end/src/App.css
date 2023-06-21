@@ -21,6 +21,7 @@
 .previous {
   transform: translateX(-100%);
 } */
+
 .hero-slides {
   display: flex;
   overflow: hidden;
@@ -47,4 +48,9 @@
   opacity: 1;
 }
 
-
+.avatar {
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}

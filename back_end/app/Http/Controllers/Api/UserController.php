@@ -79,7 +79,7 @@ class UserController extends Controller
             $image->move($destinationPath, $imageName);
         }
 
-        $imagePath = '/upload/images/' . $imageName;
+        $imagePath = $imageName;
         try {
             $user = Obtainer::create([
                 'email' => $request->email,

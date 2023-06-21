@@ -40,6 +40,8 @@ Route::put('/put-obtainer/{id}', [UserController::class, 'onEdit']);
 // Get all posts
 Route::get('/getAllPosts', [ApiController::class, 'getAllPost']);
 
+Route::get('/getHomepagePosts', [ApiController::class, 'getPostsForHomePage']);
+
 // Get all images post
 Route::get('/getAllPostImage', [ApiController::class, 'getAllPostImage']);
 
