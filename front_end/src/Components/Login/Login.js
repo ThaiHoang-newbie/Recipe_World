@@ -44,18 +44,18 @@ const Login = () => {
     }
 
 
-    const checkTokenAndRedirect = () => {
-        const token = sessionStorage.getItem("token");
-        if (token) {
-            setTimeout(() => {
-                window.location = "http://localhost:3000";
-            }, 100)
-        }
-    };
+    // const checkTokenAndRedirect = () => {
+    //     const token = sessionStorage.getItem("token");
+    //     if (token) {
+    //         setTimeout(() => {
+    //             window.location = "http://localhost:3000";
+    //         }, 100)
+    //     }
+    // };
 
-    useEffect(() => {
-        checkTokenAndRedirect();
-      }, []);
+    // useEffect(() => {
+    //     checkTokenAndRedirect();
+    //   }, []);
 
 
 

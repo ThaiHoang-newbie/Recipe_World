@@ -12,7 +12,6 @@ const Register = () => {
         "email": "",
         "full_name": "",
         "date_of_birth": "",
-        // "username": "",
         "password": "",
         "confirm_password": ""
     });
@@ -70,7 +69,7 @@ const Register = () => {
     }, []);
 
     // Hàm xử lý từng bước của form
-    const checkState = (value) => {
+    const checkState = async (value) => {
         if (value === 'inputForm') {
             if (validateEmail(dataForm.email)
                 && dataForm.password.length >= 8
@@ -89,6 +88,15 @@ const Register = () => {
         }
 
         if (value === 'btnRegister') {
+
+            // const moveImageResponse = await axios.post(
+            //     'http://localhost:8000/api/obtainers/move-image',
+            //     { imagePath: selectedFile.name }
+            // );
+            // if (moveImageResponse.data.success) {
+            //     const reactImagePath = moveImageResponse.data.imagePath;
+            // }
+
             const _formData = new FormData();
             _formData.append("username", dataForm.username);
             _formData.append("date_of_birth", dataForm.date_of_birth);
@@ -97,7 +105,6 @@ const Register = () => {
             _formData.append("password", dataForm.password);
             _formData.append("confirm_password", dataForm.confirm_password)
             _formData.append("profile_image_url", selectedFile);
-
 
 
             const requestOptions = {
@@ -159,18 +166,18 @@ const Register = () => {
     }
 
 
-    const checkTokenAndRedirect = () => {
-        const token = sessionStorage.getItem("token");
-        if (token) {
-            setTimeout(() => {
-                window.location = "http://localhost:3000";
-            }, 100)
-        }
-    };
+    // const checkTokenAndRedirect = () => {
+    //     const token = sessionStorage.getItem("token");
+    //     if (token) {
+    //         setTimeout(() => {
+    //             window.location = "http://localhost:3000";
+    //         }, 100)
+    //     }
+    // };
 
-    useEffect(() => {
-        checkTokenAndRedirect();
-    }, []);
+    // useEffect(() => {
+    //     checkTokenAndRedirect();
+    // }, []);
 
 
     const renderFormRegister =

@@ -31,7 +31,7 @@ function ShowProduct() {
                 <div className="single-best-receipe-area mb-30">
                   <img src={post.image_url} alt={post.image_url} />
                   <div className="receipe-content">
-                    <a href="receipe-post.html">
+                    <a href={`/post/${post.id}`}>
                       <h5>{post.title}</h5>
                     </a>
                   </div>

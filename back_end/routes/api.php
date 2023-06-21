@@ -29,7 +29,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/getAllObtainers', [ApiController::class, 'getAllObtainer']);
 
 // Get a obtainer
-Route::get('/getObtainerById/{id}', [ApiController::class, 'getObtainerById']);
+Route::get('/get-obtainer/{id}', [ApiController::class, 'getObtainerById']);
+
+// Get a obtainer
+Route::put('/put-obtainer/{id}', [UserController::class, 'onEdit']);
 
 
 // ----------------------------------------------------------------------------
@@ -60,6 +63,8 @@ Route::get('/getPostByCategoryId/{id}', [ApiController::class, 'getPostByCategor
 Route::post('/obtainers/login', [UserController::class, 'onLogin']);
 
 Route::post('obtainers/register', [UserController::class, 'onRegister']);
+
+Route::post('verify-email', [UserController::class, 'onRegister']);
 
 // Route::post('obtainers/logout', [UserController::class, 'onLogout']);
 

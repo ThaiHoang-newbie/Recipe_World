@@ -8,14 +8,19 @@ import reportWebVitals from './reportWebVitals';
 import Login_Register from './Login_Register';
 import Posting_form from './Components/Posting/Posting_form';
 
+import VerifyPass from './Midterm/VerifyPass';
+
 
 ReactDOM.render(
 
 
   <React.StrictMode>
-    {/* <Login_Register></Login_Register> */}
+    <Login_Register></Login_Register>
     {/* <Posting_form></Posting_form> */}
-    <App></App>
+    {/* <App></App> */}
+
+
+    {/* <VerifyPass></VerifyPass> */}
   </React.StrictMode>,
 
 

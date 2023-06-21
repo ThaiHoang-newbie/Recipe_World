@@ -11,20 +11,24 @@ import Products from "./Components/HomePage/Products";
 import Footer from "./Components/HomePage/Footer";
 import Posting_form from './Components/Posting/Posting_form';
 import Header from './Components/HomePage/Header';
+import UserInfor from './Components/UserInfor/UserInfor';
+import EditUserInfor from './Components/UserInfor/EditUserInfor';
 
 function App() {
   return (
     <div className="container-fluid">
-      <Header></Header>
+      {/* <Header></Header>
       <Navbar></Navbar>
       <HeroArea></HeroArea>
       <TopCategory />
       <ShowProduct />
       <Products />
-      <Footer />
-
-
+      <Footer /> */}
       {/* <Posting_form></Posting_form> */}
+
+      {/* <UserInfor></UserInfor> */}
+      <EditUserInfor></EditUserInfor>
+
       {/* <SearchBar></SearchBar> */}
       {/* <Search></Search> */}
     </div>
