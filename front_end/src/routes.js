@@ -1,12 +1,13 @@
-import Home from "./components/pages/homepage/Home";
-import Contact from "./components/Contact/Contact"
-import Register from "./components/Register/Register";
-import Login from "./components/Login/Login";
-import Content from "./components/pages/adminpages/parts/Content"
-import Users from "./components/pages/adminpages/UI/Users"
-import Posts from "./components/pages/adminpages/UI/Posts"
-import Categories from "./components/pages/adminpages/UI/Categories"
-import Recipe from "./components/Recipe/Recipe";
+import Home from "./Components/pages/homepage/Home";
+import Contact from "./Components/Contact/Contact"
+import Register from "./Components/Register/Register";
+import Login from "./Components/Login/Login";
+import Content from "./Components/pages/adminpages/parts/Content"
+import Users from "./Components/pages/adminpages/UI/Users"
+import Posts from "./Components/pages/adminpages/UI/Posts"
+import Categories from "./Components/pages/adminpages/UI/Categories"
+import Recipe from "./Components/Recipe/Recipe";
+import UserInfor from "./Components/UserInfor/UserInfor";
 
 export const homepageRoutes = [
   {
@@ -33,6 +34,11 @@ export const homepageRoutes = [
     path: '/recipe/:id',
     index: false,
     element: <Recipe />
+  },
+  {
+    path: '/profile-page',
+    index: false,
+    element: <UserInfor />
   }
 ]
 

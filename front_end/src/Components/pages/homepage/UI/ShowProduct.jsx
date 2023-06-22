@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import "../../../../assets/style.css";
+import "../../../../Assets/style.css";
 import Products from "./receiver/Products";
 
 function ShowProduct() {

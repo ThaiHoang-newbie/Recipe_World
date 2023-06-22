@@ -1,4 +1,4 @@
-import '../../assets/style.css';
+import '../../Assets/style.css';
 import Header from '../pages/homepage/parts/Header';
 import Footer from '../pages/homepage/parts/Footer';
 

@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UsersResource;
 use App\Models\Obtainer;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
@@ -60,7 +58,6 @@ class UserController extends Controller
     public function onRegister(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            // 'username' => 'required|string',
             'email' => 'required|email|unique:obtainers',
             'password' => 'required',
             'full_name' => 'required|string',
@@ -82,7 +79,7 @@ class UserController extends Controller
             $image->move($destinationPath, $imageName);
         }
 
-        $imagePath = '/upload/images/' . $imageName;
+        $imagePath = $imageName;
         try {
             $user = Obtainer::create([
                 'email' => $request->email,
@@ -104,5 +101,29 @@ class UserController extends Controller
         session()->forget('token');
         session()->forget('obtainer_id');
         return redirect('http://localhost:3000/login');
+    }
+
+    public function onEdit(Request $request, $id)
+    {
+        $user = Obtainer::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $user->full_name = $request->input('full_name');
+        $user->date_of_birth = $request->input('date_of_birth');
+        $user->phone_number = $request->input('phone_number');
+        $user->bio = $request->input('bio');
+        $user->location = $request->input('location');
+        $user->website = $request->input('website');
+        $user->updated_at = Carbon::now();
+        $user->save();
+
+        return response()->json(['message' => 'User updated successfully'], 200);
+    }
+
+
+    public function onVerify(){
+        
     }
 }

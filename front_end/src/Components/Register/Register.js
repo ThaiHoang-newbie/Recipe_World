@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../../svg.css";
-import { axios } from "axios";
+import './Register.css';
 import Header from "../pages/homepage/parts/Header";
 import Footer from "../pages/homepage/parts/Footer";
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/9.6.4/firebase-storage.js';
 
 const Register = () => {
-  const [phantram, setPhanTram] = useState(0);
+
+  const [phantram, setPhanTram] = useState(25);
+
 
   const [submit, setSubmit] = useState(false);
+
 
   const [dataForm, setDataForm] = useState({
     email: "",
     full_name: "",
     date_of_birth: "",
-    // "username": "",
     password: "",
     confirm_password: "",
   });
@@ -26,6 +30,8 @@ const Register = () => {
 
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
+  const fileInput = useRef(null)
+
 
   // Hàm xử lý việc chọn hình ảnh
   const onSelectFile = (e) => {
@@ -40,9 +46,9 @@ const Register = () => {
     reader.onloadend = () => {
       setPreview(reader.result);
     };
+
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
-      setPreview(reader.result);
     } else {
       setPreview(undefined);
     }
@@ -69,16 +75,14 @@ const Register = () => {
 
   // Hàm xử lý từng bước của form
   const checkState = (value) => {
-    if (value === "inputForm") {
-      if (
-        validateEmail(dataForm.email) &&
-        dataForm.password.length >= 8 &&
-        dataForm.password == dataForm.confirm_password
-      ) {
-        setPhanTram(75);
-        setCheckForm({ ...checkForm, inputForm: true });
+    if (value === 'inputForm') {
+      if (validateEmail(dataForm.email)
+        && dataForm.password.length >= 8
+        && (dataForm.password == dataForm.confirm_password)) {
+        setPhanTram(75)
+        setCheckForm({ ...checkForm, inputForm: true })
       }
-      setSubmit(true);
+      setSubmit(true)
     }
 
     if (value === "uploadAvatar") {
@@ -88,19 +92,19 @@ const Register = () => {
       }
     }
 
-    if (value === "btnRegister") {
+    if (value === 'btnRegister') {
       const _formData = new FormData();
       _formData.append("username", dataForm.username);
       _formData.append("date_of_birth", dataForm.date_of_birth);
       _formData.append("full_name", dataForm.full_name);
       _formData.append("email", dataForm.email);
       _formData.append("password", dataForm.password);
-      _formData.append("confirm_password", dataForm.confirm_password);
+      _formData.append("confirm_password", dataForm.confirm_password)
       _formData.append("profile_image_url", selectedFile);
 
       const requestOptions = {
-        method: "POST",
-        body: _formData,
+        method: 'POST',
+        body: _formData
       };
 
       fetch("http://127.0.0.1:8000/api/obtainers/register", requestOptions)
@@ -115,7 +119,62 @@ const Register = () => {
             alert(JSON.stringify(json.error));
           }
         });
+
+
+
+
+
+      const handleFileUpload = (file) => {
+        const metadata = {
+          contentType: 'image/jpeg'
+        };
+        // config
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyA4bFj14tVc9IT-5yL7tbvyvB2sCy7hbWM",
+          authDomain: "recipeworld-8ecc6.firebaseapp.com",
+          projectId: "recipeworld-8ecc6",
+          storageBucket: "recipeworld-8ecc6.appspot.com",
+          messagingSenderId: "725588893040",
+          appId: "1:725588893040:web:f83005b7b51cca25fbc3b5",
+          measurementId: "G-52RMZMLKKQ"
+        };
+
+
+        const app = initializeApp(firebaseConfig);
+        const storage = getStorage(app);
+
+        if (file) {
+          const storageRef = ref(storage, 'images/' + file.name);
+          const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+
+          uploadTask.on('state_changed',
+            (snapshot) => {
+              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log('Upload is ' + progress + '% done');
+              setPhanTram(progress);
+              switch (snapshot.state) {
+                case 'paused':
+                  console.log('Upload is paused');
+                  break;
+                case 'running':
+                  console.log('Upload is running');
+                  break;
+              }
+            },
+            (error) => {
+              console.error('Error:', error);
+            },
+            () => {
+              console.log('Upload complete');
+            }
+          );
+        }
+      };
+
+      handleFileUpload(selectedFile);
     }
+
   };
 
   const renderCheckValidationForm = () => {
@@ -163,7 +222,7 @@ const Register = () => {
     if (token) {
       setTimeout(() => {
         window.location = "http://localhost:3000";
-      }, 100);
+      }, 100)
     }
   };
 
@@ -172,7 +231,7 @@ const Register = () => {
   }, []);
 
   const renderFormRegister = (
-    <div className="form-register container">
+    <div className="form-register container my-4">
       <div className="input-group mb-3">
         <label
           className="input-group-text bg-success text-light"
@@ -270,7 +329,7 @@ const Register = () => {
         />
       </div>
 
-      <div className="btn-group">
+      <div className="btn-group d-flex justify-content-center">
         <button
           className="btn btn-success"
           onClick={() => checkState("inputForm")}
@@ -283,30 +342,35 @@ const Register = () => {
       <div className="form-label">{submit && renderCheckValidationForm()}</div>
     </div>
   );
-
   const renderUploadAvatar = (
-    <div className="form-upload">
-      <div className="upload-file">
-        <div className="box-avatar">
-          <label className="label-avatar">Avatar</label>
-          {selectedFile && (
+    <div className="form-upload my-4">
+      <div class="image-box">
+        <span class="error"></span>
+        <label for="fileInput" class="preview">
+          {selectedFile ? (
             <img src={preview} alt="avatar" className="img-avatar" />
+          ) : (
+            <span>Upload to preview image</span>
           )}
-          <input
-            type="file"
-            name="file"
-            className="input-file"
-            onChange={onSelectFile}
-          />
-        </div>
+        </label>
+        <input
+          ref={fileInput}
+          type="file"
+          name="file"
+          id="fileInput"
+          hidden
+          onChange={onSelectFile} />
       </div>
       <div className="upload-file">
-        <div className="box-event">
-          <button className="btn-next" onClick={() => backForm("inputForm")}>
+        <div className="box-event btn-group">
+          <button
+            className="btn-next btn btn-outline-success"
+            onClick={() => backForm("inputForm")}
+          >
             Back
           </button>
           <button
-            className="btn-next"
+            className="btn-next btn btn-success"
             onClick={() => checkState("uploadAvatar")}
           >
             Next
@@ -315,17 +379,51 @@ const Register = () => {
       </div>
     </div>
   );
+  // const renderUploadAvatar = (
+  //   <div className="form-upload">
+  //     <div className="upload-file">
+  //       <div className="box-avatar">
+  //         <label className="label-avatar">Avatar</label>
+  //         {selectedFile && (
+  //           <img src={preview} alt="avatar" className="img-avatar" />
+  //         )}
+  //         <input
+  //           type="file"
+  //           name="file"
+  //           ref={fileInput}
+  //           id="fileInput"
+  //           className="input-file"
+  //           onChange={onSelectFile}
+  //         />
+  //       </div>
+
+  //     </div>
+  //     <div className="upload-file">
+  //       <div className="box-event">
+  //         <button className="btn-next" onClick={() => backForm("inputForm")}>
+  //           Back
+  //         </button>
+  //         <button
+  //           className="btn-next"
+  //           onClick={() => checkState("uploadAvatar")}
+  //         >
+  //           Next
+  //         </button>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 
   const renderEventRegister = (
-    <div className="form-event-register">
-      <div className="form-event">
+    <div className="form-event-register container my-4">
+      <div className="form-event d-flex flex-column">
         <label>Vui lòng bấm xác nhận để hoàn thành đăng ký</label>
-        <div className="box-event">
-          <button className="btn-next" onClick={() => backForm("uploadAvatar")}>
+        <div className="box-event btn-group d-flex justify-content-center">
+          <button className="btn-next btn btn-outline-success" onClick={() => backForm("uploadAvatar")}>
             Back
           </button>
           <button
-            className="btn-next"
+            className="btn-next btn btn-success"
             onClick={() => checkState("btnRegister")}
           >
             Register
@@ -340,9 +438,9 @@ const Register = () => {
     <div>
       <Header />
       <div>
-        <div className="boxState container d-flex justify-content-center">
+        <div className="boxState container d-flex justify-content-center my-4">
           <div className="box">
-            <svg>
+          <svg>
               <circle className="" cx="70px" cy="70px" r="70px"></circle>
               <circle
                 className={
@@ -351,6 +449,7 @@ const Register = () => {
                 cx="70px"
                 cy="70px"
                 r="70px"
+                style={{stroke: "#28a745"}}
               ></circle>
             </svg>
             <div className="number_precent">

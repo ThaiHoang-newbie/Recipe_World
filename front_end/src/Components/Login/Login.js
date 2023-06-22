@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import './login.css';
+import './Login.css';
 import axios from "axios";
 import { Link } from "react-router-dom";
 const Login = () => {
@@ -32,7 +32,7 @@ const Login = () => {
 
         alert("Login successful!");
         setTimeout(() => {
-          window.location = "http://localhost:3000/";
+          window.location = "/";
         }, 1000);
       } else {
         alert("Wrong email or password!");
@@ -44,14 +44,14 @@ const Login = () => {
     const token = sessionStorage.getItem("token");
     if (token) {
       setTimeout(() => {
-        window.location = "http://localhost:3000";
+        window.location = "/";
       }, 100);
     }
   };
 
-  useEffect(() => {
-    checkTokenAndRedirect();
-  }, []);
+    useEffect(() => {
+        checkTokenAndRedirect();
+      }, []);
 
   return (
     <div className="login-card-container">
@@ -63,7 +63,7 @@ const Login = () => {
           <h1>Log in</h1>
           <div>Please login to our my website</div>
         </div>
-        <form className="login-card-form" method="POST" onSubmit={onLogin}>
+        <div className="login-card-form"  >
           <div className="form-group-login">
             <label>Email</label>
             <input
@@ -96,10 +96,10 @@ const Login = () => {
             </div>
             <a href="#">I forgot my password!</a>
           </div>
-          <button type="submit" name="btn-login">
+          <button type="submit" name="btn-login" onClick={() => onLogin()}>
             Sign In
           </button>
-        </form>
+        </div>
         <div className="login-card-footer">
           Don't have an account? <Link to={'/sign-up'}>Create now</Link>
         </div>

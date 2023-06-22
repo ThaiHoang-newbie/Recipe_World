@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../../../assets/style.css";
+import "../../../../Assets/style.css";
 import UserIn from "./UserIn";
 class Header extends Component {
   componentDidMount() {
@@ -18,22 +18,22 @@ class Header extends Component {
               <div className="col-12 col-sm-4">
                 <div className="top-social-info text-right">
                   <a href="#">
-                    <i className="fa fa-pinterest"/>
+                    <i className="fa-brands fa-pinterest"/>
                   </a>
                   <a href="#">
-                    <i className="fa fa-facebook"/>
+                    <i className="fa-brands fa-facebook"/>
                   </a>
                   <a href="#">
-                    <i className="fa fa-twitter"/>
+                    <i className="fa-brands fa-twitter"/>
                   </a>
                   <a href="#">
-                    <i className="fa fa-dribbble"/>
+                    <i className="fa-brands fa-dribbble"/>
                   </a>
                   <a href="#">
-                    <i className="fa fa-behance"/>
+                    <i className="fa-brands fa-behance"/>
                   </a>
                   <a href="#">
-                    <i className="fa fa-linkedin"/>
+                    <i className="fa-brands fa-linkedin"/>
                   </a>
                 </div>
               </div>
