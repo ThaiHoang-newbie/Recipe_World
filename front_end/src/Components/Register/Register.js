@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../svg.css";
+import './Register.css';
 import Header from "../pages/homepage/parts/Header";
 import Footer from "../pages/homepage/parts/Footer";
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js';
@@ -7,7 +8,8 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://w
 
 const Register = () => {
 
-  const [phantram, setPhanTram] = useState(0);
+  const [phantram, setPhanTram] = useState(25);
+
 
   const [submit, setSubmit] = useState(false);
 
@@ -127,7 +129,7 @@ const Register = () => {
           contentType: 'image/jpeg'
         };
         // config
-  
+
         const firebaseConfig = {
           apiKey: "AIzaSyA4bFj14tVc9IT-5yL7tbvyvB2sCy7hbWM",
           authDomain: "recipeworld-8ecc6.firebaseapp.com",
@@ -137,15 +139,15 @@ const Register = () => {
           appId: "1:725588893040:web:f83005b7b51cca25fbc3b5",
           measurementId: "G-52RMZMLKKQ"
         };
-  
-      
+
+
         const app = initializeApp(firebaseConfig);
         const storage = getStorage(app);
-      
+
         if (file) {
           const storageRef = ref(storage, 'images/' + file.name);
           const uploadTask = uploadBytesResumable(storageRef, file, metadata);
-      
+
           uploadTask.on('state_changed',
             (snapshot) => {
               const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -169,7 +171,7 @@ const Register = () => {
           );
         }
       };
-      
+
       handleFileUpload(selectedFile);
     }
 
@@ -229,7 +231,7 @@ const Register = () => {
   }, []);
 
   const renderFormRegister = (
-    <div className="form-register container">
+    <div className="form-register container my-4">
       <div className="input-group mb-3">
         <label
           className="input-group-text bg-success text-light"
@@ -327,7 +329,7 @@ const Register = () => {
         />
       </div>
 
-      <div className="btn-group">
+      <div className="btn-group d-flex justify-content-center">
         <button
           className="btn btn-success"
           onClick={() => checkState("inputForm")}
@@ -340,33 +342,35 @@ const Register = () => {
       <div className="form-label">{submit && renderCheckValidationForm()}</div>
     </div>
   );
-
   const renderUploadAvatar = (
-    <div className="form-upload">
-      <div className="upload-file">
-        <div className="box-avatar">
-          <label className="label-avatar">Avatar</label>
-          {selectedFile && (
+    <div className="form-upload my-4">
+      <div class="image-box">
+        <span class="error"></span>
+        <label for="fileInput" class="preview">
+          {selectedFile ? (
             <img src={preview} alt="avatar" className="img-avatar" />
+          ) : (
+            <span>Upload to preview image</span>
           )}
-          <input
-            type="file"
-            name="file"
-            ref={fileInput}
-            id="fileInput"
-            className="input-file"
-            onChange={onSelectFile}
-          />
-        </div>
-
+        </label>
+        <input
+          ref={fileInput}
+          type="file"
+          name="file"
+          id="fileInput"
+          hidden
+          onChange={onSelectFile} />
       </div>
       <div className="upload-file">
-        <div className="box-event">
-          <button className="btn-next" onClick={() => backForm("inputForm")}>
+        <div className="box-event btn-group">
+          <button
+            className="btn-next btn btn-outline-success"
+            onClick={() => backForm("inputForm")}
+          >
             Back
           </button>
           <button
-            className="btn-next"
+            className="btn-next btn btn-success"
             onClick={() => checkState("uploadAvatar")}
           >
             Next
@@ -375,23 +379,57 @@ const Register = () => {
       </div>
     </div>
   );
+  // const renderUploadAvatar = (
+  //   <div className="form-upload">
+  //     <div className="upload-file">
+  //       <div className="box-avatar">
+  //         <label className="label-avatar">Avatar</label>
+  //         {selectedFile && (
+  //           <img src={preview} alt="avatar" className="img-avatar" />
+  //         )}
+  //         <input
+  //           type="file"
+  //           name="file"
+  //           ref={fileInput}
+  //           id="fileInput"
+  //           className="input-file"
+  //           onChange={onSelectFile}
+  //         />
+  //       </div>
+
+  //     </div>
+  //     <div className="upload-file">
+  //       <div className="box-event">
+  //         <button className="btn-next" onClick={() => backForm("inputForm")}>
+  //           Back
+  //         </button>
+  //         <button
+  //           className="btn-next"
+  //           onClick={() => checkState("uploadAvatar")}
+  //         >
+  //           Next
+  //         </button>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 
   const renderEventRegister = (
-    <div className="form-event-register">
-      <div className="form-event">
+    <div className="form-event-register container my-4">
+      <div className="form-event d-flex flex-column">
         <label>Vui lòng bấm xác nhận để hoàn thành đăng ký</label>
-        <div className="box-event">
-          <button className="btn-next" onClick={() => backForm("uploadAvatar")}>
+        <div className="box-event btn-group d-flex justify-content-center">
+          <button className="btn-next btn btn-outline-success" onClick={() => backForm("uploadAvatar")}>
             Back
           </button>
           <button
-            className="btn-next"
+            className="btn-next btn btn-success"
             onClick={() => checkState("btnRegister")}
           >
             Register
           </button>
         </div>
-        { }
+        {}
       </div>
     </div>
   );
@@ -400,9 +438,9 @@ const Register = () => {
     <div>
       <Header />
       <div>
-        <div className="boxState container d-flex justify-content-center">
+        <div className="boxState container d-flex justify-content-center my-4">
           <div className="box">
-            <svg>
+          <svg>
               <circle className="" cx="70px" cy="70px" r="70px"></circle>
               <circle
                 className={
@@ -411,6 +449,7 @@ const Register = () => {
                 cx="70px"
                 cy="70px"
                 r="70px"
+                style={{stroke: "#28a745"}}
               ></circle>
             </svg>
             <div className="number_precent">

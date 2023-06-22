@@ -26,6 +26,8 @@ class UserInfor extends Component {
             });
     };
 
+
+
     direct = page => {
         if (page === 'profile') {
             window.location = 'http://localhost:3000/profile';
@@ -44,7 +46,7 @@ class UserInfor extends Component {
             <div className="container-xl px-4 mt-4">
                 <nav className="nav nav-borders">
                     <div className="nav nav-borders__left">
-                        <button className="nav-link active ms-0" onClick={() => this.direct('profile')}>Profile</button>
+                        <button className="nav-link active outline-success ms-0"  onClick={() => this.direct('profile')}>Profile</button>
                         <button className="nav-link ms-0" onClick={() => this.direct('my-posts')}>My profile </button>
                     </div>
                     <div className="nav nav-borders__right">
@@ -59,7 +61,7 @@ class UserInfor extends Component {
                             <div className="card-header">User Information</div>
                             <div className="card-body text-center">
                                 <img id="avatar" title="Your avatar" className="img-account-profile rounded-circle mb-2"
-                                    src={res.profile_image_url}
+                                    src={`https://firebasestorage.googleapis.com/v0/b/recipeworld-8ecc6.appspot.com/o/images%2F${res.profile_image_url}?alt=media&token=6faaf2a3-91a1-4350-9b33-9ccbcc755a28`}
                                     alt="Avatar" />
                                 <div className="text-muted mb-4">
                                     <b>Email: </b>{res.email}

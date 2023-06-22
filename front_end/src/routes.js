@@ -7,6 +7,7 @@ import Users from "./Components/pages/adminpages/UI/Users"
 import Posts from "./Components/pages/adminpages/UI/Posts"
 import Categories from "./Components/pages/adminpages/UI/Categories"
 import Recipe from "./Components/Recipe/Recipe";
+import UserInfor from "./Components/UserInfor/UserInfor";
 
 export const homepageRoutes = [
   {
@@ -33,6 +34,11 @@ export const homepageRoutes = [
     path: '/recipe/:id',
     index: false,
     element: <Recipe />
+  },
+  {
+    path: '/profile-page',
+    index: false,
+    element: <UserInfor />
   }
 ]
 
