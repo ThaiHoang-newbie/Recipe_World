@@ -13,13 +13,15 @@ class Post extends Model
 
     // Các trường fillable
 
-    protected $fillable = ['obtainers_id', 'content', 'image_url', 'old_price', 'new_price', 'thumbnail'];
+    protected $fillable = ['obtainer_id', 'category_id','title', 'content', 'price', 'thumbnail'];
 
-
+    public function category() {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
     // Quan hệ nhiều-bài viết thuộc về một-người dùng
     public function obtainer()
     {
-        return $this->belongsTo(Obtainer::class, 'obtainers_id');
+        return $this->belongsTo(Obtainer::class, 'obtainer_id');
     }
 
     // Quan hệ một-bài viết có nhiều-bình luận

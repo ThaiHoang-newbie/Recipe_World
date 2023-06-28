@@ -1,0 +1,36 @@
+.comment{
+  border: 1px solid #28a745;
+  background-color: #40ba37;
+  border-radius: 5px;
+  padding-left: 40px;
+  padding-right: 30px;
+  padding-top: 10px;
+  width: 100%;
+  padding: 24px;
+  display: flex;
+  justify-content: left;
+  gap: 20px;
+  align-items: center;
+  margin: 12px 0
+}
+
+.comment img {
+  border: 1px solid white;
+}
+
+.comment h4,.darker h4,.darker span{
+  display: inline;
+  color: rgb(255, 255, 255);
+}
+.comment span {
+  color: rgb(240, 222, 22)
+}
+.comment p{
+  color: rgb(0, 0, 0);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+}

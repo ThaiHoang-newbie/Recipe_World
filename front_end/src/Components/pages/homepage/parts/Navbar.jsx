@@ -34,7 +34,7 @@ function Navbar() {
                     <ul className="dropdown">
                       <li><Link to="/">Home</Link></li>
                       <li><a href="about.html">About Us</a></li>
-                      <li><a href="blog-post.html">Blog Post</a></li>
+                      <li><Link to="/all-post">Post</Link></li>
                       <li><a href="receipe-post.html">Recipe Post</a></li>
                       <li><Link href="/contact">Contact</Link></li>
                       <li><a href="elements.html">Elements</a></li>

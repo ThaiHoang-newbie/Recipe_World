@@ -47,6 +47,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('content');
             $table->string('thumbnail');
+            $table->integer('price');
             $table->timestamps();
         });
 

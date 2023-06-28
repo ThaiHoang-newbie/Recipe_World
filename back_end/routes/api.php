@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,8 @@ Route::put('/put-obtainer/{id}', [UserController::class, 'onEdit']);
 
 // Get all posts
 Route::get('/getAllPosts', [ApiController::class, 'getAllPost']);
+
+Route::get('get-post/{id}', [ApiController::class, 'getPostById']);
 
 Route::get('/getHomepagePosts', [ApiController::class, 'getPostsForHomePage']);
 
@@ -82,3 +85,10 @@ Route::get('/session-data', function () {
 
 
 Route::post('posting', [PostingController::class, 'store']);
+
+
+//Comment api
+
+Route::get('posts/comments/{id}', [CommentController::class, 'index']);
+Route::post('comment', [CommentController::class, 'store']);
+Route::get('comment/{id}', [CommentController::class, 'getCommentById']);

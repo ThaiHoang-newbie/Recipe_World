@@ -47,29 +47,25 @@ class ApiController extends Controller
             ->get();
         return response()->json($posts);
     }
+    public function getPostById($id)
+    {
+        $posts = Post::with('obtainer', 'category')
+        ->where('id', $id)
+        ->inRandomOrder()
+        ->take(6)
+        ->get();
+
+    return response()->json($posts);
+    }
     public function getPostsForHomePage()
     {
-        $posts = DB::table('posts')
-            ->join('obtainers', 'obtainers.id', '=', 'posts.obtainer_id')
-            ->join('categories', 'posts.category_id', '=', 'categories.id')
-            ->inRandomOrder() 
+        $posts = Post::with('obtainer', 'category')
+            ->inRandomOrder()
             ->take(6)
-            ->select('obtainers.*', 'posts.*', 'categories.*')
             ->get();
 
         return response()->json($posts);
     }
-
-    public function getAllPostImage()
-    {
-        $posts = DB::table('posts')
-            ->join('post_images', 'posts.id', '=', 'post_images.post_id')
-            ->select('posts.*', 'post_images.*')
-            ->get();
-        return response()->json($posts);
-    }
-
-
 
 
 

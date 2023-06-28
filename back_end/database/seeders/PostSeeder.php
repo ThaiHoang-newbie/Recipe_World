@@ -21,7 +21,8 @@ class PostSeeder extends Seeder
                 'category_id' => $faker->numberBetween(1, 3),
                 'title' => $faker->sentence,
                 'content' => $faker->paragraph,
-                'thumbnail' => $faker->imageUrl()
+                'thumbnail' => $faker->imageUrl(),
+                'price' => $faker->randomNumber()
             ]);
         }
     }
