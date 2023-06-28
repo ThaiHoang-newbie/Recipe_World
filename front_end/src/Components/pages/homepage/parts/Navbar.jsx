@@ -100,7 +100,7 @@ function Navbar() {
                     </div>
                     <span className="dd-trigger"></span>
                   </li>
-                  <li><a href="receipe-post.html">RECIPES</a></li>
+                  <li><Link to="/all-post">RECIPES</Link></li>
                   <li><a href="receipe-post.html">4 VEGANS</a></li>
                   <li ><Link to="/contact">CONTACT</Link></li>
                 </ul>

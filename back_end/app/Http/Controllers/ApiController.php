@@ -40,19 +40,23 @@ class ApiController extends Controller
     // Get all posts
     public function getAllPost()
     {
-        $posts = DB::table('posts')
-            ->join('obtainers', 'obtainers.id', '=', 'posts.obtainer_id')
-            ->join('categories', 'posts.category_id', '=', 'categories.id')
-            ->select('obtainers.*', 'posts.*', 'categories.*')
-            ->get();
-        return response()->json($posts);
+        $posts = Post::with('obtainer', 'category')
+        ->get();
+
+    return response()->json($posts);
+    }
+
+    public function getNewestPost() {
+        $posts = Post::with('obtainer', 'category')
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    return response()->json($posts);
     }
     public function getPostById($id)
     {
         $posts = Post::with('obtainer', 'category')
         ->where('id', $id)
-        ->inRandomOrder()
-        ->take(6)
         ->get();
 
     return response()->json($posts);

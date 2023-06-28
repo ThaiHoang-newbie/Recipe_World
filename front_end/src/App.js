@@ -7,8 +7,8 @@ import "@fortawesome/fontawesome-free";
 
 function App() {
   const reRenderContent = (paths) =>
-    paths.map((path) => (
-      <Route path={path.path} index={path.index} element={path.element} />
+    paths.map((path,index) => (
+      <Route key={index} path={path.path} index={path.index} element={path.element} />
     ));
   return (
     <BrowserRouter className="container-fluid">

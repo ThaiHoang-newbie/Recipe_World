@@ -22,7 +22,6 @@ export default function Recipe() {
         console.log(err);
       });
   }, [id]);
-  console.log(recipe);
 
   return (
     <>
@@ -69,11 +68,11 @@ export default function Recipe() {
               <div className="col-12 col-md-4">
                 <div className="receipe-ratings text-right my-5">
                   <div className="ratings">
-                    <i className="fa-solid fa-star" aria-hidden="true" />
-                    <i className="fa-solid fa-star" aria-hidden="true" />
-                    <i className="fa-solid fa-star" aria-hidden="true" />
-                    <i className="fa-solid fa-star" aria-hidden="true" />
-                    <i className="fa-solid fa-star-o" aria-hidden="true" />
+                    <i className="fa-solid fa-star" />
+                    <i className="fa-solid fa-star" />
+                    <i className="fa-solid fa-star" />
+                    <i className="fa-solid fa-star" />
+                    <i className="fa-solid fa-star-o" />
                   </div>
                   <a href="#" className="btn delicious-btn">
                     {recipe && `$${recipe.price}`}
@@ -84,8 +83,8 @@ export default function Recipe() {
           </div>
         </div>
       </div>
-      <div class="receipe-content-area">
-        <div class="container">
+      <div className="receipe-content-area">
+        <div className="container">
             <Comments postId={id}/>
         </div>
       </div>

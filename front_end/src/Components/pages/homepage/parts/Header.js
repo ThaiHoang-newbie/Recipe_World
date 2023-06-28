@@ -3,10 +3,6 @@ import "../../../../Assets/style.css";
 import UserIn from "./UserIn";
 import { Link } from "react-router-dom"; 
 class Header extends Component {
-  componentDidMount() {
-    const currentUrl = window.location.href;
-    console.log(currentUrl);
-  }
   render() {
     return (
       <header className="header-area">

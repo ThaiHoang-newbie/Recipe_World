@@ -41,6 +41,8 @@ Route::put('/put-obtainer/{id}', [UserController::class, 'onEdit']);
 // Get all posts
 Route::get('/getAllPosts', [ApiController::class, 'getAllPost']);
 
+Route::get('/newest-posts', [ApiController::class, 'getNewestPost']);
+
 Route::get('get-post/{id}', [ApiController::class, 'getPostById']);
 
 Route::get('/getHomepagePosts', [ApiController::class, 'getPostsForHomePage']);
@@ -91,4 +93,4 @@ Route::post('posting', [PostingController::class, 'store']);
 
 Route::get('posts/comments/{id}', [CommentController::class, 'index']);
 Route::post('comment', [CommentController::class, 'store']);
-Route::get('comment/{id}', [CommentController::class, 'getCommentById']);
+// Route::get('comment/{id}', [CommentController::class, 'getCommentById']);

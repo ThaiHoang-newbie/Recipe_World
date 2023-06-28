@@ -1,8 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import BlogPost from "../pages/homepage/UI/receiver/BlogPost";
+import Navbar from "../pages/homepage/parts/Navbar";
+import Footer from "../pages/homepage/parts/Footer";
+import Header from "../pages/homepage/parts/Header";
 
 export default function BlogPosts() {
+  const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 4;
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/newest-posts")
+      .then((res) => res.json())
+      .then((data) => setPosts(data))
+      .catch((error) => console.error(error));
+  }, []);
+
+  // Calculate index of the last post on the current page
+  const indexOfLastPost = currentPage * postsPerPage;
+  // Calculate index of the first post on the current page
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  // Get the current posts to be displayed
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
     <div>
+      <Header />
+      <Navbar />
       <div
         className="breadcumb-area bg-img bg-overlay"
         style={{ backgroundImage: "url(img/bg-img/breadcumb2.jpg)" }}
@@ -25,125 +54,39 @@ export default function BlogPosts() {
             <div className="col-12 col-lg-8">
               <div className="blog-posts-area">
                 {/* Single Blog Area */}
-                <div className="single-blog-area mb-80">
-                  {/* Thumbnail */}
-                  <div className="blog-thumbnail">
-                    <img src="img/blog-img/1.jpg" alt="" />
-                    {/* Post Date */}
-                    <div className="post-date">
-                      <a href="#">
-                        <span>05</span>April <br /> 2018
-                      </a>
-                    </div>
-                  </div>
-                  {/* Content */}
-                  <div className="blog-content">
-                    <a href="#" className="post-title">
-                      How to find amazing restaurants in your city
-                    </a>
-                    <div className="meta-data">
-                      by <a href="#">Maria Williams</a> in{" "}
-                      <a href="#">Restaurants</a>
-                    </div>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Vestibulum nec varius dui. Suspendisse potenti. Vestibulum
-                      ac pellentesque tortor. Aenean congue sed metus in
-                      iaculis. Cras a tortor enim. Phasellus posuere vestibulum
-                      ipsum, eget lobortis purus. Orci varius natoque penatibus
-                      et magnis dis parturient montes, nascetur ridiculus mus.{" "}
-                    </p>
-                    <a href="#" className="btn delicious-btn mt-30">
-                      Read More
-                    </a>
-                  </div>
-                </div>
-                {/* Single Blog Area */}
-                <div className="single-blog-area mb-80">
-                  {/* Thumbnail */}
-                  <div className="blog-thumbnail">
-                    <img src="img/blog-img/2.jpg" alt="" />
-                    {/* Post Date */}
-                    <div className="post-date">
-                      <a href="#">
-                        <span>05</span>April <br /> 2018
-                      </a>
-                    </div>
-                  </div>
-                  {/* Content */}
-                  <div className="blog-content">
-                    <a href="#" className="post-title">
-                      10 tips to live a healty life
-                    </a>
-                    <div className="meta-data">
-                      by <a href="#">Maria Williams</a> in{" "}
-                      <a href="#">Restaurants</a>
-                    </div>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Vestibulum nec varius dui. Suspendisse potenti. Vestibulum
-                      ac pellentesque tortor. Aenean congue sed metus in
-                      iaculis. Cras a tortor enim. Phasellus posuere vestibulum
-                      ipsum, eget lobortis purus. Orci varius natoque penatibus
-                      et magnis dis parturient montes, nascetur ridiculus mus.{" "}
-                    </p>
-                    <a href="#" className="btn delicious-btn mt-30">
-                      Read More
-                    </a>
-                  </div>
-                </div>
-                {/* Single Blog Area */}
-                <div className="single-blog-area mb-80">
-                  {/* Thumbnail */}
-                  <div className="blog-thumbnail">
-                    <img src="img/blog-img/3.jpg" alt="" />
-                    {/* Post Date */}
-                    <div className="post-date">
-                      <a href="#">
-                        <span>05</span>April <br /> 2018
-                      </a>
-                    </div>
-                  </div>
-                  {/* Content */}
-                  <div className="blog-content">
-                    <a href="#" className="post-title">
-                      5 Tips on how to cook the best hamburger
-                    </a>
-                    <div className="meta-data">
-                      by <a href="#">Maria Williams</a> in{" "}
-                      <a href="#">Restaurants</a>
-                    </div>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Vestibulum nec varius dui. Suspendisse potenti. Vestibulum
-                      ac pellentesque tortor. Aenean congue sed metus in
-                      iaculis. Cras a tortor enim. Phasellus posuere vestibulum
-                      ipsum, eget lobortis purus. Orci varius natoque penatibus
-                      et magnis dis parturient montes, nascetur ridiculus mus.{" "}
-                    </p>
-                    <a href="#" className="btn delicious-btn mt-30">
-                      Read More
-                    </a>
-                  </div>
-                </div>
+                {currentPosts.map((post, index) => (
+                  <BlogPost
+                    key={index}
+                    id={post.id}
+                    created_at={post.created_at}
+                    title={post.title}
+                    content={post.content}
+                    full_name={post.obtainer.full_name}
+                    category={post.category.name}
+                    thumbnail={post.thumbnail}
+                  />
+                ))}
               </div>
               <nav aria-label="Page navigation example">
                 <ul className="pagination">
-                  <li className="page-item active">
-                    <a className="page-link" href="#">
-                      01.
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      02.
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      03.
-                    </a>
-                  </li>
+                  {posts.length > postsPerPage &&
+                    Array.from({
+                      length: Math.ceil(posts.length / postsPerPage),
+                    }).map((_, index) => (
+                      <li
+                        key={index}
+                        className={`page-item ${
+                          currentPage === index + 1 ? "active" : ""
+                        }`}
+                      >
+                        <button
+                          className="page-link"
+                          onClick={() => paginate(index + 1)}
+                        >
+                          {index + 1}.
+                        </button>
+                      </li>
+                    ))}
                 </ul>
               </nav>
             </div>
@@ -237,6 +180,7 @@ export default function BlogPosts() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
