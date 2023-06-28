@@ -4,8 +4,10 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostingController;
+use App\Http\Controllers\MailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 
 /*
@@ -80,5 +82,15 @@ Route::get('/session-data', function () {
 
 // Posting api
 
-
 Route::post('posting', [PostingController::class, 'store']);
+
+
+
+
+// ----------------------------------------------------------------------------
+
+// Verify email route
+
+Route::post('send-mail', [MailController::class, 'send']);
+Route::post('comparison', [MailController::class, 'comparison']);
+

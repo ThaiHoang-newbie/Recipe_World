@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import './user.css';
+import './UserInfor.css';
 import axios from 'axios';
+// import './EditUserInfor.css';
 
 class UserInfor extends Component {
     constructor(props) {
@@ -39,18 +40,17 @@ class UserInfor extends Component {
             window.location = 'http://localhost:3000/';
         }
     };
-
     render() {
         const { res } = this.state;
         return (
             <div className="container-xl px-4 mt-4">
                 <nav className="nav nav-borders">
                     <div className="nav nav-borders__left">
-                        <button className="nav-link active outline-success ms-0"  onClick={() => this.direct('profile')}>Profile</button>
-                        <button className="nav-link ms-0" onClick={() => this.direct('my-posts')}>My profile </button>
+                        <a className="nav-link active outline-success ms-0" onClick={() => this.direct('profile')}>Profile</a>
+                        <a className="nav-link ms-0" onClick={() => this.direct('my-posts')}>My posts </a>
                     </div>
                     <div className="nav nav-borders__right">
-                        <button className="nav-link ms-0" onClick={() => this.direct('back')}>Back</button>
+                        <a className="nav-link ms-0" onClick={() => this.direct('back')}>Back</a>
                     </div>
                 </nav>
                 <hr className="mt-0 mb-4" />
@@ -59,29 +59,52 @@ class UserInfor extends Component {
                     <div className="col-md-12">
                         <div className="card mb-12 mb-xl-0">
                             <div className="card-header">User Information</div>
-                            <div className="card-body text-center">
-                                <img id="avatar" title="Your avatar" className="img-account-profile rounded-circle mb-2"
-                                    src={`https://firebasestorage.googleapis.com/v0/b/recipeworld-8ecc6.appspot.com/o/images%2F${res.profile_image_url}?alt=media&token=6faaf2a3-91a1-4350-9b33-9ccbcc755a28`}
-                                    alt="Avatar" />
-                                <div className="text-muted mb-4">
-                                    <b>Email: </b>{res.email}
+
+                            <center>
+                                <div className="card-body text-center">
+                                    <img id="avatar" title="Your avatar" className="img-account-profile rounded-circle mb-2"
+                                        src={`https://firebasestorage.googleapis.com/v0/b/recipeworld-8ecc6.appspot.com/o/images%2F${res.profile_image_url}?alt=media&token=6faaf2a3-91a1-4350-9b33-9ccbcc755a28`}
+                                        alt="Avatar" />
                                 </div>
-                                <div className="text-muted mb-4">
-                                    <b>Full name:</b> {res.full_name}
-                                </div>
-                                <div className="text-muted mb-4">
-                                    <b>Birthday:</b> {res.date_of_birth}
-                                </div>
-                                <div className="text-muted mb-4">
-                                    <b>Phone number:</b> {res.phone_number}
-                                </div>
-                                <div className="text-muted mb-4">
-                                    <b>Followers:</b> {res.followers_count}
+                            </center>
+
+                            <center>
+                                <div class="main">
+                                    <div class="main_left">
+                                        <div className="text-muted mb-4">
+                                            <b>Email:</b> {res.email}
+                                        </div>
+                                        <div className="text-muted mb-4">
+                                            <b>Full name:</b> {res.full_name}
+                                        </div>
+                                        <div className="text-muted mb-4">
+                                            <b>Birthday:</b> {res.date_of_birth}
+                                        </div>
+                                        <div className="text-muted mb-4">
+                                            <b>Phone number:</b> {res.phone_number}
+                                        </div>
+                                    </div>
+
+                                    <div class="main_right">
+                                        <div className="text-muted mb-4">
+                                            <b>Followers:</b> {res.followers_count}
+                                        </div>
+                                        <div className="text-muted mb-4">
+                                            <b>Location:</b> {res.location}
+                                        </div>
+                                        <div className="text-muted mb-4">
+                                            <b>Website:</b> {res.website}
+                                        </div>
+                                        <div className="text-muted mb-4" href={res.bio}>
+                                            <b>Bio:</b> {res.bio}
+                                        </div>
+                                    </div>
                                 </div>
                                 <button className="btn btn-primary" type="button" onClick={() => this.direct('edit-profile')}>
                                     Edit Profile
                                 </button>
-                            </div>
+                            </center>
+
                         </div>
                     </div>
                 </div>

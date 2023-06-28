@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import './Posting_form.css';
-import 'bootstrap/dist/css/bootstrap.css';
+import './NewPosting.css';
 import axios from 'axios';
 
-const Posting_form = () => {
+const NewPosting = () => {
     const [inputs, setInputs] = useState([]);
 
     const handleInputChange = (event, index) => {
@@ -185,4 +184,4 @@ const Posting_form = () => {
     );
 };
 
-export default Posting_form;
+export default NewPosting;

@@ -11,18 +11,11 @@ const EditUserInfor = () => {
 
 
     const today = () => {
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1;
-        var yyyy = today.getFullYear();
-        if (dd < 10) {
-            dd = '0' + dd;
-        }
-        if (mm < 10) {
-            mm = '0' + mm;
-        }
-        today = yyyy + '-' + mm + '-' + dd;
-        document.getElementById('datefield').setAttribute('max', today);
+        const now = new Date();
+        const dd = String(now.getDate()).padStart(2, '0');
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const yyyy = now.getFullYear();
+        return `${yyyy}-${mm}-${dd}`;
     };
 
 
@@ -74,7 +67,7 @@ const EditUserInfor = () => {
         e.preventDefault();
         var obtainerId = sessionStorage.getItem('obtainer_id');
         axios
-            .put(`http://127.0.0.1:8000/api/get-obtainer/${obtainerId}`, {
+            .put(`http://127.0.0.1:8000/api/put-obtainer/${obtainerId}`, {
                 full_name: fullName,
                 date_of_birth: dateOfBirth,
                 phone_number: phoneNumber,
@@ -83,12 +76,10 @@ const EditUserInfor = () => {
                 website: website,
             })
             .then(response => {
-                // Handle successful response
                 console.log(response.data);
                 alert('Profile updated successfully');
             })
             .catch(error => {
-                // Handle error
                 console.log(error);
                 alert('An error occurred while updating the profile');
             });
@@ -101,7 +92,7 @@ const EditUserInfor = () => {
 
     return (
         <div className="container">
-            <h2>Edit Profile</h2>
+            <h2 className='text-center'>Edit Profile</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Full Name:</label>
@@ -119,6 +110,7 @@ const EditUserInfor = () => {
                         type="date"
                         name="dateOfBirth"
                         value={dateOfBirth}
+                        id="datefield"
                         max={today()}
                         onChange={handleChange}
                         className="form-control"
@@ -164,7 +156,7 @@ const EditUserInfor = () => {
                         className="form-control"
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn text-center btn-primary">
                     Save Changes
                 </button>
             </form>
