@@ -9,7 +9,7 @@ import Categories from "./Components/pages/adminpages/UI/Categories"
 import Recipe from "./Components/Recipe/Recipe";
 import UserInfor from "./Components/UserInfor/UserInfor";
 import EditUserInfor from "./Components/UserInfor/EditUserInfor";
-import NewPosting from "./Components/Posting/NewPosting";
+import Posting from "./Components/Posting/Posting";
 
 export const homepageRoutes = [
   {
@@ -48,9 +48,9 @@ export const homepageRoutes = [
     element: <EditUserInfor />
   },
   {
-    path: '/new-posting',
+    path: '/posting',
     index: false,
-    element: <NewPosting />
+    element: <Posting />
   }
 ]
 

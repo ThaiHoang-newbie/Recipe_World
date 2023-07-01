@@ -290,7 +290,6 @@ const Register = () => {
     checkTokenAndRedirect();
   }, []);
 
-
   const renderFormRegister = (
     <div className="form-register container my-4">
       <div className="input-group mb-3">
@@ -484,7 +483,6 @@ const Register = () => {
   );
 
   return (
-
     <div>
       <Header />
       <div>

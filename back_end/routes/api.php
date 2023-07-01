@@ -54,6 +54,13 @@ Route::get('/getPostByObtainerId/{id}', [ApiController::class, 'getPostByObtaine
 Route::get('/getPostByCategoryId/{id}', [ApiController::class, 'getPostByCategoryId']);
 
 
+// ----------------------------------------------------------------------------
+
+// Get all categories
+Route::get('/get-categories', [ApiController::class, 'getCategories']);
+Route::post('/categories', [ApiController::class, 'getCategories']);
+
+
 
 // ----------------------------------------------------------------------------
 
@@ -93,4 +100,11 @@ Route::post('posting', [PostingController::class, 'store']);
 
 Route::post('send-mail', [MailController::class, 'send']);
 Route::post('comparison', [MailController::class, 'comparison']);
+
+
+// ----------------------------------------------------------------------------
+
+// Add new post
+
+Route::post('add-post', [PostingController::class, 'AddNewPost']);
 

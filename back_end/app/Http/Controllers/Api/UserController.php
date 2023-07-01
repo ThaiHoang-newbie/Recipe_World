@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\UsersResource;
 use App\Models\Obtainer;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -123,7 +124,4 @@ class UserController extends Controller
     }
 
 
-    public function onVerify(){
-        
-    }
 }
