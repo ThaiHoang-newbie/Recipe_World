@@ -58,7 +58,7 @@ Route::get('/getPostByCategoryId/{id}', [ApiController::class, 'getPostByCategor
 
 // Get all categories
 Route::get('/get-categories', [ApiController::class, 'getCategories']);
-Route::post('/categories', [ApiController::class, 'getCategories']);
+Route::post('/categories', [ApiController::class, 'addCategories']);
 
 
 

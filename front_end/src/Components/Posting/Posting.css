@@ -26,7 +26,44 @@
 .toolbar-class {
     border: 1px solid #ccc;
 }
+
 .preview {
     padding: 1rem;
     margin-top: 1rem;
-  }
+}
+.btn-save-post{
+    display: flex !important;
+    justify-content: center !important;
+}
+
+select {
+    /* Reset */
+    appearance: none;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    /* Personalize */
+    width: 20em;
+    height: 3em;
+    padding: 0 4em 0 1em;
+    color: black;
+    border-radius: 0.25em;
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+
+    /* <option> colors */
+    option {
+        color: inherit;
+        background-color: black !important;
+    }
+
+    /* Remove focus outline */
+    &:focus {
+        outline: none;
+    }
+
+    /* Remove IE arrow */
+    &::-ms-expand {
+        display: none;
+    }
+}

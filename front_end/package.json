@@ -20,6 +20,7 @@
     "firebase": "^9.22.2",
     "http-proxy-middleware": "^2.0.6",
     "install": "^0.13.0",
+    "jquery": "^3.7.0",
     "lodash": "^4.17.21",
     "logrocket": "^4.0.3",
     "postcss-loader": "^7.3.3",
@@ -28,6 +29,8 @@
     "react-draft-wysiwyg": "^1.15.0",
     "react-router-dom": "^6.12.1",
     "react-scripts": "^5.0.1",
+    "sass": "^1.63.6",
+    "scss": "^0.2.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
