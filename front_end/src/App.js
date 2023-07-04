@@ -1,20 +1,22 @@
-import HeroArea from "./components/HeroArea";
-import Navbar from "./components/Navbar";
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import TopCategory from "./components/TopCategory";
-import ShowProduct from "./components/ShowProduct";
-import Products from "./components/Products";
-import Footer from "./components/Footer";
+
+import React from "react";
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { homepageRoutes } from "./routes";
+import "@fortawesome/fontawesome-free";
+import LogRocket from 'logrocket';
 function App() {
+  LogRocket.init('hjb3fu/recipe-world');
+  const reRenderContent = (paths) =>
+    paths.map((path) => (
+      <Route path={path.path} index={path.index} element={path.element} />
+    ));
   return (
-    <div>
-      <Navbar></Navbar>
-      <HeroArea></HeroArea>
-      <TopCategory/>
-      <ShowProduct/>
-      <Products/>
-      <Footer/>
-    </div>
-  )
+    <BrowserRouter className="container-fluid">
+      <Routes>{reRenderContent(homepageRoutes)}</Routes>
+    </BrowserRouter>
+  );
 }
-export default App
+
+export default App;
+

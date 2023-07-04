@@ -18,14 +18,18 @@ class ObtainerSeeder extends Seeder
 
         for ($i = 0; $i < 20; $i++) {
             Obtainer::create([
-                'username' => $faker->userName,
                 'email' => $faker->unique()->email,
                 'password' => bcrypt('password'),
                 'full_name' => $faker->name,
                 'date_of_birth' => $faker->date(),
                 'bio' => $faker->paragraph,
+                'phone_number' => $faker->phoneNumber(),
+                'isActive' => 1,
                 'profile_image_url' => $faker->imageUrl(),
             ]);
         }
+        
+
+
     }
 }
