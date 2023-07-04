@@ -47,6 +47,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('content');
             $table->string('thumbnail');
+            $table->integer('price');
             $table->timestamps();
         });
 
@@ -109,8 +110,7 @@ return new class extends Migration
             $table->foreign('sender_id')->references('id')->on('obtainers');
             $table->unsignedInteger('recipient_id');
             $table->foreign('recipient_id')->references('id')->on('obtainers');
-            $table->text('content');
-            $table->timestamp('sent_at')->nullable();
+            $table->boolean('content');
             $table->timestamps();
         });
 
@@ -119,12 +119,13 @@ return new class extends Migration
         // Create orders table
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('order_seller_id');
-            $table->foreign('order_seller_id')->references('id')->on('obtainers')->onDelete('cascade');
-            $table->unsignedInteger('order_buyer_id');
-            $table->foreign('order_buyer_id')->references('id')->on('obtainers')->onDelete('cascade');
-            $table->double('price');
-            $table->boolean('status')->default(false);
+            $table->unsignedInteger('sender_id');
+            $table->foreign('sender_id')->references('id')->on('obtainers')->onDelete('cascade');
+            $table->unsignedInteger('recipient_id');
+            $table->foreign('recipient_id')->references('id')->on('obtainers')->onDelete('cascade');
+            $table->unsignedInteger('post_id');
+            $table->foreign('post_id')->references('id')->on('posts');
+            $table->boolean('status');
             $table->timestamps();
         });
 

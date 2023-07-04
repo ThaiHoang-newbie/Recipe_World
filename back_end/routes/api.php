@@ -36,6 +36,8 @@ Route::get('/get-obtainer/{id}', [ApiController::class, 'getObtainerById']);
 // Get a obtainer
 Route::put('/put-obtainer/{id}', [UserController::class, 'onEdit']);
 
+// Check obtainer exist
+Route::post('/check-exist', [UserController::class, 'checkUserExist']);
 
 // ----------------------------------------------------------------------------
 

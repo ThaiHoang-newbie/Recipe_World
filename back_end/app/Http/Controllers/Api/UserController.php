@@ -25,6 +25,19 @@ class UserController extends Controller
         return new UsersResource(Obtainer::all());
     }
 
+    public function checkUserExist(Request $request)
+    {
+        $email = $request->input('email');
+        // return response()->json(['email' => $email]);
+
+        $user = Obtainer::where("email", $email)->first();
+
+        if ($user == null || $user == "") {
+            return response()->json(['exists' => false]);
+        } else {
+            return response()->json(['exists' => true]);
+        }
+    }
 
     public function onLogin(Request $request)
     {
@@ -33,7 +46,7 @@ class UserController extends Controller
             'password' => 'required|string',
         ]);
         if ($validator->fails()) {
-            return response()->json(['error' => 'Login unsuccessful!'], 401);
+            return response()->json(['success' => 'Login unsuccessful!'], 401);
         }
 
         $primary_token = Str::random(80);
@@ -122,6 +135,4 @@ class UserController extends Controller
 
         return response()->json(['message' => 'User updated successfully'], 200);
     }
-
-
 }
