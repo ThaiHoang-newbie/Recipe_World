@@ -76,7 +76,7 @@
 }
 
 .input-title:focus::placeholder {
-    color:transparent ;
+    color: transparent;
 }
 
 select {
@@ -109,4 +109,17 @@ select {
     &::-ms-expand {
         display: none;
     }
+}
+
+
+.uploaded-images {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.image-thumbnail {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
 }

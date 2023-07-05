@@ -16,6 +16,8 @@ function Posting() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [titleInputed, setTitleInputed] = useState('');
   const [uploadedImages, setUploadedImages] = useState([]);
+  const [thumbnail, setThumbnail] = useState({});
+
 
   useEffect(() => {
     let isMounted = true;
@@ -39,7 +41,7 @@ function Posting() {
     }
   };
 
-  
+
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
   };
@@ -47,6 +49,13 @@ function Posting() {
   const handleTitleInputed = (event) => {
     setTitleInputed(event.target.value);
   };
+
+  const selectThumbnail = (event) => {
+    const thumbnailId = event.target.value;
+    const selectedThumbnail = categories.find((category) => category.id === thumbnailId);
+    setThumbnail(selectedThumbnail);
+  };
+
 
   const createCategory = async (categoryName) => {
     try {
@@ -142,7 +151,7 @@ function Posting() {
       alert("Please select a category");
       return;
     }
-    
+
     if (titleInputed === '') {
       alert("Please enter the title");
       return;
@@ -193,7 +202,7 @@ function Posting() {
         </button>
       </div>
 
-      <input type='text' placeholder='Title' className='input-title' onChange={handleTitleInputed}/>
+      <input type='text' placeholder='Title' className='input-title' onChange={handleTitleInputed} />
 
       <Editor
         editorState={editorState}
@@ -238,6 +247,17 @@ function Posting() {
           </div>
         </div>
       </div>
+
+
+      <select value={thumbnail.id} onChange={selectThumbnail}>
+        <option value="">Select Thumbnail</option>
+        {uploadedImages.map((image) => (
+          <div key={image.name} className="image-thumbnail">
+            <img src={URL.createObjectURL(image)} alt="Uploaded Image" />
+          </div>
+        ))}
+      </select>
+
 
       {uploadedImages.length > 0 && (
         <div className="uploaded-images">

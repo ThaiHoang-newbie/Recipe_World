@@ -267,9 +267,9 @@ const Register = () => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/check-exist', { email });
       if (response.data.exists = true) {
-        return false;
-      } else {
         return true;
+      } else {
+        return false;
       }
     } catch (error) {
       console.error("Error:", error);

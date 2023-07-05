@@ -28,14 +28,13 @@ class UserController extends Controller
     public function checkUserExist(Request $request)
     {
         $email = $request->input('email');
-        // return response()->json(['email' => $email]);
 
         $user = Obtainer::where("email", $email)->first();
 
-        if ($user == null || $user == "") {
-            return response()->json(['exists' => false]);
+        if ($user == null) {
+            return response()->json(['exists' => "false"]);
         } else {
-            return response()->json(['exists' => true]);
+            return response()->json(['exists' => "true"]);
         }
     }
 
