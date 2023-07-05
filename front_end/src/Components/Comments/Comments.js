@@ -7,22 +7,29 @@ import { Link } from "react-router-dom";
 export default function Comments({ postId }) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [commentCount, setCommentCount] = useState(0);
   const obtainer_id = sessionStorage.getItem("obtainer_id");
 
   useEffect(() => {
-    fetchComments();
-  }, [postId]);
-
-  const fetchComments = () => {
-    axios
-      .get(`http://localhost:8000/api/posts/comments/${postId}`)
-      .then((res) => {
-        const data = res.data;
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/posts/comments/${postId}`
+        );
+        const data = response.data;
         setComments(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        setCommentCount(data.length);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [postId, commentCount]);
+
+  const storePrevPage = () => {
+    const currentPage = window.location.href;
+    localStorage.setItem("prevPage", currentPage);
   };
 
   const handleSubmit = (e) => {
@@ -39,11 +46,19 @@ export default function Comments({ postId }) {
         const newComment = res.data;
         setComments((prevComments) => [...prevComments, newComment]);
         setNewComment("");
-        window.location.href=`/recipe/${postId}`
+        setCommentCount((prevCount) => prevCount + 1); // Increment the comment count
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handleDeleteComment = (commentId) => {
+    const updatedComments = comments.filter(
+      (comment) => comment.id !== commentId
+    );
+    setComments(updatedComments);
+    setCommentCount((prevCount) => prevCount - 1); // Decrement the comment count
   };
 
   return (
@@ -56,13 +71,20 @@ export default function Comments({ postId }) {
           <div className="col-12">
             <div className="row">
               {comments.length > 0 ? (
-                comments.map((comment, index) => (
+                comments.map((comment) => (
                   <Comment
-                    key={index}
-                    full_name={comment.full_name}
-                    profile_image_url={comment.profile_image_url}
+                    obtainer_id={comment.obtainer_id}
+                    key={comment.id}
+                    id={comment.id}
+                    full_name={
+                      comment.obtainer ? comment.obtainer.full_name : "Unknown"
+                    }
+                    profile_image_url={
+                      comment.obtainer ? comment.obtainer.profile_image_url : ""
+                    }
                     created_at={comment.created_at}
                     content={comment.content}
+                    onDeleteComment={handleDeleteComment}
                   />
                 ))
               ) : (
@@ -76,7 +98,7 @@ export default function Comments({ postId }) {
         <div className="col-12">
           <div className="contact-form-area">
             {obtainer_id ? (
-              <form action="#" method="post" onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-12 my-4">
                     <textarea
@@ -92,7 +114,7 @@ export default function Comments({ postId }) {
                   </div>
                   <div className="col-12">
                     <button className="btn delicious-btn mt-30" type="submit">
-                      Post Comments
+                      Post Comment
                     </button>
                   </div>
                 </div>
@@ -101,7 +123,11 @@ export default function Comments({ postId }) {
               <div className="row">
                 <div className="col-12">
                   <p>
-                    You must <Link to="/sign-in">Login</Link> to comment{" "}
+                    You must{" "}
+                    <Link onClick={storePrevPage} to="/sign-in">
+                      Login
+                    </Link>{" "}
+                    to comment.
                   </p>
                 </div>
               </div>

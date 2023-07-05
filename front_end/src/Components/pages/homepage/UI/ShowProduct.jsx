@@ -9,8 +9,12 @@ function ShowProduct() {
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/getHomepagePosts")
       .then((res) => res.json())
-      .then((data) => setPosts(data))
-      .catch((error) => console.error(error));
+      .then((data) => {
+        setPosts(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   return (
@@ -53,14 +57,14 @@ function ShowProduct() {
             <div className="container">
               <div className="row">
                 {posts.map((post, index) => (
-                  <Products 
-                  key={index}
-                  thumbnail = {post.thumbnail}
-                  created_at = {post.created_at}
-                  title = {post.title}
-                  id = {post.id}
-                  full_name={post.obtainer.full_name}
-                    />
+                  <Products
+                    key={index}
+                    thumbnail={post.thumbnail}
+                    created_at={post.created_at}
+                    title={post.title}
+                    id={post.id}
+                    full_name={post.obtainer.full_name}
+                  />
                 ))}
               </div>
             </div>

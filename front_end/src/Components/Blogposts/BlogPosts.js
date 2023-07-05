@@ -7,7 +7,7 @@ import Header from "../pages/homepage/parts/Header";
 export default function BlogPosts() {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 4;
+  const postsPerPage = 3;
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/newest-posts")

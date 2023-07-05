@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import './Login.css';
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Header from "../pages/homepage/parts/Header";
+import Footer from "../pages/homepage/parts/Footer";
 const Login = () => {
   const [dataForm, setDataForm] = useState({
     email: "",
@@ -13,32 +15,39 @@ const Login = () => {
       const _formData = new FormData();
       _formData.append("email", dataForm.email);
       _formData.append("password", dataForm.password);
-
+  
       const requestOptions = {
         method: "POST",
         body: _formData,
       };
-
+  
       const response = await fetch(
         "http://127.0.0.1:8000/api/obtainers/login",
         requestOptions
       );
-
+  
       if (response.status == 200) {
         var res = await response.json();
-
+  
         sessionStorage.setItem("obtainer_id", res.data.id);
         sessionStorage.setItem("token", res.token);
-
+  
         alert("Login successful!");
         setTimeout(() => {
-          window.location = "/";
+          const prevPage = localStorage.getItem('prevPage');
+          if (prevPage) {
+            localStorage.removeItem('prevPage');
+            window.location.href = prevPage;
+          } else {
+            window.location.href = "/";
+          }
         }, 1000);
       } else {
         alert("Wrong email or password!");
       }
     }
   };
+  
 
   const checkTokenAndRedirect = () => {
     const token = sessionStorage.getItem("token");
@@ -54,6 +63,8 @@ const Login = () => {
       }, []);
 
   return (
+    <>
+    <Header />
     <div className="login-card-container">
       <div className="login-card">
         {/* <div class="login-card-logo">
@@ -105,6 +116,8 @@ const Login = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

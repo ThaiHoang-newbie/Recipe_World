@@ -37,7 +37,7 @@ export const homepageRoutes = [
     element: <Recipe />
   },
   {
-    path: '/profile-page',
+    path: '/profile-page/:id',
     index: false,
     element: <UserInfor />
   },

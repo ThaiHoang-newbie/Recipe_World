@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -27,6 +28,9 @@ class ApiController extends Controller
         $obtainerById = Obtainer::find($id);
 
         if ($obtainerById) {
+            // Fetch the latest data by the created_at column
+            $obtainerById = Obtainer::latest()->find($id);
+
             return response()->json($obtainerById);
         } else {
             return response()->json(['error' => 'Obtainer not found'], 404);
@@ -41,25 +45,26 @@ class ApiController extends Controller
     public function getAllPost()
     {
         $posts = Post::with('obtainer', 'category')
-        ->get();
+            ->get();
 
-    return response()->json($posts);
+        return response()->json($posts);
     }
 
-    public function getNewestPost() {
+    public function getNewestPost()
+    {
         $posts = Post::with('obtainer', 'category')
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    return response()->json($posts);
+        return response()->json($posts);
     }
     public function getPostById($id)
     {
         $posts = Post::with('obtainer', 'category')
-        ->where('id', $id)
-        ->get();
+            ->where('id', $id)
+            ->get();
 
-    return response()->json($posts);
+        return response()->json($posts);
     }
     public function getPostsForHomePage()
     {
@@ -76,14 +81,15 @@ class ApiController extends Controller
     // Get all posts by obtainer_id
     public function getPostByObtainerId($id)
     {
-        $postByObtainerId = Post::all()->where('obtainer_id', $id);
+        $postByObtainerId = Post::where('obtainer_id', $id)->get();
 
-        if ($postByObtainerId) {
-            return response()->json($postByObtainerId);
+        if ($postByObtainerId->isNotEmpty()) {
+            return response()->json($postByObtainerId->toArray());
         } else {
-            return response()->json(['error' => `This user hasn't any posts`], 404);
+            return response()->json(['error' => 'This user has no posts'], 404);
         }
     }
+
 
     // Get all posts posts by category_id
     public function getPostByCategoryId($id)
@@ -95,5 +101,16 @@ class ApiController extends Controller
         } else {
             return response()->json(['error' => `This category hasn't any posts`], 404);
         }
+    }
+
+    public function getOrderById($id)
+    {
+
+        $orders = Order::join('posts', 'posts.id', '=', 'orders.post_id')
+            ->select('orders.*', 'posts.*')
+            ->where('sender_id', $id)
+            ->get();
+
+        return response()->json($orders);
     }
 }

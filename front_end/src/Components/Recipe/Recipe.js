@@ -1,27 +1,210 @@
 import React, { useEffect, useState } from "react";
-import "../../Assets/style.css";
+import { useParams, Link } from "react-router-dom";
+import axios from "axios";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
+
 import Header from "../pages/homepage/parts/Header";
 import Footer from "../pages/homepage/parts/Footer";
-import axios from "axios";
-import { Link, useParams } from "react-router-dom";
 import Comments from "../Comments/Comments";
 
 export default function Recipe() {
   const { id } = useParams();
+  const [open, setOpen] = useState(false);
   const [recipe, setRecipe] = useState(null);
+  const [orders, setOrders] = useState(null);
   const [postImages, setPostImages] = useState([]);
+  const userId = sessionStorage.getItem("obtainer_id");
+  const [status, setStatus] = useState(null); // Add status state
 
   useEffect(() => {
+    const fetchRecipe = async () => {
+      try {
+        if (!recipe) {
+          const response = await axios.get(
+            `http://127.0.0.1:8000/api/get-post/${id}`
+          );
+          const data = response.data;
+          setRecipe(data[0]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchRecipe();
+  }, [id, recipe]);
+
+  useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        if (!orders) {
+          const recipeInformation = {
+            sender_id: userId,
+            post_id: id,
+          };
+          const response = await axios.post(
+            "http://127.0.0.1:8000/api/post/orders",
+            recipeInformation
+          );
+          const data = response.data;
+          setOrders(data[0]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchOrder();
+  }, [id, userId, orders]);
+
+  useEffect(() => {
+    if (orders && orders.status) {
+      setStatus(orders.status); // Update status state when orders.status changes
+    }
+  }, [orders]);
+
+  const checkUser = (userId) => {
+    if (!recipe) {
+      return null;
+    }
+
+    if (!userId) {
+      return (
+        <>
+          <button
+            onClick={() => {
+              setOpen(true);
+            }}
+            className="btn delicious-btn"
+          >
+            {recipe && `$${recipe.price}`}
+          </button>
+          <Dialog open={open} onClose={() => setOpen(false)}>
+            <DialogTitle>
+              <center>Something went wrong here</center>
+            </DialogTitle>
+            <DialogContent>
+              You haven't logged in yet. If you have an account,{" "}
+              <Link to="/sign-in" onClick={storePrevPage}>
+                Login
+              </Link>{" "}
+              here, or you can <Link to="/sign-up">Join us</Link>.
+            </DialogContent>
+          </Dialog>
+        </>
+      );
+    }
+
+    if (orders && !orders.status) {
+      return (
+        <div>
+          <button className="btn btn-outline-success delicious-btn">Waiting</button>
+        </div>
+      );
+    }
+
+    if (userId == recipe.obtainer.id) {
+      return (
+        <>
+          <button className="btn delicious-btn">View your other posts</button>
+        </>
+      );
+    }
+
+    if (status) {
+      return (
+        <div>
+          <button className="btn btn-outline-success delicious-btn" disable>
+            You have bought this recipe
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <button
+          onClick={() => {
+            setOpen(true);
+          }}
+          className="btn delicious-btn"
+        >
+          {recipe && `$${recipe.price}`}
+        </button>
+        <Dialog open={open} onClose={() => setOpen(false)}>
+          <DialogTitle>
+            <center>{recipe && recipe.title}</center>
+          </DialogTitle>
+          <DialogContent>
+            <div className="dialog-content">
+              <img src={recipe && recipe.thumbnail} alt="" />
+              <div className="dialog-content-information">
+                <div className="dialog-information">
+                  <p>
+                    <i className="fa-solid fa-user"></i>&nbsp;{" "}
+                    {recipe && recipe.obtainer.full_name}
+                  </p>
+                  <p>
+                    <i className="fa-solid fa-phone"></i>&nbsp;{" "}
+                    {recipe && recipe.obtainer.phone_number}
+                  </p>
+                  <p>
+                    <i className="fa-solid fa-envelope"></i>&nbsp;{" "}
+                    {recipe && recipe.obtainer.email}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+          <div className="dialog-action">
+            <div className="user-amount">Total Amount: 0$</div>
+            <DialogActions>
+              <div className="btn-group">
+                <Button className="text-success" onClick={() => setOpen(false)}>
+                  Cancel
+                </Button>
+                <Button className="text-success" onClick={() => buy()}>
+                  {recipe && `$${recipe.price}`}
+                </Button>
+              </div>
+            </DialogActions>
+          </div>
+        </Dialog>
+      </>
+    );
+  };
+
+  const storePrevPage = () => {
+    const currentPage = window.location.href;
+    localStorage.setItem("prevPage", currentPage);
+  };
+
+  const buy = () => {
+    const buyingInformation = {
+      sender_id: userId,
+      recipient_id: recipe.obtainer.id,
+      post_id: recipe.id,
+      status: 0,
+    };
     axios
-      .get(`http://127.0.0.1:8000/api/get-post/${id}`)
+      .post("http://localhost:8000/api/order", buyingInformation)
       .then((res) => {
-        const data = res.data;
-        setRecipe(data[0]);
+        setOpen(false);
+        setStatus(0); // Update status state after successful order
+        alert("Your order is ready, let's wait for the owner!!");
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [id]);
+  };
+
+
 
   return (
     <>
@@ -74,9 +257,7 @@ export default function Recipe() {
                     <i className="fa-solid fa-star" />
                     <i className="fa-solid fa-star-o" />
                   </div>
-                  <a href="#" className="btn delicious-btn">
-                    {recipe && `$${recipe.price}`}
-                  </a>
+                  {checkUser(userId)}
                 </div>
               </div>
             </div>
@@ -85,7 +266,7 @@ export default function Recipe() {
       </div>
       <div className="receipe-content-area">
         <div className="container">
-            <Comments postId={id}/>
+          <Comments postId={id} />
         </div>
       </div>
 
@@ -94,7 +275,7 @@ export default function Recipe() {
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <h5>Follow Us Instragram</h5>
+              <h5>Follow Us Instagram</h5>
             </div>
           </div>
         </div>

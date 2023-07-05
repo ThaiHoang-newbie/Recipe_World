@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BuyController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostingController;
 use Illuminate\Http\Request;
@@ -51,13 +52,15 @@ Route::get('/getHomepagePosts', [ApiController::class, 'getPostsForHomePage']);
 Route::get('/getAllPostImage', [ApiController::class, 'getAllPostImage']);
 
 // Get posts by obtainer_id
-Route::get('/getPostByObtainerId/{id}', [ApiController::class, 'getPostByObtainerId']);
+Route::get('/get-posts/{id}', [ApiController::class, 'getPostByObtainerId']);
 
 // Get posts by obtainer_id
 Route::get('/getPostByCategoryId/{id}', [ApiController::class, 'getPostByCategoryId']);
 
 
+//get order
 
+Route::get('/get-orders/{id}', [ApiController::class, 'getOrderById']);
 // ----------------------------------------------------------------------------
 
 // Api Register
@@ -93,4 +96,12 @@ Route::post('posting', [PostingController::class, 'store']);
 
 Route::get('posts/comments/{id}', [CommentController::class, 'index']);
 Route::post('comment', [CommentController::class, 'store']);
-// Route::get('comment/{id}', [CommentController::class, 'getCommentById']);
+Route::put('comments/{id}', [CommentController::class, 'update']);
+Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+
+//Messages api
+Route::get('orders/{id}', [BuyController::class,'index']);
+Route::post('post/orders', [BuyController::class,'find']);
+Route::post('order', [BuyController::class, 'store']);
+Route::put('order/{id}', [BuyController::class, 'update']);
+

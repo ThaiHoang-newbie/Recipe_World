@@ -1,30 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Message from "../../../Messages/Message";
 
 export default function UserIn() {
   const [user, setUser] = useState({});
   const userId = sessionStorage.getItem("obtainer_id");
 
   useEffect(() => {
-    if (userId) {
-      axios
-        .get(`http://127.0.0.1:8000/api/get-obtainer/${userId}`)
-        .then((res) => {
-          const data = res.data;
+    const fetchData = async () => {
+      try {
+        if (userId) {
+          const response = await axios.get(
+            `http://127.0.0.1:8000/api/get-obtainer/${userId}`
+          );
+          const data = response.data;
           setUser(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const logout = () => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("obtainer_id");
     setTimeout(() => {
-      window.location = "http://localhost:3000/";
+      const currentPage = window.location.href;
+      window.location.href = currentPage;
     }, 500);
   };
 
@@ -39,29 +45,51 @@ export default function UserIn() {
             className="avatar"
           />
           <span>
-            Hello, <Link to="/profile-page" className="text-success">{user.full_name}</Link>
+            Hello,{" "}
+            <Link to={`/profile-page/${userId}`} className="text-success">
+              {user.full_name}
+            </Link>
           </span>
-          <div class="btn-group" role="group" aria-label="Basic example">
-            <Link to="/profile-page" type="button" class="btn btn-outline-success">
-            <i className="fa-solid fa-user"></i>
+          <div>
+            <Message id={userId} />
+          </div>
+
+          <div className="btn-group" role="group" aria-label="Basic example">
+            <Link
+              to={`/profile-page/${userId}`}
+              type="button"
+              className="btn btn-outline-success"
+              onClick={() => window.location.href =`/profile-page/${userId}`}
+            >
+              <i className="fa-solid fa-user"></i>
             </Link>
-            <Link to="/setting" type="button" class="btn btn-outline-success">
-            <i className="fa-solid fa-gear"></i>
+            <Link
+              to="/setting"
+              type="button"
+              className="btn btn-outline-success"
+            >
+              <i className="fa-solid fa-gear"></i>
             </Link>
-            <button onClick={logout} type="button" class="btn btn-outline-success">
-            <i className="fa-solid fa-arrow-right-from-bracket"></i>
+            <button
+              onClick={logout}
+              type="button"
+              className="btn btn-outline-success"
+            >
+              <i className="fa-solid fa-arrow-right-from-bracket"></i>
             </button>
           </div>
         </div>
       ) : (
-        <div className="btn-group">
-          <Link to="/sign-up" className="btn btn-outline-success">
-            Sign Up
-          </Link>
-          <Link to="/sign-in" className="btn btn-outline-success">
-            Sign In
-          </Link>
-        </div>
+        <>
+          <div className="btn-group">
+            <Link to="/sign-up" className="btn btn-outline-success">
+              Sign Up
+            </Link>
+            <Link to="/sign-in" className="btn btn-outline-success">
+              Sign In
+            </Link>
+          </div>
+        </>
       )}
     </div>
   );
