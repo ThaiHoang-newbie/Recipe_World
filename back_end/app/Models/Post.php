@@ -13,7 +13,7 @@ class Post extends Model
 
     // Các trường fillable
 
-    protected $fillable = ['obtainers_id', 'content', 'image_url', 'old_price', 'new_price', 'thumbnail'];
+    protected $fillable = ['obtainers_id', 'content', 'price', 'title', 'thumbnail', 'category_id'];
 
 
     // Quan hệ nhiều-bài viết thuộc về một-người dùng

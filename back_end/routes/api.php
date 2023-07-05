@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostingController;
 use App\Http\Controllers\MailController;
 use Illuminate\Http\Request;
@@ -89,9 +88,9 @@ Route::get('/session-data', function () {
 
 // ----------------------------------------------------------------------------
 
-// Posting api
+// Posting 
 
-Route::post('posting', [PostingController::class, 'store']);
+Route::post('add-post', [PostingController::class, 'addPost']);
 
 
 
@@ -102,11 +101,3 @@ Route::post('posting', [PostingController::class, 'store']);
 
 Route::post('send-mail', [MailController::class, 'send']);
 Route::post('comparison', [MailController::class, 'comparison']);
-
-
-// ----------------------------------------------------------------------------
-
-// Add new post
-
-Route::post('add-post', [PostingController::class, 'AddNewPost']);
-

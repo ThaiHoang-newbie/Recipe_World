@@ -158,18 +158,19 @@ function Posting() {
       return;
     }
 
-    // let obtainers_id = sessionStorage.getItem('obtainers_id');
-    // try {
-    //   const response = await axios.post('http://localhost:8000/api/add-post', {
-    //     content: contentRaw,
-    //     obtainers_id: obtainers_id,
-    //     category_id: selectedCategory,
-    //   });
+    let obtainers_id = sessionStorage.getItem('obtainer_id');
+    try {
+      const response = await axios.post('http://localhost:8000/api/add-post', {
+        content: contentRaw,
+        obtainers_id: obtainers_id,
+        category_id: selectedCategory,
+        title: titleInputed,
+      });
 
-    //   console.log('Data saved successfully:', response.data);
-    // } catch (error) {
-    //   console.error('Error saving data:', error);
-    // }
+      console.log('Data saved successfully:', response.data);
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
   };
 
   return (
