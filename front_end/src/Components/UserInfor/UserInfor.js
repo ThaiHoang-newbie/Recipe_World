@@ -3,7 +3,7 @@ import "./user.css";
 import axios from "axios";
 import Header from "../pages/homepage/parts/Header";
 import Footer from "../pages/homepage/parts/Footer";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import UserPost from "../pages/homepage/UI/receiver/UserPost";
 
 const UserInfor = () => {
@@ -82,12 +82,13 @@ const UserInfor = () => {
                     className="rounded mb-2 img-thumbnail"
                   />
                   {res.id == userId ? (
-                    <button
+                    <Link
+                      to={`/edit-profile`}
                       type="button"
                       className="btn btn-outline-dark btn-sm btn-block"
                     >
                       Edit profile
-                    </button>
+                    </Link>
                   ) : (
                     <button
                       type="button"
@@ -169,9 +170,11 @@ const UserInfor = () => {
                 <div className="py-4 px-4">
                   <div className="d-flex align-items-center justify-content-between mb-3">
                     <h5 className="mb-0">Recent {activeButton}</h5>
-                    <a href="#" className="btn btn-link text-muted">
-                      Show all
-                    </a>
+                    {activeButton === "Posts" && (
+                      <Link to="/posting" className="btn btn-link text-muted">
+                        Add a Post
+                      </Link>
+                    )}
                   </div>
                   {activeButton === "Posts" ? (
                     <div>

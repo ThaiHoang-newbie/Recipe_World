@@ -109,7 +109,7 @@
     if ($.fn.scrollUp) {
         browserWindow.scrollUp({
             scrollSpeed: 1500,
-            scrollText: '<i class="fa fa-angle-up"></i>'
+            scrollText: '<i class="fa-solid fa-angle-up"></i>'
         });
     }
 

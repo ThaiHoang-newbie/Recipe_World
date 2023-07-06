@@ -8,6 +8,8 @@ import Posts from "./components/pages/adminpages/UI/Posts"
 import Categories from "./components/pages/adminpages/UI/Categories"
 import Recipe from "./components/Recipe/Recipe";
 import UserInfor from "./components/UserInfor/UserInfor";
+import EditUserInfor from "./Components/UserInfor/EditUserInfor";
+import Posting from "./Components/Posting/Posting";
 import BlogPosts from "./components/Blogposts/BlogPosts";
 
 export const homepageRoutes = [
@@ -40,6 +42,16 @@ export const homepageRoutes = [
     path: '/profile-page/:id',
     index: false,
     element: <UserInfor />
+  },
+  {
+    path: '/edit-profile',
+    index: false,
+    element: <EditUserInfor />
+  },
+  {
+    path: '/posting',
+    index: false,
+    element: <Posting />
   },
   {
     path:'/all-post',

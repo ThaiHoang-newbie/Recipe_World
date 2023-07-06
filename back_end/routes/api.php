@@ -6,8 +6,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuyController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostingController;
+use App\Http\Controllers\MailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 
 /*
@@ -36,6 +38,8 @@ Route::get('/get-obtainer/{id}', [ApiController::class, 'getObtainerById']);
 // Get a obtainer
 Route::put('/put-obtainer/{id}', [UserController::class, 'onEdit']);
 
+// Check obtainer exist
+Route::post('/check-exist', [UserController::class, 'checkUserExist']);
 
 // ----------------------------------------------------------------------------
 
@@ -58,7 +62,13 @@ Route::get('/get-posts/{id}', [ApiController::class, 'getPostByObtainerId']);
 Route::get('/getPostByCategoryId/{id}', [ApiController::class, 'getPostByCategoryId']);
 
 
-//get order
+// ----------------------------------------------------------------------------
+
+// Get all categories
+Route::get('/get-categories', [ApiController::class, 'getCategories']);
+Route::post('/categories', [ApiController::class, 'addCategories']);
+
+
 
 Route::get('/get-orders/{id}', [ApiController::class, 'getOrderById']);
 // ----------------------------------------------------------------------------
@@ -88,7 +98,6 @@ Route::get('/session-data', function () {
 
 // Posting api
 
-
 Route::post('posting', [PostingController::class, 'store']);
 
 
@@ -104,4 +113,19 @@ Route::get('orders/{id}', [BuyController::class,'index']);
 Route::post('post/orders', [BuyController::class,'find']);
 Route::post('order', [BuyController::class, 'store']);
 Route::put('order/{id}', [BuyController::class, 'update']);
+
+
+// ----------------------------------------------------------------------------
+
+// Verify email route
+
+Route::post('send-mail', [MailController::class, 'send']);
+Route::post('comparison', [MailController::class, 'comparison']);
+
+
+// ----------------------------------------------------------------------------
+
+// Add new post
+
+Route::post('add-post', [PostingController::class, 'AddNewPost']);
 

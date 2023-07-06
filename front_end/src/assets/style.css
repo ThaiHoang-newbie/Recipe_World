@@ -308,11 +308,17 @@ img {
   .mfp-iframe-holder .mfp-close {
     right: 0;
   }
+  .top-social-info{
+    display: none;
+  }
 }
 @media only screen and (max-width: 767px) {
   .mfp-image-holder .mfp-close,
   .mfp-iframe-holder .mfp-close {
     right: 0;
+  }
+  .top-social-info{
+    display: none;
   }
 }
 
