@@ -10,7 +10,8 @@ import Recipe from "./Components/Recipe/Recipe";
 import UserInfor from "./Components/UserInfor/UserInfor";
 import EditUserInfor from "./Components/UserInfor/EditUserInfor";
 import Posting from "./Components/Posting/Posting";
-
+import ForgotPass from "./Components/ForgotPass/ForgotPass";
+import NewPass from "./Components/ForgotPass/NewPass";
 export const homepageRoutes = [
   {
     path: '/',
@@ -51,6 +52,16 @@ export const homepageRoutes = [
     path: '/posting',
     index: false,
     element: <Posting />
+  },
+  {
+    path: '/enter-email',
+    index: false,
+    element: <ForgotPass />
+  },
+  {
+    path: '/new-pass',
+    index: false,
+    element: <NewPass />
   }
 ]
 

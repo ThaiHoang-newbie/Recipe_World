@@ -125,20 +125,18 @@ const Register = () => {
   // Function handle step by step of register feature
   const checkState = (value) => {
     if (value === 'inputForm') {
-      if (validateEmail(dataForm.email)
-        && dataForm.password.length >= 8
-        && (dataForm.password == dataForm.confirm_password)) {
+      if (validateEmail(dataForm.email) && dataForm.password.length >= 8 && (dataForm.password == dataForm.confirm_password)) {
+
         setPhanTram(50)
         setCheckForm({ ...checkForm, inputForm: true })
-
         let e_session = sessionStorage.getItem("email")
         axios.post('http://localhost:8000/api/send-mail', { e_session })
           .then(response => {
             sessionStorage.setItem("token_sent", response.data.token_sent)
           });
       }
-
       setSubmit(true)
+
     }
 
     if (value === 'verifyForm') {
@@ -242,9 +240,8 @@ const Register = () => {
     return (
       <div className="errors d-flex flex-column justify-content-start-end">
         {dataForm.date_of_birth === "" && <span>Birthday must be filled</span>}
-        {/* {dataForm.date_of_birth <= today() && <span>Birthday not valid</span>} */}
         {dataForm.full_name === "" && <span>Full name must be filled</span>}
-        {!validateEmail(dataForm.email) && <span>Email syntax</span>}
+        {!validateEmail(dataForm.email) && <span>Wrong email syntax</span>}
         {dataForm.password === "" && <span>Password must be filled</span>}
         {dataForm.password.length < 8 && (
           <span>Password has at least 8 characters</span>
@@ -255,6 +252,7 @@ const Register = () => {
         {dataForm.password !== dataForm.confirm_password && (
           <span>Confirm password not same as password</span>
         )}
+        {check(dataForm.email) && <span>This email has already registerd</span>}
       </div>
     );
   };
@@ -263,6 +261,19 @@ const Register = () => {
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+  };
+
+  const check = async (email) => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/check-exist', { email });
+      if (response.data.exists = true) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const backForm = (value) => {

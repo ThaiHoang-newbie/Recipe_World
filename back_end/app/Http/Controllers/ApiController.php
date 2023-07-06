@@ -37,7 +37,7 @@ class ApiController extends Controller
 
 
 
-    // Get all posts
+    // Get all posts 
     public function getAllPost()
     {
         $posts = DB::table('posts')
@@ -47,29 +47,6 @@ class ApiController extends Controller
             ->get();
         return response()->json($posts);
     }
-    public function getPostsForHomePage()
-    {
-        $posts = DB::table('posts')
-            ->join('obtainers', 'obtainers.id', '=', 'posts.obtainer_id')
-            ->join('categories', 'posts.category_id', '=', 'categories.id')
-            ->inRandomOrder() 
-            ->take(6)
-            ->select('obtainers.*', 'posts.*', 'categories.*')
-            ->get();
-
-        return response()->json($posts);
-    }
-
-    public function getAllPostImage()
-    {
-        $posts = DB::table('posts')
-            ->join('post_images', 'posts.id', '=', 'post_images.post_id')
-            ->select('posts.*', 'post_images.*')
-            ->get();
-        return response()->json($posts);
-    }
-
-
 
 
 

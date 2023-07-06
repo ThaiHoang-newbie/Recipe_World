@@ -94,7 +94,7 @@ const Login = () => {
               />
               <label htmlFor="rememberMeCheckbox">Remember me</label>
             </div>
-            <a href="#">I forgot my password!</a>
+            <a href="./enter-email">I forgot my password!</a>
           </div>
           <button type="submit" name="btn-login" onClick={() => onLogin()}>
             Sign In
