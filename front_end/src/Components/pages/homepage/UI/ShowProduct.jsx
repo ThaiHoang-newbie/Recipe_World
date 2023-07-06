@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 
 import "../../../../Assets/style.css";
 import Products from "./receiver/Products";
+import Card from "./receiver/Card";
 
 function ShowProduct() {
   const [posts, setPosts] = useState([]);
+  const [recipes, setRecipes] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const slideInterval = 4000; // Slide interval in milliseconds
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/getHomepagePosts")
@@ -12,10 +16,34 @@ function ShowProduct() {
       .then((data) => {
         setPosts(data);
       })
-      .catch((error) => {
-        console.error(error);
+      .catch((err) => {
+        console.log(err);
       });
   }, []);
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/api/bestRecipe")
+      .then((res) => res.json())
+      .then((data) => {
+        setRecipes(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    const slideTimer = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === recipes.length - 1 ? 0 : prevIndex + 1
+      );
+    }, slideInterval);
+
+    return () => {
+      clearInterval(slideTimer);
+    };
+  }, [recipes]);
+
+  const visibleRecipes = recipes.slice(currentIndex, currentIndex + 3);
 
   return (
     <section className="best-receipe-area">
@@ -23,7 +51,7 @@ function ShowProduct() {
         <div className="row">
           <div className="col-12">
             <div className="section-heading">
-              <h3>The best Receipies</h3>
+              <h3>The best Recipes</h3>
             </div>
           </div>
         </div>
@@ -36,18 +64,22 @@ function ShowProduct() {
               <div className="row h-100 align-items-center">
                 <div className="col-12">
                   {/* Cta Content */}
-                  <div className="cta-content text-center">
-                    <h2>Gluten Free Receipies</h2>
-                    <p>
-                      Fusce nec ante vitae lacus aliquet vulputate. Donec
-                      scelerisque accumsan molestie. Vestibulum ante ipsum
-                      primis in faucibus orci luctus et ultrices posuere cubilia
-                      Curae; Cras sed accumsan neque. Ut vulputate, lectus vel
-                      aliquam congue, risus leo elementum nibh
-                    </p>
-                    <a href="#" className="btn delicious-btn">
-                      Discover all the receipies
-                    </a>
+                  <div className="card-content-wrapper">
+                    <div class="card-content">
+                      {visibleRecipes.map((recipe, index) => (
+                        <Card
+                          key={recipe.id}
+                          id={recipe.id}
+                          obtainer_id={recipe.obtainer_id}
+                          thumbnail={recipe.thumbnail}
+                          title={recipe.title}
+                          category_name={recipe.category_name}
+                          price={recipe.price}
+                          full_name={recipe.full_name}
+                          comment_count={recipe.count_comment}
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -18,6 +18,7 @@
     "babel-plugin-macros": "^3.1.0",
     "bootstrap": "^5.3.0",
     "css-loader": "^6.8.1",
+    "dayjs": "^1.11.9",
     "dompurify": "^3.0.4",
     "draft-convert": "^2.1.13",
     "draft-js": "^0.11.7",
@@ -36,9 +37,9 @@
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.12.1",
     "react-scripts": "^5.0.1",
+    "react-slideshow-image": "^4.2.1",
     "sass": "^1.63.6",
     "scss": "^0.2.4",
-    "react-slideshow-image": "^4.2.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

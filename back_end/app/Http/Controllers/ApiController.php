@@ -6,9 +6,10 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-
+use App\Models\Category;
 use App\Models\Obtainer;
 use App\Models\Post;
+use App\Models\Comment;
 
 class ApiController extends Controller
 {
@@ -52,11 +53,14 @@ class ApiController extends Controller
 
     public function getNewestPost()
     {
-        $posts = Post::with('obtainer', 'category')
-            ->orderBy('created_at', 'desc')
-            ->get();
 
-        return response()->json($posts);
+
+        $posts = Post::with('obtainer', 'category', 'comments')
+        ->orderBy('posts.created_at', 'desc')
+        ->get();
+        $comments = Comment::with('obtainer')->get();
+
+    return response()->json([$posts,$comments]);
     }
     public function getPostById($id)
     {
@@ -112,5 +116,29 @@ class ApiController extends Controller
             ->get();
 
         return response()->json($orders);
+    }
+
+    public function getPostMostComment()
+    {
+        $posts = Post::select(
+            'posts.id',
+            'posts.title',
+            'posts.obtainer_id',
+            'posts.price',
+            'posts.content',
+            'posts.thumbnail',
+            'posts.created_at',
+
+            'obtainers.full_name',
+            'obtainers.profile_image_url',
+            DB::raw('count(comments.id) as count_comment')
+        )
+            ->join('comments', 'posts.id', '=', 'comments.post_id')
+            ->join('obtainers', 'posts.obtainer_id', '=', 'obtainers.id')
+            ->groupBy('posts.id', 'posts.title', 'posts.obtainer_id', 'posts.price', 'posts.content', 'posts.thumbnail', 'posts.created_at', 'obtainers.full_name', 'obtainers.profile_image_url')
+            ->orderBy('count_comment', 'desc')
+            ->get();
+
+        return response()->json($posts);
     }
 }

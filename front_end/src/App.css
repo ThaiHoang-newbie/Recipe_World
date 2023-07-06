@@ -55,11 +55,16 @@
   object-fit: cover;
 
 }
+.card-image > img {
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+}
 
 .dialog-content {
   display: flex;
   justify-content: space-around;
-  align-items:safe;
+  align-items: center;
 }
 
 .dialog-content img {

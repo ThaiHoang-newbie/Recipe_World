@@ -52,6 +52,8 @@ Route::get('get-post/{id}', [ApiController::class, 'getPostById']);
 
 Route::get('/getHomepagePosts', [ApiController::class, 'getPostsForHomePage']);
 
+Route::get('/bestRecipe', [ApiController::class, 'getPostMostComment']);
+
 // Get all images post
 Route::get('/getAllPostImage', [ApiController::class, 'getAllPostImage']);
 

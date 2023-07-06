@@ -2,17 +2,17 @@ import Home from "./components/pages/homepage/Home";
 import Contact from "./components/Contact/Contact"
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
-import Content from "./components/pages/adminpages/parts/Content"
 import Users from "./components/pages/adminpages/UI/Users"
 import Posts from "./components/pages/adminpages/UI/Posts"
 import Categories from "./components/pages/adminpages/UI/Categories"
 import Recipe from "./components/Recipe/Recipe";
 import UserInfor from "./components/UserInfor/UserInfor";
-import EditUserInfor from "./Components/UserInfor/EditUserInfor";
-import Posting from "./Components/Posting/Posting";
+import EditUserInfor from "./components/UserInfor/EditUserInfor";
+import Posting from "./components/Posting/Posting";
 import BlogPosts from "./components/Blogposts/BlogPosts";
+import Admin from "./components/pages/adminpages/Admin";
 
-export const homepageRoutes = [
+export const routes = [
   {
     path: '/',
     index: true,
@@ -57,28 +57,25 @@ export const homepageRoutes = [
     path:'/all-post',
     index: false,
     element: <BlogPosts />
-  }
-]
-
-export const adminPageRoutes = [
-  {
-    path: "/admin",
-    index: true,
-    element: <Content />
   },
   {
-    path: "/users",
+    path: "/admin",
+    index: false,
+    element: <Admin />
+  },
+  {
+    path: "/admin/users",
     index: true,
     element: <Users />
   },
   {
-    path: "/posts",
+    path: "/admin/posts",
     index: true,
     element: <Posts />
   },
   {
-    path: "/categories",
+    path: "/admin/categories",
     index: true,
     element: <Categories />
-  },
+  }
 ]

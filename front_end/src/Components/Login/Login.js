@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import './Login.css';
+import "./Login.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Header from "../pages/homepage/parts/Header";
@@ -11,7 +11,7 @@ const Login = () => {
   });
 
   const onLogin = async () => {
-    if (dataForm.email != "" && dataForm.password != "") {
+    if (dataForm.email !== "" && dataForm.password !== "") {
       const _formData = new FormData();
       _formData.append("email", dataForm.email);
       _formData.append("password", dataForm.password);
@@ -26,24 +26,34 @@ const Login = () => {
         requestOptions
       );
   
-      if (response.status == 200) {
-        var res = await response.json();
+      if (response.status === 200) {
+        const responseData = await response.json();
   
-        sessionStorage.setItem("obtainer_id", res.data.id);
-        sessionStorage.setItem("token", res.token);
+        if (responseData.success === 1) {
+          const { data, token } = responseData;
   
-        alert("Login successful!");
-        setTimeout(() => {
-          const prevPage = localStorage.getItem('prevPage');
-          if (prevPage) {
-            localStorage.removeItem('prevPage');
-            window.location.href = prevPage;
-          } else {
-            window.location.href = "/";
+          if (data.email === "admin" && data.password === "admin") {
+            localStorage.setItem("isLoggedIn", "true");
           }
-        }, 1000);
+  
+          sessionStorage.setItem("obtainer_id", data.id);
+          sessionStorage.setItem("token", token);
+  
+          alert("Login successful!");
+          setTimeout(() => {
+            const prevPage = localStorage.getItem("prevPage");
+            if (prevPage) {
+              localStorage.removeItem("prevPage");
+              window.location.href = prevPage;
+            } else {
+              window.location.href = "/";
+            }
+          }, 1000);
+        } else {
+          alert("Wrong email or password!");
+        }
       } else {
-        alert("Wrong email or password!");
+        alert("Login failed!");
       }
     }
   };
@@ -58,65 +68,65 @@ const Login = () => {
     }
   };
 
-    useEffect(() => {
-        checkTokenAndRedirect();
-      }, []);
+  useEffect(() => {
+    checkTokenAndRedirect();
+  }, []);
 
   return (
     <>
-    <Header />
-    <div className="login-card-container">
-      <div className="login-card">
-        {/* <div class="login-card-logo">
+      <Header />
+      <div className="login-card-container">
+        <div className="login-card">
+          {/* <div class="login-card-logo">
   <img src="logo.png" alt="logo">
 </div> */}
-        <div className="login-card-header">
-          <h1>Log in</h1>
-          <div>Please login to our my website</div>
-        </div>
-        <div className="login-card-form"  >
-          <div className="form-group-login">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              onChange={(e) =>
-                setDataForm({ ...dataForm, email: e.target.value })
-              }
-            />
+          <div className="login-card-header">
+            <h1>Log in</h1>
+            <div>Please login to our my website</div>
           </div>
-          <div className="form-group-login">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              onChange={(e) =>
-                setDataForm({ ...dataForm, password: e.target.value })
-              }
-            />
-          </div>
-          <div className="form-item-other">
-            <div className="checkbox">
+          <div className="login-card-form">
+            <div className="form-group-login">
+              <label>Email</label>
               <input
-                type="checkbox"
-                name="rememberme"
-                id="rememberMeCheckbox"
-                defaultChecked=""
+                type="email"
+                name="email"
+                onChange={(e) =>
+                  setDataForm({ ...dataForm, email: e.target.value })
+                }
               />
-              <label htmlFor="rememberMeCheckbox">Remember me</label>
             </div>
-            <a href="#">I forgot my password!</a>
+            <div className="form-group-login">
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                onChange={(e) =>
+                  setDataForm({ ...dataForm, password: e.target.value })
+                }
+              />
+            </div>
+            <div className="form-item-other">
+              <div className="checkbox">
+                <input
+                  type="checkbox"
+                  name="rememberme"
+                  id="rememberMeCheckbox"
+                  defaultChecked=""
+                />
+                <label htmlFor="rememberMeCheckbox">Remember me</label>
+              </div>
+              <a href="#">I forgot my password!</a>
+            </div>
+            <button type="submit" name="btn-login" onClick={() => onLogin()}>
+              Sign In
+            </button>
           </div>
-          <button type="submit" name="btn-login" onClick={() => onLogin()}>
-            Sign In
-          </button>
-        </div>
-        <div className="login-card-footer">
-          Don't have an account? <Link to={'/sign-up'}>Create now</Link>
+          <div className="login-card-footer">
+            Don't have an account? <Link to={"/sign-up"}>Create now</Link>
+          </div>
         </div>
       </div>
-    </div>
-    <Footer />
+      <Footer />
     </>
   );
 };

@@ -1,20 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { EditorState, convertToRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import { convertToHTML } from 'draft-convert';
-import DOMPurify from 'dompurify';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import './Posting.css';
-import axios from 'axios';
-import { initializeApp } from 'firebase/app';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import React, { useState, useEffect } from "react";
+import { EditorState, convertToRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import { convertToHTML } from "draft-convert";
+import DOMPurify from "dompurify";
+import Header from "../pages/homepage/parts/Header";
+import Footer from "../pages/homepage/parts/Footer";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import "./Posting.css";
+import axios from "axios";
+import { initializeApp } from "firebase/app";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 
 function Posting() {
-  const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
   const [convertedContent, setConvertedContent] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [titleInputed, setTitleInputed] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [titleInputed, setTitleInputed] = useState("");
   const [uploadedImages, setUploadedImages] = useState([]);
 
   useEffect(() => {
@@ -32,14 +41,15 @@ function Posting() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/get-categories');
+      const response = await axios.get(
+        "http://127.0.0.1:8000/api/get-categories"
+      );
       setCategories(response.data);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     }
   };
 
-  
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
   };
@@ -50,17 +60,20 @@ function Posting() {
 
   const createCategory = async (categoryName) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/categories', {
-        name: categoryName,
-      });
-      if (response.data.message === 'Successful') {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/categories",
+        {
+          name: categoryName,
+        }
+      );
+      if (response.data.message === "Successful") {
         fetchCategories();
-        alert('Add new category successful');
+        alert("Add new category successful");
       } else {
-        alert('This category already exists');
+        alert("This category already exists");
       }
     } catch (error) {
-      console.error('Error creating category:', error);
+      console.error("Error creating category:", error);
     }
   };
 
@@ -71,7 +84,7 @@ function Posting() {
     storageBucket: "recipeworld-8ecc6.appspot.com",
     messagingSenderId: "725588893040",
     appId: "1:725588893040:web:f83005b7b51cca25fbc3b5",
-    measurementId: "G-52RMZMLKKQ"
+    measurementId: "G-52RMZMLKKQ",
   };
 
   const app = initializeApp(firebaseConfig);
@@ -81,69 +94,74 @@ function Posting() {
   const handleImageUpload = async (file) => {
     try {
       const metadata = {
-        contentType: 'image/jpeg'
+        contentType: "image/jpeg",
       };
-      const storageRef = ref(storage, 'post-images/' + file.name);
+      const storageRef = ref(storage, "post-images/" + file.name);
       const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
-      uploadTask.on('state_changed',
+      uploadTask.on(
+        "state_changed",
         (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log('Upload is ' + progress + '% done');
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
           switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused');
+            case "paused":
+              console.log("Upload is paused");
               break;
-            case 'running':
-              console.log('Upload is running');
+            case "running":
+              console.log("Upload is running");
               break;
           }
         },
         (error) => {
-          console.error('Error uploading image:', error);
+          console.error("Error uploading image:", error);
         },
         () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            console.log('Image uploaded:', downloadURL);
-          }).catch((error) => {
-            console.error('Error getting download URL:', error);
-          });
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((downloadURL) => {
+              console.log("Image uploaded:", downloadURL);
+            })
+            .catch((error) => {
+              console.error("Error getting download URL:", error);
+            });
         }
       );
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error("Error uploading image:", error);
     }
   };
 
   const handleImageDrop = (event) => {
     event.preventDefault();
     const files = event.dataTransfer.files;
-    const imageFiles = Array.from(files).filter((file) => file.type.startsWith('image/'));
+    const imageFiles = Array.from(files).filter((file) =>
+      file.type.startsWith("image/")
+    );
     setUploadedImages(imageFiles);
     imageFiles.forEach((file) => {
       handleImageUpload(file);
     });
   };
 
-
   const saveData = async () => {
     const contentState = editorState.getCurrentContent();
     const contentRaw = JSON.stringify(convertToRaw(contentState));
 
-    if (!sessionStorage.getItem('obtainer_id')) {
+    if (!sessionStorage.getItem("obtainer_id")) {
       alert("You must register to use this function");
       setTimeout(() => {
-        window.location = "http://localhost:3000/login"
+        window.location = "http://localhost:3000/login";
       }, 100);
       return;
     }
 
-    if (selectedCategory === '') {
+    if (selectedCategory === "") {
       alert("Please select a category");
       return;
     }
-    
-    if (titleInputed === '') {
+
+    if (titleInputed === "") {
       alert("Please enter the title");
       return;
     }
@@ -173,87 +191,127 @@ function Posting() {
   };
 
   return (
-    <div>
-      <header className="App-header">Create your own new recipe</header>
-      <div className="wrap-category mb-3">
-        <span htmlFor="category" className="form-label">
-          Select a category:
-        </span>
-        <select id="category" value={selectedCategory} onChange={handleCategoryChange} className="form-select">
-          <option value="">-- Select a category --  </option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-        <button className="btn btn-success rounded-pill px-4 py-2 shadow-lg" onClick={() => createCategory(prompt('Enter the new category name:'))}>
-          +
-        </button>
-      </div>
+    <>
+      <Header />
+      <div className="posting-page">
+        <header className="App-header">Create your own new recipe</header>
+        <div className="posting-content">
+          <div className="edit-zone">
+          <div className="wrap-category mb-3">
+            <span htmlFor="category" className="form-label">
+              Select a category:
+            </span>
+            <select
+              id="category"
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+              className="form-select"
+            >
+              <option value="">-- Select a category -- </option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+            <button
+              className="btn btn-success rounded-pill px-4 py-2 shadow-lg"
+              onClick={() =>
+                createCategory(prompt("Enter the new category name:"))
+              }
+            >
+              +
+            </button>
+          </div>
 
-      <input type='text' placeholder='Title' className='input-title' onChange={handleTitleInputed}/>
+          <input
+            type="text"
+            placeholder="Title"
+            className="input-title"
+            onChange={handleTitleInputed}
+          />
 
-      <Editor
-        editorState={editorState}
-        placeholder="Content"
-        onEditorStateChange={setEditorState}
-        wrapperClassName="wrapper-class"
-        editorClassName="editor-class"
-        toolbarClassName="toolbar-class"
-        toolbar={{
-          options: ['inline', 'blockType', 'emoji', 'image'],
-          inline: {
-            options: ['bold', 'italic', 'underline', 'strikethrough'],
-          },
-          blockType: {
-            inDropdown: true,
-            options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'],
-            className: 'custom-dropdown',
-          },
-          emoji: {
-            className: 'custom-emoji',
-          },
-          image: {
-            uploadCallback: handleImageUpload,
-            alt: { present: true, mandatory: false },
-            previewImage: true,
-            inputAccept: 'image/gif,image/jpeg,image/jpg,image/png,image/svg',
-          },
-        }}
-        hashtag={{
-          separator: '',
-          trigger: '#',
-        }}
-      />
+          <Editor
+            editorState={editorState}
+            placeholder="Content"
+            onEditorStateChange={setEditorState}
+            wrapperClassName="wrapper-class"
+            editorClassName="editor-class"
+            toolbarClassName="toolbar-class"
+            toolbar={{
+              options: ["inline", "blockType", "emoji", "image"],
+              inline: {
+                options: ["bold", "italic", "underline", "strikethrough"],
+              },
+              blockType: {
+                inDropdown: true,
+                options: ["Normal", "H1", "H2", "H3", "H4", "H5", "H6"],
+                className: "custom-dropdown",
+              },
+              emoji: {
+                className: "custom-emoji",
+              },
+              image: {
+                uploadCallback: handleImageUpload,
+                alt: { present: true, mandatory: false },
+                previewImage: true,
+                inputAccept:
+                  "image/gif,image/jpeg,image/jpg,image/png,image/svg",
+              },
+            }}
+            hashtag={{
+              separator: "",
+              trigger: "#",
+            }}
+          />
+          </div>
 
-      <div className="image-dropzone" onDragOver={(event) => event.preventDefault()} onDrop={handleImageDrop}>
-        <div className="form-upload my-4">
-          <div class="image-box">
-            <input type="file" name="file" id="fileInput" accept=".jpg" hidden />
-            <label for="fileInput" class="preview">
-              <span>Drag and drop images here</span>
-            </label>
+          <div
+            className="image-dropzone"
+            onDragOver={(event) => event.preventDefault()}
+            onDrop={handleImageDrop}
+          >
+            <div className="form-upload my-4">
+              <div class="image-box">
+                <input
+                  type="file"
+                  name="file"
+                  id="fileInput"
+                  accept=".jpg"
+                  hidden
+                />
+                <label for="fileInput" class="preview">
+                  <span>Drag and drop images here</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {uploadedImages.length > 0 && (
+            <div className="uploaded-images">
+              {uploadedImages.map((image) => (
+                <div key={image.name} className="image-thumbnail">
+                  <img src={URL.createObjectURL(image)} alt="Uploaded Image" />
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div
+            className="button-container"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <button
+              className="btn-save-post btn btn-success rounded-pill px-4 py-2 shadow-lg"
+              onClick={saveData}
+            >
+              Post
+            </button>
           </div>
         </div>
       </div>
-
-      {uploadedImages.length > 0 && (
-        <div className="uploaded-images">
-          {uploadedImages.map((image) => (
-            <div key={image.name} className="image-thumbnail">
-              <img src={URL.createObjectURL(image)} alt="Uploaded Image" />
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div className="button-container" style={{ display: 'flex', justifyContent: 'center' }}>
-        <button className="btn-save-post btn btn-success rounded-pill px-4 py-2 shadow-lg" onClick={saveData}>
-          Post
-        </button>
-      </div>
-    </div>
+      <Footer />
+    </>
   );
 }
 

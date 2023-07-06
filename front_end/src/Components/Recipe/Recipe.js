@@ -104,7 +104,9 @@ export default function Recipe() {
     if (orders && !orders.status) {
       return (
         <div>
-          <button className="btn btn-outline-success delicious-btn">Waiting</button>
+          <button className="btn btn-outline-success delicious-btn">
+            Waiting
+          </button>
         </div>
       );
     }
@@ -203,8 +205,6 @@ export default function Recipe() {
         console.log(err);
       });
   };
-
-
 
   return (
     <>

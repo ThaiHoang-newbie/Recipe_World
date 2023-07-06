@@ -6,13 +6,17 @@ import Header from "../pages/homepage/parts/Header";
 
 export default function BlogPosts() {
   const [posts, setPosts] = useState([]);
+  const [comments, setComments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 3;
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/newest-posts")
       .then((res) => res.json())
-      .then((data) => setPosts(data))
+      .then((data) => {
+        setPosts(data[0]);
+        setComments(data[1]);
+      })
       .catch((error) => console.error(error));
   }, []);
 
@@ -64,6 +68,8 @@ export default function BlogPosts() {
                     full_name={post.obtainer.full_name}
                     category={post.category.name}
                     thumbnail={post.thumbnail}
+                    comments={comments}
+                    image_url={post.obtainer.profile_image_url}
                   />
                 ))}
               </div>

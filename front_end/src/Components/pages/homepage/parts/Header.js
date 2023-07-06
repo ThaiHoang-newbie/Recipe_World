@@ -13,26 +13,6 @@ class Header extends Component {
                 <Link to="/" className="text-success pt-2">Welcome to Receipe World</Link>
               </div>
               <div className="col-12 col-sm-4">
-                <div className="top-social-info text-right">
-                  <a href="#">
-                    <i className="fa-brands fa-pinterest"/>
-                  </a>
-                  <a href="#">
-                    <i className="fa-brands fa-facebook"/>
-                  </a>
-                  <a href="#">
-                    <i className="fa-brands fa-twitter"/>
-                  </a>
-                  <a href="#">
-                    <i className="fa-brands fa-dribbble"/>
-                  </a>
-                  <a href="#">
-                    <i className="fa-brands fa-behance"/>
-                  </a>
-                  <a href="#">
-                    <i className="fa-brands fa-linkedin"/>
-                  </a>
-                </div>
               </div>
               <div className="col-12 col-sm-4">
                 <UserIn />
