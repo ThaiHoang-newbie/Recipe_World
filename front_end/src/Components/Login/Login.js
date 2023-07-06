@@ -26,13 +26,21 @@ const Login = () => {
 
       if (response.status == 200) {
         var res = await response.json();
-
         sessionStorage.setItem("obtainer_id", res.data.id);
         sessionStorage.setItem("token", res.token);
 
         alert("Login successful!");
         setTimeout(() => {
           window.location = "/";
+        }, 1000);
+      } else if (response.status == 201) {
+        var res = await response.json();
+        sessionStorage.setItem("obtainer_id", res.data.id);
+        sessionStorage.setItem("token", res.token);
+
+        alert("Login successful!");
+        setTimeout(() => {
+          window.location = "/admin";
         }, 1000);
       } else {
         alert("Wrong email or password!");
@@ -46,12 +54,16 @@ const Login = () => {
       setTimeout(() => {
         window.location = "/";
       }, 100);
+    }else if(token === 'admin'){
+      setTimeout(() => {
+        window.location = "/admin";
+      }, 100);
     }
   };
 
-    useEffect(() => {
-        checkTokenAndRedirect();
-      }, []);
+  useEffect(() => {
+    checkTokenAndRedirect();
+  }, []);
 
   return (
     <div className="login-card-container">

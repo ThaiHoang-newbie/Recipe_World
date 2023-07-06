@@ -39,6 +39,7 @@ Route::get('/get-obtainer/{id}', [ApiController::class, 'getObtainerById']);
 Route::put('/put-obtainer/{id}', [UserController::class, 'onEdit']);
 
 
+
 // ----------------------------------------------------------------------------
 
 // Get all posts
@@ -56,10 +57,12 @@ Route::get('/getPostByObtainerId/{id}', [ApiController::class, 'getPostByObtaine
 Route::get('/getPostByCategoryId/{id}', [ApiController::class, 'getPostByCategoryId']);
 
 
+
 // ----------------------------------------------------------------------------
 
 // Get all categories
 Route::get('/get-categories', [ApiController::class, 'getCategories']);
+
 Route::post('/categories', [ApiController::class, 'getCategories']);
 
 
@@ -67,11 +70,6 @@ Route::post('/categories', [ApiController::class, 'getCategories']);
 // ----------------------------------------------------------------------------
 
 // Api Register
-// Route::get('token', function (Request $request) {
-//     $token = $request->session()->token();
-    // $token = csrf_token();
-//     return Response()->json(array("token"=>$token));
-// });
 
 Route::post('/obtainers/login', [UserController::class, 'onLogin']);
 
@@ -79,7 +77,6 @@ Route::post('obtainers/register', [UserController::class, 'onRegister']);
 
 Route::post('verify-email', [UserController::class, 'onRegister']);
 
-// Route::post('obtainers/logout', [UserController::class, 'onLogout']);
 
 Route::get('/session-data', function () {
     return session()->all();
@@ -94,6 +91,12 @@ Route::get('/session-data', function () {
 
 Route::post('posting', [PostingController::class, 'store']);
     
+// Add new post
+
+Route::post('add-post', [PostingController::class, 'AddNewPost']);
+
+
+
 
 
 // ----------------------------------------------------------------------------
@@ -101,7 +104,9 @@ Route::post('posting', [PostingController::class, 'store']);
 // Reset pass
 
 Route::post('enter-email', [ResetPassController::class, 'sendResetPass']);
+
 Route::post('check-exists', [ResetPassController::class, 'checkObatainerExist']);
+
 Route::post('new-pass', [ResetPassController::class, 'resetPass']);
 
 
@@ -114,13 +119,8 @@ Route::post('new-pass', [ResetPassController::class, 'resetPass']);
 // Verify email route
 
 Route::post('send-mail', [MailController::class, 'send']);
+
 Route::post('comparison', [MailController::class, 'comparison']);
 
 
-
-// ----------------------------------------------------------------------------
-
-// Add new post
-
-Route::post('add-post', [PostingController::class, 'AddNewPost']);
 
