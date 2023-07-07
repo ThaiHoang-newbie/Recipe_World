@@ -23,13 +23,13 @@ class Obtainer extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'obtainers_id');
+        return $this->hasMany(Comment::class, 'obtainer_id');
     }
 
 
     public function likes()
     {
-        return $this->hasMany(Like::class, 'obtainers_id');
+        return $this->hasMany(Like::class, 'obtainer_id');
     }
 
     public function followers()

@@ -1,78 +1,100 @@
 import Home from "./Components/pages/homepage/Home";
-import Contact from "./Components/Contact/Contact"
+import Contact from "./Components/Contact/Contact";
 import Register from "./Components/Register/Register";
 import Login from "./Components/Login/Login";
-import Content from "./Components/pages/adminpages/parts/Content"
-import Users from "./Components/pages/adminpages/UI/Users"
-import Posts from "./Components/pages/adminpages/UI/Posts"
-import Categories from "./Components/pages/adminpages/UI/Categories"
+import Users from "./Components/pages/adminpages/UI/Users";
+import Posts from "./Components/pages/adminpages/UI/Posts";
+import Categories from "./Components/pages/adminpages/UI/Categories";
 import Recipe from "./Components/Recipe/Recipe";
 import UserInfor from "./Components/UserInfor/UserInfor";
 import EditUserInfor from "./Components/UserInfor/EditUserInfor";
 import Posting from "./Components/Posting/Posting";
+import BlogPosts from "./Components/Blogposts/BlogPosts";
+import Admin from "./Components/pages/adminpages/Admin";
+import Content from "./Components/pages/adminpages/parts/Content";
+import ForgotPass from "./Components/ForgotPass/ForgotPass";
+import NewPass from "./Components/ForgotPass/NewPass";
+import PostRecipe from  "./Components/Posting/PostRecipe";
 
-export const homepageRoutes = [
+export const routes = [
   {
-    path: '/',
+    path: "/",
     index: true,
-    element: <Home />
+    element: <Home />,
   },
   {
-    path: '/sign-up',
+    path: "/sign-up",
     index: false,
-    element: <Register />
+    element: <Register />,
   },
   {
-    path: '/sign-in',
+    path: "/sign-in",
     index: false,
-    element: <Login />
+    element: <Login />,
   },
   {
-    path: '/contact',
+    path: "/contact",
     index: false,
-    element: <Contact />
+    element: <Contact />,
   },
   {
-    path: '/recipe/:id',
+    path: "/all-post",
     index: false,
-    element: <Recipe />
+    element: <BlogPosts />,
   },
   {
-    path: '/profile-page',
+    path: "/recipe/:id",
     index: false,
-    element: <UserInfor />
+    element: <Recipe />,
   },
   {
-    path: '/edit-profile',
+    path: "/profile-page/:id",
     index: false,
-    element: <EditUserInfor />
+    element: <UserInfor />,
   },
   {
-    path: '/posting',
+    path: "/edit-profile",
     index: false,
-    element: <Posting />
-  }
-]
-
-export const adminPageRoutes = [
+    element: <EditUserInfor />,
+  },
+  {
+    path: "/posting",
+    index: false,
+    element: <Posting />,
+  },
+  {
+    path: "/post-recipe",
+    index: false,
+    element: <PostRecipe />,
+  },
+  {
+    path: "/enter-email",
+    index: false,
+    element: <ForgotPass />,
+  },
+  {
+    path: "/new-pass",
+    index: false,
+    element: <NewPass />,
+  },
   {
     path: "/admin",
-    index: true,
-    element: <Content />
+    index: false,
+    element: <Admin />,
   },
   {
-    path: "/users",
+    path: "/admin/users",
     index: true,
-    element: <Users />
+    element: <Users />,
   },
   {
-    path: "/posts",
+    path: "/admin/posts",
     index: true,
-    element: <Posts />
+    element: <Posts />,
   },
   {
-    path: "/categories",
+    path: "/admin/categories",
     index: true,
-    element: <Categories />
+    element: <Categories />,
   },
-]
+];

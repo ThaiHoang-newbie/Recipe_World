@@ -12,17 +12,26 @@ class Comment extends Model
     protected $table = 'comments';
 
 
-    protected $fillable = ['obtainers_id', 'post_id', 'content'];
+    protected $fillable = ['obtainer_id', 'post_id', 'content'];
 
 
     public function obtainer()
     {
-        return $this->belongsTo(Obtainer::class, 'obtainers_id');
+        return $this->belongsTo(Obtainer::class, 'obtainer_id');
     }
 
 
     public function post()
     {
         return $this->belongsTo(Post::class, 'post_id');
+    }
+    public function parent()
+    {
+        return $this->belongsTo(Comment::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Comment::class, 'parent_id');
     }
 }

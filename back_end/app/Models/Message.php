@@ -12,7 +12,7 @@ class Message extends Model
     protected $table = 'messages';
 
 
-    protected $fillable = ['sender_id', 'recipient_id', 'content', 'sent_at'];
+    protected $fillable = ['sender_id', 'recipient_id', 'content'];
 
 
     public function sender()

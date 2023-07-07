@@ -44,8 +44,13 @@ return new class extends Migration
             $table->foreign('obtainer_id')->references('id')->on('obtainers');
             $table->unsignedInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories');
-            $table->string('title');
-            $table->text('content');
+
+            $table->string('name'); 
+            $table->text('instruction');
+            $table->integer('preparetion_time');
+            $table->integer('cooking_time');
+            $table->text('description');
+            $table->text('ingredients');
             $table->string('thumbnail');
             $table->integer('price');
             $table->timestamps();

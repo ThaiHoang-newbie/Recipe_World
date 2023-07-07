@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <title>Posting page</title>
+    <link rel="stylesheet" href="./test3.css">
+    <link rel="stylesheet" href="./test8.css">
+    <link rel="stylesheet" href="./Posting.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="title_h2">Create Your Own Recipe</h2>
+                <form action="" id="form-add-recipe" class="parsley-form" onclick="return false;"
+                    data-parsley-validate="">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="inputName">Recipe Name</label>
+                                <input type="text" class="form-control" placeholder="Chocolate Chunk Cookies"
+                                    id="inputName" name="name" required="" value="" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="inputPrice">Price</label>
+                                <input type="text" class="form-control" placeholder="24 000" id="inputPrice"
+                                    name="price" value="" required="" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="inputPrepTime">Preparation Time</label>
+                                <input type="number" min="0" class="form-control" placeholder="1h" id="inputPrepTime"
+                                    name="prepTime" required="" value="" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="inputCookTime">Cook Time</label>
+                                <input type="number" min="0" class="form-control" placeholder="0.5h" id="inputCookTime"
+                                    name="cookTime" required="" value="" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="inputTotalTime">Total Time</label>
+                                <input type="text" class="form-control" placeholder="1.5h" id=" inputTotalTime"
+                                    name="totalTime" required="" value="" disabled />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="inputDescription">Recipe Description</label>
+                                <textarea class="form-control" placeholder="My award winning chocolate chunk cookies."
+                                    id="inputDescription" name="description" required="" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="inputIngredients">Ingredients</label>
+                                <textarea class="form-control" placeholder="2 cups flour" id="inputIngredients"
+                                    name="ingredients" rows="5" required=""></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="inputInstructions">Instructions</label>
+                                <textarea class="form-control" placeholder="Mix dry ingredients in a large bowl"
+                                    id="inputInstructions" name="instructions" rows="5" required=""></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="inputCategories">Select the category</label>
+                                <select name="form-control" id="inputCategories" required>
+                                    <option value="">-- Select a category -- </option>
+                                </select>
+                                <button id="buttonAddCate">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="image-dropzone">
+                        <div className="form-upload my-4">
+                            <div className="image-box">
+                                <input type="file" name="file" id="fileInput" accept=".jpg" hidden />
+                                <label htmlFor="fileInput" className="preview">
+                                    <span>Drag and drop images here</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="uploaded-images">
+                        <div key={image.name} className="image-thumbnail">
+                            <img src="" alt="Uploaded Image" />
+                        </div>
+                    </div>
+
+
+
+                    <input type="hidden" id="recipeId" value="64a791e724da525507e48420" />
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <button class="btn btn-primary" id="btn-save-recipe-custom">Save
+                                    Recipe</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

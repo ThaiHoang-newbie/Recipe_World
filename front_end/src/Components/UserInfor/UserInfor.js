@@ -1,116 +1,269 @@
-import React, { Component } from 'react';
-import './UserInfor.css';
-import axios from 'axios';
-// import './EditUserInfor.css';
+import React, { useState, useEffect } from "react";
+import "./user.css";
+import axios from "axios";
+import Header from "../pages/homepage/parts/Header";
+import Footer from "../pages/homepage/parts/Footer";
+import { useParams, Link } from "react-router-dom";
+import UserPost from "../pages/homepage/UI/receiver/UserPost";
 
-class UserInfor extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            res: {},
-        };
-    }
+const UserInfor = () => {
+  const { id } = useParams();
+  const [res, setRes] = useState({});
+  const [postsOwner, setPostsOwner] = useState([]);
+  const [activeButton, setActiveButton] = useState("Posts");
+  const [orders, setOrders] = useState([]);
+  const userId = sessionStorage.getItem("obtainer_id");
 
-    componentDidMount() {
-        this.getInfor();
-    }
-
-    getInfor = () => {
-        var obtainerId = sessionStorage.getItem('obtainer_id');
-        axios
-            .get(`http://127.0.0.1:8000/api/get-obtainer/${obtainerId}`)
-            .then(response => {
-                this.setState({ res: response.data });
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    };
-
-
-
-    direct = page => {
-        if (page === 'profile') {
-            window.location = 'http://localhost:3000/profile';
-        } else if (page === 'my-posts') {
-            window.location = 'http://localhost:3000/my-posts';
-        } else if (page === 'edit-profile') {
-            window.location = 'http://localhost:3000/edit-profile';
-        } else {
-            window.location = 'http://localhost:3000/';
-        }
-    };
-    render() {
-        const { res } = this.state;
-        return (
-            <div className="container-xl px-4 mt-4">
-                <nav className="nav nav-borders">
-                    <div className="nav nav-borders__left">
-                        <a className="nav-link active outline-success ms-0" onClick={() => this.direct('profile')}>Profile</a>
-                        <a className="nav-link ms-0" onClick={() => this.direct('my-posts')}>My posts </a>
-                    </div>
-                    <div className="nav nav-borders__right">
-                        <a className="nav-link ms-0" onClick={() => this.direct('back')}>Back</a>
-                    </div>
-                </nav>
-                <hr className="mt-0 mb-4" />
-                <br />
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="card mb-12 mb-xl-0">
-                            <div className="card-header">User Information</div>
-
-                            <center>
-                                <div className="card-body text-center">
-                                    <img id="avatar" title="Your avatar" className="img-account-profile rounded-circle mb-2"
-                                        src={`https://firebasestorage.googleapis.com/v0/b/recipeworld-8ecc6.appspot.com/o/images%2F${res.profile_image_url}?alt=media&token=6faaf2a3-91a1-4350-9b33-9ccbcc755a28`}
-                                        alt="Avatar" />
-                                </div>
-                            </center>
-
-                            <center>
-                                <div class="main">
-                                    <div class="main_left">
-                                        <div className="text-muted mb-4">
-                                            <b>Email:</b> {res.email}
-                                        </div>
-                                        <div className="text-muted mb-4">
-                                            <b>Full name:</b> {res.full_name}
-                                        </div>
-                                        <div className="text-muted mb-4">
-                                            <b>Birthday:</b> {res.date_of_birth}
-                                        </div>
-                                        <div className="text-muted mb-4">
-                                            <b>Phone number:</b> {res.phone_number}
-                                        </div>
-                                    </div>
-
-                                    <div class="main_right">
-                                        <div className="text-muted mb-4">
-                                            <b>Followers:</b> {res.followers_count}
-                                        </div>
-                                        <div className="text-muted mb-4">
-                                            <b>Location:</b> {res.location}
-                                        </div>
-                                        <div className="text-muted mb-4">
-                                            <b>Website:</b> {res.website}
-                                        </div>
-                                        <div className="text-muted mb-4" href={res.bio}>
-                                            <b>Bio:</b> {res.bio}
-                                        </div>
-                                    </div>
-                                </div>
-                                <button className="btn btn-primary" type="button" onClick={() => this.direct('edit-profile')}>
-                                    Edit Profile
-                                </button>
-                            </center>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/get-obtainer/${id}`
         );
-    }
-}
+        setRes(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/get-posts/${id}`
+        );
+        setPostsOwner(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/get-orders/${id}`
+        );
+        setOrders(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  const handleButtonClick = (button) => {
+    setActiveButton(button);
+  };
+
+  console.log(postsOwner);
+
+  return (
+    <>
+      <Header />
+      <div className="row py-5 px-4 user-info">
+        <div className="col-md-5 mx-auto">
+          {/* Profile widget */}
+          <div className="bg-white shadow rounded overflow-hidden">
+            <div className="px-4 pt-0 pb-4 cover">
+              <div className="media align-items-end profile-head">
+                <div className="profile mr-3">
+                  <img
+                    src={`https://firebasestorage.googleapis.com/v0/b/recipeworld-8ecc6.appspot.com/o/images%2F${res.profile_image_url}?alt=media&token=6faaf2a3-91a1-4350-9b33-9ccbcc755a28`}
+                    alt="..."
+                    width={130}
+                    className="rounded mb-2 img-thumbnail"
+                  />
+                  {res.id == userId ? (
+                    <Link
+                      to={`/edit-profile`}
+                      type="button"
+                      className="btn btn-outline-dark btn-sm btn-block"
+                    >
+                      Edit profile
+                    </Link>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn-outline-dark btn-sm btn-block"
+                    >
+                      Follow
+                    </button>
+                  )}
+                </div>
+                <div className="media-body mb-5 text-white">
+                  <h4 className="mt-0 mb-0 text-light">{res.full_name}</h4>
+                  <p className="small mt-0 mb-0 ">
+                    <i className="fa-solid fa-envelope" /> {res.email}
+                  </p>
+                  <p className="small mt-0 mb-1 ">
+                    <i className="fa-solid fa-phone" /> {res.phone_number}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-light p-4 d-flex justify-content-end text-center">
+              <ul className="list-inline mb-0">
+                <li className="list-inline-item">
+                  <h5 className="font-weight-bold mb-0 d-block">
+                    {postsOwner.length}
+                  </h5>
+                  <small className="text-muted">
+                    {" "}
+                    <i className="fas fa-image mr-1" />
+                    Posts
+                  </small>
+                </li>
+                <li className="list-inline-item">
+                  <h5 className="font-weight-bold mb-0 d-block">
+                    {orders.length}
+                  </h5>
+                  <small className="text-muted">
+                    {" "}
+                    <i className="fa-solid fa-cart-shopping" /> Purchased
+                  </small>
+                </li>
+                <li className="list-inline-item">
+                  <h5 className="font-weight-bold mb-0 d-block">
+                    {res.followers_count}
+                  </h5>
+                  <small className="text-muted">
+                    {" "}
+                    <i className="fas fa-user mr-1" /> Followers
+                  </small>
+                </li>
+              </ul>
+            </div>
+            <div className="px-4 py-3">
+              <h5 className="mb-0">About</h5>
+              <div className="p-4 rounded shadow-sm bg-light">
+                {res.bio ? (
+                  <p className="font-italic mb-0">{res.bio}</p>
+                ) : (
+                  <p className="font-italic mb-0">Nothing to see here yet</p>
+                )}
+              </div>
+            </div>
+            {userId == res.id ? (
+              <>
+                <div className="option-group">
+                  <button
+                    className="option-btn btn btn-dark"
+                    onClick={() => handleButtonClick("Posts")}
+                  >
+                    Posts
+                  </button>
+                  <button
+                    className="option-btn btn btn-dark"
+                    onClick={() => handleButtonClick("Orders")}
+                  >
+                    Orders
+                  </button>
+                </div>
+                <div className="py-4 px-4">
+                  <div className="d-flex align-items-center justify-content-between mb-3">
+                    <h5 className="mb-0">Recent {activeButton}</h5>
+                    {activeButton === "Posts" && (
+                      <Link to="/post-recipe" className="btn btn-link text-muted">
+                        Add a Post
+                      </Link>
+                    )}
+                  </div>
+                  {activeButton === "Posts" ? (
+                    <div>
+                      {Array.isArray(postsOwner) && postsOwner.length > 0 ? (
+                        postsOwner.map((post, index) => (
+                          <UserPost
+                            key={index}
+                            id={post.id}
+                            thumbnail={post.thumbnail}
+                            title={post.title}
+                            price={post.price}
+                            content={post.content}
+                          />
+                        ))
+                      ) : (
+                        <p>No posts available</p>
+                      )}
+                    </div>
+                  ) : (
+                    <div>
+                      {Array.isArray(orders) && orders.length > 0 ? (
+                        orders.map((order, index) => (
+                          <UserPost
+                            key={index}
+                            id={order.id}
+                            thumbnail={order.thumbnail}
+                            title={order.title}
+                            price={order.price}
+                            content={order.content}
+                          />
+                        ))
+                      ) : (
+                        <p>No orders available</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className="py-4 px-4">
+                <div className="d-flex align-items-center justify-content-between mb-3">
+                  <h5 className="mb-0">Recent {activeButton}</h5>
+                  <a href="#" className="btn btn-link text-muted">
+                    Show all
+                  </a>
+                </div>
+                {activeButton === "Posts" ? (
+                  <div>
+                    {Array.isArray(postsOwner) && postsOwner.length > 0 ? (
+                      postsOwner.map((post, index) => (
+                        <UserPost
+                          key={index}
+                          id={post.id}
+                          thumbnail={post.thumbnail}
+                          title={post.title}
+                          price={post.price}
+                          content={post.content}
+                        />
+                      ))
+                    ) : (
+                      <p>No posts available</p>
+                    )}
+                  </div>
+                ) : (
+                  <div>
+                    {Array.isArray(orders) && orders.length > 0 ? (
+                      orders.map((order, index) => (
+                        <UserPost
+                          key={index}
+                          id={order.id}
+                          thumbnail={order.thumbnail}
+                          title={order.title}
+                          price={order.price}
+                          content={order.content}
+                        />
+                      ))
+                    ) : (
+                      <p>No orders available</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </>
+  );
+};
 
 export default UserInfor;

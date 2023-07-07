@@ -1,17 +1,230 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import "react-notifications/lib/notifications.css";
+import axios from "axios";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
+
+import Header from "../pages/homepage/parts/Header";
+import Footer from "../pages/homepage/parts/Footer";
+import Comments from "../Comments/Comments";
 
 export default function Recipe() {
+  const { id } = useParams();
+  const [open, setOpen] = useState(false);
+  const [recipe, setRecipe] = useState(null);
+  const [orders, setOrders] = useState(null);
+  const [postImages, setPostImages] = useState([]);
+  const userId = sessionStorage.getItem("obtainer_id");
+  const [status, setStatus] = useState(null); // Add status state
+
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      try {
+        if (!recipe) {
+          const response = await axios.get(
+            `http://127.0.0.1:8000/api/get-post/${id}`
+          );
+          const data = response.data;
+          setRecipe(data[0]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchRecipe();
+  }, [id, recipe]);
+
+  useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        if (!orders) {
+          const recipeInformation = {
+            sender_id: userId,
+            post_id: id,
+          };
+          const response = await axios.post(
+            "http://127.0.0.1:8000/api/post/orders",
+            recipeInformation
+          );
+          const data = response.data;
+          setOrders(data[0]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchOrder();
+  }, [id, userId, orders]);
+
+  useEffect(() => {
+    if (orders && orders.status) {
+      setStatus(orders.status); // Update status state when orders.status changes
+    }
+  }, [orders]);
+
+  const checkUser = (userId) => {
+    if (!recipe) {
+      return null;
+    }
+
+    if (!userId) {
+      return (
+        <>
+          <button
+            onClick={() => {
+              setOpen(true);
+            }}
+            className="btn delicious-btn"
+          >
+            {recipe && `$${recipe.price}`}
+          </button>
+          <Dialog open={open} onClose={() => setOpen(false)}>
+            <DialogTitle>
+              <center>Something went wrong here</center>
+            </DialogTitle>
+            <DialogContent>
+              You haven't logged in yet. If you have an account,{" "}
+              <Link to="/sign-in" onClick={storePrevPage}>
+                Login
+              </Link>{" "}
+              here, or you can <Link to="/sign-up">Join us</Link>.
+            </DialogContent>
+          </Dialog>
+        </>
+      );
+    }
+
+    if (orders && !orders.status) {
+      return (
+        <div>
+          <button className="btn btn-outline-success delicious-btn">
+            Waiting
+          </button>
+        </div>
+      );
+    }
+
+    if (userId == recipe.obtainer.id) {
+      return (
+        <>
+          <button className="btn delicious-btn">View your other posts</button>
+        </>
+      );
+    }
+
+    if (status) {
+      return (
+        <div>
+          <button className="btn btn-outline-success delicious-btn" disable>
+            You have bought this recipe
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <button
+          onClick={() => {
+            setOpen(true);
+          }}
+          className="btn delicious-btn"
+        >
+          {recipe && `$${recipe.price}`}
+        </button>
+        <Dialog open={open} onClose={() => setOpen(false)}>
+          <DialogTitle>
+            <center>{recipe && recipe.title}</center>
+          </DialogTitle>
+          <DialogContent>
+            <div className="dialog-content">
+              <img src={recipe && recipe.thumbnail} alt="" />
+              <div className="dialog-content-information">
+                <div className="dialog-information">
+                  <p>
+                    <i className="fa-solid fa-user"></i>&nbsp;{" "}
+                    {recipe && recipe.obtainer.full_name}
+                  </p>
+                  <p>
+                    <i className="fa-solid fa-phone"></i>&nbsp;{" "}
+                    {recipe && recipe.obtainer.phone_number}
+                  </p>
+                  <p>
+                    <i className="fa-solid fa-envelope"></i>&nbsp;{" "}
+                    {recipe && recipe.obtainer.email}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </DialogContent>
+          <div className="dialog-action">
+            <div className="user-amount">Total Amount: 0$</div>
+            <DialogActions>
+              <div className="btn-group">
+                <Button className="text-success" onClick={() => setOpen(false)}>
+                  Cancel
+                </Button>
+                <Button className="text-success" onClick={() => buy()}>
+                  {recipe && `$${recipe.price}`}
+                </Button>
+              </div>
+            </DialogActions>
+          </div>
+        </Dialog>
+      </>
+    );
+  };
+
+  const storePrevPage = () => {
+    const currentPage = window.location.href;
+    localStorage.setItem("prevPage", currentPage);
+  };
+
+  const buy = () => {
+    const buyingInformation = {
+      sender_id: userId,
+      recipient_id: recipe.obtainer.id,
+      post_id: recipe.id,
+      status: 0,
+    };
+    axios
+      .post("http://localhost:8000/api/order", buyingInformation)
+      .then((res) => {
+        setOpen(false);
+        setStatus(0); // Update status state after successful order
+        NotificationManager.info(
+          "Your order is ready, let's wait for the owner!!"
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
+      <Header />
       <div
         className="breadcumb-area bg-img bg-overlay"
-        style={{ backgroundImage: "url(img/bg-img/breadcumb3.jpg)" }}
+        style={{ backgroundImage: `url(${recipe && recipe.thumbnail})` }}
       >
         <div className="container h-100">
           <div className="row h-100 align-items-center">
             <div className="col-12">
               <div className="breadcumb-text text-center">
-                <h2>Recipe</h2>
+                <h2>{recipe && recipe.title}</h2>
               </div>
             </div>
           </div>
@@ -20,44 +233,6 @@ export default function Recipe() {
       {/* ##### Breadcumb Area End ##### */}
       <div className="receipe-post-area section-padding-80">
         {/* Receipe Post Search */}
-        <div className="receipe-post-search mb-80">
-          <div className="container">
-            <form action="#" method="post">
-              <div className="row">
-                <div className="col-12 col-lg-3">
-                  <select name="select1" id="select1">
-                    <option value={1}>All Receipies Categories</option>
-                    <option value={1}>All Receipies Categories 2</option>
-                    <option value={1}>All Receipies Categories 3</option>
-                    <option value={1}>All Receipies Categories 4</option>
-                    <option value={1}>All Receipies Categories 5</option>
-                  </select>
-                </div>
-                <div className="col-12 col-lg-3">
-                  <select name="select1" id="select2">
-                    <option value={1}>All Receipies Categories</option>
-                    <option value={1}>All Receipies Categories 2</option>
-                    <option value={1}>All Receipies Categories 3</option>
-                    <option value={1}>All Receipies Categories 4</option>
-                    <option value={1}>All Receipies Categories 5</option>
-                  </select>
-                </div>
-                <div className="col-12 col-lg-3">
-                  <input
-                    type="search"
-                    name="search"
-                    placeholder="Search Receipies"
-                  />
-                </div>
-                <div className="col-12 col-lg-3 text-right">
-                  <button type="submit" className="btn delicious-btn">
-                    Search
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
         {/* Receipe Slider */}
         <div className="container">
           <div className="row">
@@ -76,269 +251,38 @@ export default function Recipe() {
             <div className="row">
               <div className="col-12 col-md-8">
                 <div className="receipe-headline my-5">
-                  <span>April 05, 2018</span>
-                  <h2>Vegetarian cheese salad</h2>
-                  <div className="receipe-duration">
-                    <h6>Prep: 15 mins</h6>
-                    <h6>Cook: 30 mins</h6>
-                    <h6>Yields: 8 Servings</h6>
-                  </div>
+                  <h5>Description</h5>
+                  {recipe && recipe.content}
                 </div>
               </div>
               <div className="col-12 col-md-4">
                 <div className="receipe-ratings text-right my-5">
                   <div className="ratings">
-                    <i className="fa fa-star" aria-hidden="true" />
-                    <i className="fa fa-star" aria-hidden="true" />
-                    <i className="fa fa-star" aria-hidden="true" />
-                    <i className="fa fa-star" aria-hidden="true" />
-                    <i className="fa fa-star-o" aria-hidden="true" />
+                    <i className="fa-solid fa-star" />
+                    <i className="fa-solid fa-star" />
+                    <i className="fa-solid fa-star" />
+                    <i className="fa-solid fa-star" />
+                    <i className="fa-solid fa-star-o" />
                   </div>
-                  <a href="#" className="btn delicious-btn">
-                    For Begginers
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-12 col-lg-8">
-                {/* Single Preparation Step */}
-                <div className="single-preparation-step d-flex">
-                  <h4>01.</h4>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Vestibulum nec varius dui. Suspendisse potenti. Vestibulum
-                    ac pellentesque tortor. Aenean congue sed metus in iaculis.
-                    Cras a tortor enim. Phasellus posuere vestibulum ipsum, eget
-                    lobortis purus. Orci varius natoque penatibus et magnis dis
-                    parturient montes, nascetur ridiculus mus.{" "}
-                  </p>
-                </div>
-                {/* Single Preparation Step */}
-                <div className="single-preparation-step d-flex">
-                  <h4>02.</h4>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Vestibulum nec varius dui. Suspendisse potenti. Vestibulum
-                    ac pellentesque tortor. Aenean congue sed metus in iaculis.
-                    Cras a tortor enim. Phasellus posuere vestibulum ipsum, eget
-                    lobortis purus. Orci varius natoque penatibus et magnis dis
-                    parturient montes, nascetur ridiculus mus.{" "}
-                  </p>
-                </div>
-                {/* Single Preparation Step */}
-                <div className="single-preparation-step d-flex">
-                  <h4>03.</h4>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Vestibulum nec varius dui. Suspendisse potenti. Vestibulum
-                    ac pellentesque tortor. Aenean congue sed metus in iaculis.
-                    Cras a tortor enim. Phasellus posuere vestibulum ipsum, eget
-                    lobortis purus. Orci varius natoque penatibus et magnis dis
-                    parturient montes, nascetur ridiculus mus.{" "}
-                  </p>
-                </div>
-                {/* Single Preparation Step */}
-                <div className="single-preparation-step d-flex">
-                  <h4>04.</h4>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Vestibulum nec varius dui. Suspendisse potenti. Vestibulum
-                    ac pellentesque tortor. Aenean congue sed metus in iaculis.
-                    Cras a tortor enim. Phasellus posuere vestibulum ipsum, eget
-                    lobortis purus. Orci varius natoque penatibus et magnis dis
-                    parturient montes, nascetur ridiculus mus.{" "}
-                  </p>
-                </div>
-              </div>
-              {/* Ingredients */}
-              <div className="col-12 col-lg-4">
-                <div className="ingredients">
-                  <h4>Ingredients</h4>
-                  {/* Custom Checkbox */}
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      id="customCheck1"
-                    />
-                    <label
-                      className="custom-control-label"
-                      htmlFor="customCheck1"
-                    >
-                      4 Tbsp (57 gr) butter
-                    </label>
-                  </div>
-                  {/* Custom Checkbox */}
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      id="customCheck2"
-                    />
-                    <label
-                      className="custom-control-label"
-                      htmlFor="customCheck2"
-                    >
-                      2 large eggs
-                    </label>
-                  </div>
-                  {/* Custom Checkbox */}
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      id="customCheck3"
-                    />
-                    <label
-                      className="custom-control-label"
-                      htmlFor="customCheck3"
-                    >
-                      2 yogurt containers granulated sugar
-                    </label>
-                  </div>
-                  {/* Custom Checkbox */}
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      id="customCheck4"
-                    />
-                    <label
-                      className="custom-control-label"
-                      htmlFor="customCheck4"
-                    >
-                      1 vanilla or plain yogurt, 170g container
-                    </label>
-                  </div>
-                  {/* Custom Checkbox */}
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      id="customCheck5"
-                    />
-                    <label
-                      className="custom-control-label"
-                      htmlFor="customCheck5"
-                    >
-                      2 yogurt containers unbleached white flour
-                    </label>
-                  </div>
-                  {/* Custom Checkbox */}
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      id="customCheck6"
-                    />
-                    <label
-                      className="custom-control-label"
-                      htmlFor="customCheck6"
-                    >
-                      1.5 yogurt containers milk
-                    </label>
-                  </div>
-                  {/* Custom Checkbox */}
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      id="customCheck7"
-                    />
-                    <label
-                      className="custom-control-label"
-                      htmlFor="customCheck7"
-                    >
-                      1/4 tsp cinnamon
-                    </label>
-                  </div>
-                  {/* Custom Checkbox */}
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      id="customCheck8"
-                    />
-                    <label
-                      className="custom-control-label"
-                      htmlFor="customCheck8"
-                    >
-                      1 cup fresh blueberries{" "}
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-12">
-                <div className="section-heading text-left">
-                  <h3>Leave a comment</h3>
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-12">
-                <div className="contact-form-area">
-                  <form action="#" method="post">
-                    <div className="row">
-                      <div className="col-12 col-lg-6">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="name"
-                          placeholder="Name"
-                        />
-                      </div>
-                      <div className="col-12 col-lg-6">
-                        <input
-                          type="email"
-                          className="form-control"
-                          id="email"
-                          placeholder="E-mail"
-                        />
-                      </div>
-                      <div className="col-12">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="subject"
-                          placeholder="Subject"
-                        />
-                      </div>
-                      <div className="col-12">
-                        <textarea
-                          name="message"
-                          className="form-control"
-                          id="message"
-                          cols={30}
-                          rows={10}
-                          placeholder="Message"
-                          defaultValue={""}
-                        />
-                      </div>
-                      <div className="col-12">
-                        <button
-                          className="btn delicious-btn mt-30"
-                          type="submit"
-                        >
-                          Post Comments
-                        </button>
-                      </div>
-                    </div>
-                  </form>
+                  {checkUser(userId)}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <div className="receipe-content-area">
+        <div className="container">
+          <Comments postId={id} />
+        </div>
+      </div>
+
       {/* ##### Follow Us Instagram Area Start ##### */}
       <div className="follow-us-instagram">
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <h5>Follow Us Instragram</h5>
+              <h5>Follow Us Instagram</h5>
             </div>
           </div>
         </div>
@@ -350,7 +294,7 @@ export default function Recipe() {
             {/* Icon */}
             <div className="insta-icon">
               <a href="#">
-                <i className="fa fa-instagram" aria-hidden="true" />
+                <i className="fa-brands fa-instagram" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -360,7 +304,7 @@ export default function Recipe() {
             {/* Icon */}
             <div className="insta-icon">
               <a href="#">
-                <i className="fa fa-instagram" aria-hidden="true" />
+                <i className="fa-brands fa-instagram" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -380,7 +324,7 @@ export default function Recipe() {
             {/* Icon */}
             <div className="insta-icon">
               <a href="#">
-                <i className="fa fa-instagram" aria-hidden="true" />
+                <i className="fa-brands fa-instagram" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -390,7 +334,7 @@ export default function Recipe() {
             {/* Icon */}
             <div className="insta-icon">
               <a href="#">
-                <i className="fa fa-instagram" aria-hidden="true" />
+                <i className="fa-brands fa-instagram" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -410,12 +354,14 @@ export default function Recipe() {
             {/* Icon */}
             <div className="insta-icon">
               <a href="#">
-                <i className="fa fa-instagram" aria-hidden="true" />
+                <i className="fa-brands fa-instagram" aria-hidden="true" />
               </a>
             </div>
           </div>
         </div>
       </div>
+      <Footer />
+      <NotificationContainer />
     </>
   );
 }

@@ -14,13 +14,27 @@ class PostingController extends Controller
             $post = new Post;
             $post->obtainer_id = $request->obtainer_id;
             $post->category_id = $request->category_id;
-            $post->title = $request->title;
-            $post->content = $request->content;
+
+            $post->name = $request->name;
+
+            $post->instruction = $request->instruction;
+
+            $post->preparetion_time = $request->preparetion_time;
+
+            $post->cooking_time = $request->cooking_time;
+
+            $post->description = $request->description;
+
+            $post->ingredients = $request->ingredients;
+
             $post->thumbnail = $request->thumbnail;
+
             $post->price = $request->price;
+
             $post->created_at = Carbon::now();
             $post->updated_at = Carbon::now();
             $post->save();
+            
         } catch (\Illuminate\Database\QueryException $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
         };

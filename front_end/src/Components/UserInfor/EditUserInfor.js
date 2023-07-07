@@ -78,6 +78,7 @@ const EditUserInfor = () => {
             .then(response => {
                 console.log(response.data);
                 alert('Profile updated successfully');
+                window.location.href=`/profile-page/${obtainerId}`
             })
             .catch(error => {
                 console.log(error);

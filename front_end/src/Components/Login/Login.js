@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
-import './Login.css';
+import "./Login.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import "react-notifications/lib/notifications.css";
 const Login = () => {
   const [dataForm, setDataForm] = useState({
     email: "",
@@ -26,16 +31,24 @@ const Login = () => {
 
       if (response.status == 200) {
         var res = await response.json();
-
         sessionStorage.setItem("obtainer_id", res.data.id);
         sessionStorage.setItem("token", res.token);
 
-        alert("Login successful!");
+        NotificationManager.success("Login successful!");
         setTimeout(() => {
           window.location = "/";
         }, 1000);
+      } else if (response.status == 201) {
+        var res = await response.json();
+        sessionStorage.setItem("obtainer_id", res.data.id);
+        sessionStorage.setItem("token", res.token);
+
+        NotificationManager.success("Login successful!");
+        setTimeout(() => {
+          window.location = "/admin";
+        }, 1000);
       } else {
-        alert("Wrong email or password!");
+        NotificationManager.error("Wrong email or password!");
       }
     }
   };
@@ -46,12 +59,16 @@ const Login = () => {
       setTimeout(() => {
         window.location = "/";
       }, 100);
+    } else if (token === "admin") {
+      setTimeout(() => {
+        window.location = "/admin";
+      }, 100);
     }
   };
 
-    useEffect(() => {
-        checkTokenAndRedirect();
-      }, []);
+  useEffect(() => {
+    checkTokenAndRedirect();
+  }, []);
 
   return (
     <div className="login-card-container">
@@ -63,7 +80,7 @@ const Login = () => {
           <h1>Log in</h1>
           <div>Please login to our my website</div>
         </div>
-        <div className="login-card-form"  >
+        <div className="login-card-form">
           <div className="form-group-login">
             <label>Email</label>
             <input
@@ -94,14 +111,14 @@ const Login = () => {
               />
               <label htmlFor="rememberMeCheckbox">Remember me</label>
             </div>
-            <a href="#">I forgot my password!</a>
+            <a href="./enter-email">I forgot my password!</a>
           </div>
           <button type="submit" name="btn-login" onClick={() => onLogin()}>
             Sign In
           </button>
         </div>
         <div className="login-card-footer">
-          Don't have an account? <Link to={'/sign-up'}>Create now</Link>
+          Don't have an account? <Link to={"/sign-up"}>Create now</Link>
         </div>
       </div>
     </div>

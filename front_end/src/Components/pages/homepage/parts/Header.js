@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import "../../../../Assets/style.css";
 import UserIn from "./UserIn";
+import { Link } from "react-router-dom"; 
 class Header extends Component {
-  componentDidMount() {
-    const currentUrl = window.location.href;
-    console.log(currentUrl);
-  }
   render() {
     return (
       <header className="header-area">
@@ -13,29 +10,9 @@ class Header extends Component {
           <div className="container h-100">
             <div className="row h-100 align-items-center justify-content-between">
               <div className="col-12 col-sm-4">
-                <p className="text-success pt-2">Welcome to Receipe World</p>
+                <Link to="/" className="text-success pt-2">Welcome to Receipe World</Link>
               </div>
               <div className="col-12 col-sm-4">
-                <div className="top-social-info text-right">
-                  <a href="#">
-                    <i className="fa-brands fa-pinterest"/>
-                  </a>
-                  <a href="#">
-                    <i className="fa-brands fa-facebook"/>
-                  </a>
-                  <a href="#">
-                    <i className="fa-brands fa-twitter"/>
-                  </a>
-                  <a href="#">
-                    <i className="fa-brands fa-dribbble"/>
-                  </a>
-                  <a href="#">
-                    <i className="fa-brands fa-behance"/>
-                  </a>
-                  <a href="#">
-                    <i className="fa-brands fa-linkedin"/>
-                  </a>
-                </div>
               </div>
               <div className="col-12 col-sm-4">
                 <UserIn />

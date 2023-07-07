@@ -19,8 +19,12 @@ class PostSeeder extends Seeder
             Post::create([
                 'obtainer_id' => $i + 1,
                 'category_id' => $faker->numberBetween(1, 3),
-                'title' => $faker->sentence,
-                'content' => $faker->paragraph,
+                'name' => $faker->sentence,
+                'instruction' => $faker->sentence,
+                'preparetion_time' => $faker->randomNumber(),
+                'cooking_time' => $faker->randomNumber(),
+                'description' => $faker->paragraph,
+                'ingredients' => $faker->paragraph,
                 'thumbnail' => $faker->imageUrl(),
                 'price' => $faker->randomNumber()
             ]);

@@ -1,14 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../svg.css";
-import './Register.css';
+import "./Register.css";
 import Header from "../pages/homepage/parts/Header";
 import Footer from "../pages/homepage/parts/Footer";
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'https://www.gstatic.com/firebasejs/9.6.4/firebase-storage.js';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "https://www.gstatic.com/firebasejs/9.6.4/firebase-storage.js";
 import axios from "axios";
 
 const Register = () => {
-
   const [phantram, setPhanTram] = useState(0);
   const [submit, setSubmit] = useState(false);
   const [verify, setVerify] = useState(false);
@@ -18,7 +24,7 @@ const Register = () => {
   // Get email to make sure that not has already in DB and send Verify Token to the one
   const [email, setEmail] = useState();
 
-  const fileInput = useRef(null)
+  const fileInput = useRef(null);
 
   const [dataForm, setDataForm] = useState({
     email: "",
@@ -66,21 +72,24 @@ const Register = () => {
         let verify_token = _finalKey;
         let token_sent = sessionStorage.getItem("token_sent");
 
-        axios.post('http://localhost:8000/api/comparison', { verify_token, token_sent })
-          .then(response => {
-            if (response.data.message == 'Successful') {
+        axios
+          .post("http://localhost:8000/api/comparison", {
+            verify_token,
+            token_sent,
+          })
+          .then((response) => {
+            if (response.data.message == "Successful") {
               checkState("verifyForm");
             } else {
               alert("Wrong token verification");
             }
-          })
-
+          });
       } else {
         document.querySelector("#_otp").classList.replace("_ok", "_notok");
         document.querySelector("#_otp").innerText = _finalKey;
       }
     }
-  })
+  });
 
   // Function hadle photo picking
   const onSelectFile = (e) => {
@@ -139,10 +148,10 @@ const Register = () => {
 
     }
 
-    if (value === 'verifyForm') {
-      setPhanTram(75)
-      setCheckForm({ ...checkForm, verifyForm: true })
-      setVerify(true)
+    if (value === "verifyForm") {
+      setPhanTram(75);
+      setCheckForm({ ...checkForm, verifyForm: true });
+      setVerify(true);
     }
 
     if (value === "uploadAvatar") {
@@ -152,41 +161,37 @@ const Register = () => {
       }
     }
 
-    if (value === 'btnRegister') {
+    if (value === "btnRegister") {
       const _formData = new FormData();
       _formData.append("username", dataForm.username);
       _formData.append("date_of_birth", dataForm.date_of_birth);
       _formData.append("full_name", dataForm.full_name);
       _formData.append("email", dataForm.email);
       _formData.append("password", dataForm.password);
-      _formData.append("confirm_password", dataForm.confirm_password)
+      _formData.append("confirm_password", dataForm.confirm_password);
       _formData.append("profile_image_url", selectedFile);
 
       const requestOptions = {
-        method: 'POST',
-        body: _formData
+        method: "POST",
+        body: _formData,
       };
 
       fetch("http://127.0.0.1:8000/api/obtainers/register", requestOptions)
         .then((res) => res.json())
         .then((json) => {
           if (json["success"] > 0) {
-            alert("Bạn đã đăng ký thành công!");
+            NotificationManager.success("Sign up successful!");
             setTimeout(() => {
               window.location = "http://localhost:3000/sign-in";
             }, 1000);
           } else {
-            alert(JSON.stringify(json.error));
+            NotificationManager.error(JSON.stringify(json.error));
           }
         });
 
-
-
-
-
       const handleFileUpload = (file) => {
         const metadata = {
-          contentType: 'image/jpeg'
+          contentType: "image/jpeg",
         };
         // config
 
@@ -197,36 +202,37 @@ const Register = () => {
           storageBucket: "recipeworld-8ecc6.appspot.com",
           messagingSenderId: "725588893040",
           appId: "1:725588893040:web:f83005b7b51cca25fbc3b5",
-          measurementId: "G-52RMZMLKKQ"
+          measurementId: "G-52RMZMLKKQ",
         };
-
 
         const app = initializeApp(firebaseConfig);
         const storage = getStorage(app);
 
         if (file) {
-          const storageRef = ref(storage, 'images/' + file.name);
+          const storageRef = ref(storage, "images/" + file.name);
           const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
-          uploadTask.on('state_changed',
+          uploadTask.on(
+            "state_changed",
             (snapshot) => {
-              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              console.log('Upload is ' + progress + '% done');
+              const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log("Upload is " + progress + "% done");
               setPhanTram(progress);
               switch (snapshot.state) {
-                case 'paused':
-                  console.log('Upload is paused');
+                case "paused":
+                  console.log("Upload is paused");
                   break;
-                case 'running':
-                  console.log('Upload is running');
+                case "running":
+                  console.log("Upload is running");
                   break;
               }
             },
             (error) => {
-              console.error('Error:', error);
+              console.error("Error:", error);
             },
             () => {
-              console.log('Upload complete');
+              console.log("Upload complete");
             }
           );
         }
@@ -293,7 +299,7 @@ const Register = () => {
     if (token) {
       setTimeout(() => {
         window.location = "http://localhost:3000";
-      }, 100)
+      }, 100);
     }
   };
 
@@ -406,7 +412,10 @@ const Register = () => {
       </div>
 
       <div className="btn-group d-flex justify-content-center">
-        <button className="btn btn-success" onClick={() => checkState("inputForm")}>
+        <button
+          className="btn btn-success"
+          onClick={() => checkState("inputForm")}
+        >
           Next
         </button>
       </div>
@@ -420,7 +429,9 @@ const Register = () => {
       <form action="javascript: void(0)" className="otp-form" name="otp-form">
         <div className="title">
           <h1>OTP VERIFICATION</h1>
-          <p className="info color-black">An otp has been sent to <b>{sessionStorage.getItem('email')}</b></p>
+          <p className="info color-black">
+            An otp has been sent to <b>{sessionStorage.getItem("email")}</b>
+          </p>
           <p className="msg">Please enter OTP to verify</p>
         </div>
         <div className="otp-input-fields">
@@ -432,13 +443,14 @@ const Register = () => {
           <input type="number" className="otp__digit otp__field__6" />
         </div>
         <div className="result">
-          <p id="_otp" className="_notok">Your verification token</p>
+          <p id="_otp" className="_notok">
+            Your verification token
+          </p>
         </div>
       </form>
-      <div className="btn-group d-flex justify-content-center">
-      </div>
+      <div className="btn-group d-flex justify-content-center"></div>
     </div>
-  )
+  );
 
   const renderUploadAvatar = (
     <div className="form-upload my-4">
@@ -458,7 +470,8 @@ const Register = () => {
           id="fileInput"
           accept=".jpg, .jpeg, .png, image/gif"
           hidden
-          onChange={onSelectFile} />
+          onChange={onSelectFile}
+        />
       </div>
       <div className="upload-file">
         <div className="box-event btn-group">
@@ -476,9 +489,14 @@ const Register = () => {
   const renderEventRegister = (
     <div className="form-event-register container my-4">
       <div className="form-event d-flex flex-column">
-        <label className="d-flex justify-content-center">Vui lòng bấm xác nhận để hoàn thành đăng ký</label>
+        <label className="d-flex justify-content-center">
+          Vui lòng bấm xác nhận để hoàn thành đăng ký
+        </label>
         <div className="box-event btn-group d-flex justify-content-center">
-          <button className="btn-next btn btn-outline-success" onClick={() => backForm("uploadAvatar")}>
+          <button
+            className="btn-next btn btn-outline-success"
+            onClick={() => backForm("uploadAvatar")}
+          >
             Back
           </button>
           <button
@@ -488,7 +506,7 @@ const Register = () => {
             Register
           </button>
         </div>
-        { }
+        {}
       </div>
     </div>
   );
@@ -502,7 +520,11 @@ const Register = () => {
             <svg>
               <circle className="" cx="70px" cy="70px" r="70px"></circle>
               <circle
-                className={phantram > 0 ? "p" + phantram + " bg-success" : "p0"} cx="70px" cy="70px" r="70px" style={{ stroke: "#28a745" }}
+                className={phantram > 0 ? "p" + phantram + " bg-success" : "p0"}
+                cx="70px"
+                cy="70px"
+                r="70px"
+                style={{ stroke: "#28a745" }}
               ></circle>
             </svg>
             <div className="number_precent">
@@ -514,11 +536,14 @@ const Register = () => {
 
       {!checkForm.inputForm && renderFormRegister}
       {checkForm.inputForm && !checkForm.verifyForm && renderFormVerify}
-      {checkForm.inputForm && checkForm.verifyForm && !checkForm.uploadAvatar && renderUploadAvatar}
+      {checkForm.inputForm &&
+        checkForm.verifyForm &&
+        !checkForm.uploadAvatar &&
+        renderUploadAvatar}
       {checkForm.uploadAvatar && !checkForm.btnRegister && renderEventRegister}
       <Footer />
+      <NotificationContainer />
     </div>
-
   );
 };
 
