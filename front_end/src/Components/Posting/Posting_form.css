@@ -1,0 +1,54 @@
+/* Input style*/
+.italic-text {
+    font-style: italic;
+}
+.underline-text {
+    text-decoration: underline;
+}  
+.strike-through-text {
+    text-decoration: line-through;
+}
+.bold-text {
+    text-decoration: bold;
+}
+
+
+
+
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+textarea,
+input[type="file"] {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.image-display {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.image-item {
+    margin: 5px;
+}
+
+.image-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.remove-button {
+    margin-top: 5px;
+}

@@ -12,7 +12,7 @@ class Obtainer extends Model
     protected $table = 'obtainers';
 
 
-    protected $fillable = ['username', 'email', 'password', 'full_name', 'date_of_birth', 'bio', 'profile_image_url'];
+    protected $fillable = ['email', 'password', 'phone_number', 'location', 'website', 'full_name', 'date_of_birth', 'bio', 'profile_image_url'];
 
 
     public function posts()
