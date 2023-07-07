@@ -55,7 +55,7 @@ class UserController extends Controller
         $obtainer = Obtainer::where('email', $request->email)->first();
 
         if ($obtainer && Hash::check($request->password, $obtainer->password)) {
-            if ($email == "hoang@gmail.com") {
+            if ($email == "bondshino.238@gmail.com") {
                 return response()->json(['success' => 1, 'data' => $obtainer, 'token' => 'admin'], 201);
             } else {
                 return response()->json(['success' => 1, 'data' => $obtainer, 'token' => $token], 200);
