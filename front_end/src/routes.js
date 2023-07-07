@@ -11,7 +11,9 @@ import EditUserInfor from "./components/UserInfor/EditUserInfor";
 import Posting from "./components/Posting/Posting";
 import BlogPosts from "./components/Blogposts/BlogPosts";
 import Admin from "./components/pages/adminpages/Admin";
-
+import Content from "./components/pages/adminpages/parts/Content"
+import ForgotPass from "./components/ForgotPass/ForgotPass";
+import NewPass from "./components/ForgotPass/NewPass";
 export const homepageRoutes = [
   {
     path: '/',
@@ -52,6 +54,24 @@ export const homepageRoutes = [
     path: '/posting',
     index: false,
     element: <Posting />
+  },
+  {
+    path: '/enter-email',
+    index: false,
+    element: <ForgotPass />
+  },
+  {
+    path: '/new-pass',
+    index: false,
+    element: <NewPass />
+  }
+]
+
+export const adminPageRoutes = [
+  {
+    path: "/admin",
+    index: true,
+    element: <Content />
   },
   {
     path:'/all-post',

@@ -8,6 +8,8 @@ use App\Http\Controllers\BuyController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostingController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\ResetPassController;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +44,7 @@ Route::put('/put-obtainer/{id}', [UserController::class, 'onEdit']);
 // Check obtainer exist
 Route::post('/check-exist', [UserController::class, 'checkUserExist']);
 
+
 // ----------------------------------------------------------------------------
 
 // Get all posts
@@ -65,6 +68,7 @@ Route::get('/get-posts/{id}', [ApiController::class, 'getPostByObtainerId']);
 Route::get('/getPostByCategoryId/{id}', [ApiController::class, 'getPostByCategoryId']);
 
 
+
 // ----------------------------------------------------------------------------
 
 // Get all categories
@@ -77,11 +81,6 @@ Route::get('/get-orders/{id}', [ApiController::class, 'getOrderById']);
 // ----------------------------------------------------------------------------
 
 // Api Register
-// Route::get('token', function (Request $request) {
-//     $token = $request->session()->token();
-    // $token = csrf_token();
-//     return Response()->json(array("token"=>$token));
-// });
 
 Route::post('/obtainers/login', [UserController::class, 'onLogin']);
 
@@ -89,11 +88,11 @@ Route::post('obtainers/register', [UserController::class, 'onRegister']);
 
 Route::post('verify-email', [UserController::class, 'onRegister']);
 
-// Route::post('obtainers/logout', [UserController::class, 'onLogout']);
 
 Route::get('/session-data', function () {
     return session()->all();
 });
+
 
 
 
@@ -102,6 +101,26 @@ Route::get('/session-data', function () {
 // Posting api
 
 Route::post('posting', [PostingController::class, 'store']);
+
+// Add new post
+
+Route::post('add-post', [PostingController::class, 'AddNewPost']);
+
+
+
+
+
+// ----------------------------------------------------------------------------
+
+// Reset pass
+
+Route::post('enter-email', [ResetPassController::class, 'sendResetPass']);
+
+Route::post('check-exists', [ResetPassController::class, 'checkObatainerExist']);
+
+Route::post('new-pass', [ResetPassController::class, 'resetPass']);
+
+
 
 
 //Comment api
@@ -123,12 +142,8 @@ Route::put('order/{id}', [BuyController::class, 'update']);
 // Verify email route
 
 Route::post('send-mail', [MailController::class, 'send']);
+
 Route::post('comparison', [MailController::class, 'comparison']);
 
 
-// ----------------------------------------------------------------------------
-
-// Add new post
-
-Route::post('add-post', [PostingController::class, 'AddNewPost']);
 

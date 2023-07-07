@@ -133,22 +133,19 @@ const Register = () => {
 
   // Function handle step by step of register feature
   const checkState = (value) => {
-    if (value === "inputForm") {
-      if (
-        validateEmail(dataForm.email) &&
-        dataForm.password.length >= 8 &&
-        dataForm.password == dataForm.confirm_password
-      ) {
-        setPhanTram(50);
-        setCheckForm({ ...checkForm, inputForm: true });
-        let e_session = sessionStorage.getItem("email");
-        axios
-          .post("http://localhost:8000/api/send-mail", { e_session })
-          .then((response) => {
-            sessionStorage.setItem("token_sent", response.data.token_sent);
+    if (value === 'inputForm') {
+      if (validateEmail(dataForm.email) && dataForm.password.length >= 8 && (dataForm.password == dataForm.confirm_password)) {
+
+        setPhanTram(50)
+        setCheckForm({ ...checkForm, inputForm: true })
+        let e_session = sessionStorage.getItem("email")
+        axios.post('http://localhost:8000/api/send-mail', { e_session })
+          .then(response => {
+            sessionStorage.setItem("token_sent", response.data.token_sent)
           });
       }
-      setSubmit(true);
+      setSubmit(true)
+
     }
 
     if (value === "verifyForm") {
@@ -274,11 +271,8 @@ const Register = () => {
 
   const check = async (email) => {
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/check-exist",
-        { email }
-      );
-      if ((response.data.exists = true)) {
+      const response = await axios.post('http://127.0.0.1:8000/api/check-exist', { email });
+      if (response.data.exists = true) {
         return true;
       } else {
         return false;

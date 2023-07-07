@@ -61,6 +61,10 @@ const Login = () => {
       setTimeout(() => {
         window.location = "/";
       }, 100);
+    }else if(token === 'admin'){
+      setTimeout(() => {
+        window.location = "/admin";
+      }, 100);
     }
   };
 
