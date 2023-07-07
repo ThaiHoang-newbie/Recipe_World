@@ -9,7 +9,7 @@ function Navbar() {
     <div className="delicious-main-menu">
       <div className="classy-nav-container breakpoint-off light left">
         <div className="container">
-          <nav className="classy-navbar justify-content-between" id="deliciousNav">
+          <nav className="classy-navbar justify-content-between my-2" id="deliciousNav">
           <Link className="nav-brand" to="/"><img src="../img/core-img/logo.png" alt="" /></Link>
             <div className="classy-navbar-toggler">
               <span className="navbarToggler">

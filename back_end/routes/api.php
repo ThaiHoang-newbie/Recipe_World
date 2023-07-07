@@ -74,10 +74,11 @@ Route::get('/getPostByCategoryId/{id}', [ApiController::class, 'getPostByCategor
 // Get all categories
 Route::get('/get-categories', [Controller::class, 'getCategories']);
 Route::post('/categories', [Controller::class, 'addCategories']);
-
+Route::get('/get-total-posts', [ApiController::class, 'getPostsWithCategory']);
 
 
 Route::get('/get-orders/{id}', [ApiController::class, 'getOrderById']);
+Route::get('/get-all-orders', [ApiController::class, 'getAllOrder']);
 // ----------------------------------------------------------------------------
 
 // Api Register

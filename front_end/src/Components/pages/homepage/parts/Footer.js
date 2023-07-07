@@ -23,7 +23,7 @@ function Footer() {
                             <a href="index.html"><img src="../img/core-img/logo.png" alt="" /></a>
                         </div>
                         <p>
-                            Copyright ©2023 All rights reserved | This template is made with <i className="fa-solid fa-heart" /> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            Copyright ©2023 All rights reserved | Project made by our group, wish you guys have a good time.
                         </p>
                     </div>
                 </div>

@@ -4,8 +4,11 @@ import "./Register.css";
 import Header from "../pages/homepage/parts/Header";
 import Footer from "../pages/homepage/parts/Footer";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js";
-import {NotificationContainer, NotificationManager} from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import "react-notifications/lib/notifications.css";
 import {
   getStorage,
   ref,
@@ -133,19 +136,22 @@ const Register = () => {
 
   // Function handle step by step of register feature
   const checkState = (value) => {
-    if (value === 'inputForm') {
-      if (validateEmail(dataForm.email) && dataForm.password.length >= 8 && (dataForm.password == dataForm.confirm_password)) {
-
-        setPhanTram(50)
-        setCheckForm({ ...checkForm, inputForm: true })
-        let e_session = sessionStorage.getItem("email")
-        axios.post('http://localhost:8000/api/send-mail', { e_session })
-          .then(response => {
-            sessionStorage.setItem("token_sent", response.data.token_sent)
+    if (value === "inputForm") {
+      if (
+        validateEmail(dataForm.email) &&
+        dataForm.password.length >= 8 &&
+        dataForm.password == dataForm.confirm_password
+      ) {
+        setPhanTram(50);
+        setCheckForm({ ...checkForm, inputForm: true });
+        let e_session = sessionStorage.getItem("email");
+        axios
+          .post("http://localhost:8000/api/send-mail", { e_session })
+          .then((response) => {
+            sessionStorage.setItem("token_sent", response.data.token_sent);
           });
       }
-      setSubmit(true)
-
+      setSubmit(true);
     }
 
     if (value === "verifyForm") {
@@ -271,8 +277,11 @@ const Register = () => {
 
   const check = async (email) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/check-exist', { email });
-      if (response.data.exists = true) {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/check-exist",
+        { email }
+      );
+      if ((response.data.exists = true)) {
         return true;
       } else {
         return false;
@@ -326,6 +335,7 @@ const Register = () => {
             setDataForm({ ...dataForm, full_name: e.target.value })
           }
           value={dataForm.full_name}
+          autoFocus
         />
       </div>
 
@@ -435,7 +445,7 @@ const Register = () => {
           <p className="msg">Please enter OTP to verify</p>
         </div>
         <div className="otp-input-fields">
-          <input type="number" className="otp__digit otp__field__1" />
+          <input type="number" className="otp__digit otp__field__1" autoFocus />
           <input type="number" className="otp__digit otp__field__2" />
           <input type="number" className="otp__digit otp__field__3" />
           <input type="number" className="otp__digit otp__field__4" />

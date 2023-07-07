@@ -83,10 +83,10 @@ export default function UserIn() {
         <>
           <div className="btn-group">
             <Link to="/sign-up" className="btn btn-outline-success">
-              Sign Up
+            <i className="fa-solid fa-user-plus"></i>
             </Link>
             <Link to="/sign-in" className="btn btn-outline-success">
-              Sign In
+            <i className="fa-solid fa-user-check"></i>
             </Link>
           </div>
         </>

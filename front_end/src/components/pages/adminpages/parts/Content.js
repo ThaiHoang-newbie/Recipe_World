@@ -4,7 +4,6 @@ import LeftSidebar from "./LeftSidebar";
 export default function Content() {
   return (
     <>
-      <Header />
       <div className="container-fluid">
         {/*  Row 1 */}
         <div className="row">
@@ -326,7 +325,7 @@ export default function Content() {
           </div>
         </div>
       </div>
-      <LeftSidebar />
+
     </>
   );
 }

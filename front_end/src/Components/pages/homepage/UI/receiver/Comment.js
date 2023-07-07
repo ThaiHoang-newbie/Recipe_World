@@ -86,6 +86,7 @@ export default function Comment({
               onChange={handleInputChange}
               className="form-control"
               rows={3}
+              autoFocus
             />
           ) : (
             <p>{commentContent}</p>

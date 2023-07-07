@@ -4,7 +4,7 @@ import "./App.css";
 import "@fortawesome/fontawesome-free";
 import LogRocket from "logrocket";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { routes } from "../../../routes";
+import { routes } from "./routes";
 function App() {
   const currentPage = window.location.href;
   const tailPage = currentPage.substring(currentPage.lastIndexOf("/") + 1);

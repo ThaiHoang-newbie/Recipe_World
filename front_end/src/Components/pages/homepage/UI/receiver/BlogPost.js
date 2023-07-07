@@ -26,7 +26,7 @@ export default function BlogPost({
             className="rounded-circle object-fit-cover"
           />
           <div className="d-flex flex-column ml-2 p-2">
-            <span className="text-dark">{full_name}</span>
+            <Link to={`/profile-page/${id}`} className="text-dark font-bold">{full_name}</Link>
             <span className="font-weight-bold font-italic text-success">
               {title}
             </span>
@@ -88,7 +88,7 @@ export default function BlogPost({
                 {" "}
                 <p>
                   No comments yet.{" "}
-                  <Link to={`/recipe/${id}`}>Be the first to comment!</Link>
+                  <Link className="text-success" to={`/recipe/${id}`}>Be the first to comment!</Link>
                 </p>
               </div>
             )}

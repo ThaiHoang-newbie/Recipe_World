@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "../../../../Assets/style.css";
 import Products from "./receiver/Products";
 import Card from "./receiver/Card";
-
+import { Carousel } from 'grommet';
 function ShowProduct() {
   const [posts, setPosts] = useState([]);
   const [recipes, setRecipes] = useState([]);

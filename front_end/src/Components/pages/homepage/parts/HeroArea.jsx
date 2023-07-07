@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../../../../App.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import Carousel from "react-bootstrap/Carousel";
+import { Box, Carousel } from "grommet";
 import { Link } from "react-router-dom";
 
 function HeroArea() {
@@ -50,11 +50,11 @@ function HeroArea() {
   }, []);
 
   return (
-    <section className="hero-area py-4">
-      <div className="hero-slides">
-        <Carousel>
-          {slides.map((slide, index) => (
-            <Carousel.Item>
+    <section className="hero-area">
+      <div className="hero-slides d-block">
+        <Box gap="medium" align="center" pad="large">
+          <Carousel controls={false} play={3000}>
+            {slides.map((slide, index) => (
               <div
                 key={index}
                 className={`single-hero-slide ${
@@ -63,32 +63,30 @@ function HeroArea() {
                 style={{
                   backgroundImage: `url(${slide.backgroundImage})`,
                   backgroundRepeat: "no-repeat",
-                  backgroundPosition: "bottom"
+                  backgroundPosition: "bottom",
                 }}
               >
-                <Carousel.Caption>
-                  <div className="container h-100">
-                    <div className="row h-100 align-items-center">
-                      <div className="col-12 col-md-9 col-lg-7 col-xl-6">
-                        <div
-                          className={`hero-slides-content ${
-                            index === currentSlide ? "active" : ""
-                          }`}
-                        >
-                          <h2>{slide.title}</h2>
-                          <p>{slide.description}</p>
-                          <Link to="/all-post" className="btn delicious-btn">
-                            See Recipe
-                          </Link>
-                        </div>
+                <div className="container h-100">
+                  <div className="row h-100 align-items-center">
+                    <div className="col-12 col-md-9 col-lg-7 col-xl-6">
+                      <div
+                        className={`hero-slides-content ${
+                          index === currentSlide ? "active" : ""
+                        }`}
+                      >
+                        <h2>{slide.title}</h2>
+                        <p>{slide.description}</p>
+                        <Link to="/all-post" className="btn delicious-btn">
+                          See Recipe
+                        </Link>
                       </div>
                     </div>
                   </div>
-                </Carousel.Caption>
+                </div>
               </div>
-            </Carousel.Item>
-          ))}
-        </Carousel>
+            ))}
+          </Carousel>
+        </Box>
       </div>
     </section>
   );

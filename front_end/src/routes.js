@@ -11,9 +11,9 @@ import EditUserInfor from "./components/UserInfor/EditUserInfor";
 import Posting from "./components/Posting/Posting";
 import BlogPosts from "./components/Blogposts/BlogPosts";
 import Admin from "./components/pages/adminpages/Admin";
-import Content from "./components/pages/adminpages/parts/Content";
 import ForgotPass from "./components/ForgotPass/ForgotPass";
 import NewPass from "./components/ForgotPass/NewPass";
+import Orders from "./components/pages/adminpages/UI/Orders";
 
 export const routes = [
   {
@@ -78,17 +78,22 @@ export const routes = [
   },
   {
     path: "/admin/users",
-    index: true,
+    index: false,
     element: <Users />,
   },
   {
     path: "/admin/posts",
-    index: true,
+    index: false,
     element: <Posts />,
   },
   {
+    path: "/admin/orders",
+    index: false,
+    element: <Orders />,
+  },
+  {
     path: "/admin/categories",
-    index: true,
+    index: false,
     element: <Categories />,
   },
 ];

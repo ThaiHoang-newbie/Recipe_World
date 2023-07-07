@@ -1,9 +1,11 @@
 import React from "react";
-
+import { Clock } from "grommet";
 export default function Header() {
+  const logOut = () => {
+    sessionStorage.clear();
+    window.location.href = "/";
+  };
   return (
-
-
     <header className="app-header">
       <nav className="navbar navbar-expand-lg navbar-light">
         <ul className="navbar-nav">
@@ -19,7 +21,6 @@ export default function Header() {
           <li className="nav-item">
             <a className="nav-link nav-icon-hover" href="javascript:void(0)">
               <i className="ti ti-bell-ringing" />
-              <div className="notification bg-primary rounded-circle" />
             </a>
           </li>
         </ul>
@@ -28,13 +29,10 @@ export default function Header() {
           id="navbarNav"
         >
           <ul className="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-            <a
-              href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/"
-              target="_blank"
-              className="btn btn-primary"
-            >
-              Download Free
-            </a>
+            <Clock type="digital" />
+            <button onClick={() => logOut()} className="btn btn-primary ml-2">
+              Log out
+            </button>
             <li className="nav-item dropdown">
               <a
                 className="nav-link nav-icon-hover"
@@ -42,15 +40,7 @@ export default function Header() {
                 id="drop2"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
-              >
-                <img
-                  src="../assets/images/profile/user-1.jpg"
-                  alt=""
-                  width={35}
-                  height={35}
-                  className="rounded-circle"
-                />
-              </a>
+              ></a>
               <div
                 className="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
                 aria-labelledby="drop2"
@@ -77,6 +67,7 @@ export default function Header() {
                     <i className="ti ti-list-check fs-6" />
                     <p className="mb-0 fs-3">My Task</p>
                   </a>
+
                   <a
                     href="./authentication-login.html"
                     className="btn btn-outline-primary mx-3 mt-2 d-block"

@@ -2,7 +2,6 @@ import React from "react";
 
 export default function User({
   id,
-  username,
   email,
   full_name,
   birthday,
@@ -13,13 +12,12 @@ export default function User({
   changeStatus,
 }) {
   const handleStatusChange = () => {
-    changeStatus(!isActive); 
+    changeStatus(!isActive);
   };
 
   return (
     <tr className="align-middle">
       <td>{id}</td>
-      <td>{username}</td>
       <td>{email}</td>
       <td>{full_name}</td>
       <td>{birthday}</td>
@@ -27,7 +25,7 @@ export default function User({
       <td>{followers}</td>
       <td>
         <img
-          src={profile_image}
+          src={`https://firebasestorage.googleapis.com/v0/b/recipeworld-8ecc6.appspot.com/o/images%2F${profile_image}?alt=media&token=6faaf2a3-91a1-4350-9b33-9ccbcc755a28`}
           alt=""
           className="img-fluid object-fit"
           width={90}

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css";
 import axios from "axios";
+import Header from "../pages/homepage/parts/Header";
+import Footer from "../pages/homepage/parts/Footer";
 import { Link } from "react-router-dom";
 import {
   NotificationContainer,
@@ -71,57 +73,63 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="login-card-container">
-      <div className="login-card">
-        {/* <div class="login-card-logo">
+    <>
+      <Header />
+      <div className="login-card-container">
+        <div className="login-card">
+          {/* <div class="login-card-logo">
   <img src="logo.png" alt="logo">
 </div> */}
-        <div className="login-card-header">
-          <h1>Log in</h1>
-          <div>Please login to our my website</div>
-        </div>
-        <div className="login-card-form">
-          <div className="form-group-login">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              onChange={(e) =>
-                setDataForm({ ...dataForm, email: e.target.value })
-              }
-            />
+          <div className="login-card-header">
+            <h1>Log in</h1>
+            <div>Please login to our my website</div>
           </div>
-          <div className="form-group-login">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              onChange={(e) =>
-                setDataForm({ ...dataForm, password: e.target.value })
-              }
-            />
-          </div>
-          <div className="form-item-other">
-            <div className="checkbox">
+          <div className="login-card-form">
+            <div className="form-group-login">
+              <label>Email</label>
               <input
-                type="checkbox"
-                name="rememberme"
-                id="rememberMeCheckbox"
-                defaultChecked=""
+                type="email"
+                name="email"
+                onChange={(e) =>
+                  setDataForm({ ...dataForm, email: e.target.value })
+                }
+                autoFocus
               />
-              <label htmlFor="rememberMeCheckbox">Remember me</label>
             </div>
-            <a href="./enter-email">I forgot my password!</a>
+            <div className="form-group-login">
+              <label>Password</label>
+              <input
+                type="password"
+                name="password"
+                onChange={(e) =>
+                  setDataForm({ ...dataForm, password: e.target.value })
+                }
+              />
+            </div>
+            <div className="form-item-other">
+              <div className="checkbox">
+                <input
+                  type="checkbox"
+                  name="rememberme"
+                  id="rememberMeCheckbox"
+                  defaultChecked=""
+                />
+                <label htmlFor="rememberMeCheckbox">Remember me</label>
+              </div>
+              <a href="./enter-email">I forgot my password!</a>
+            </div>
+            <button type="submit" name="btn-login" onClick={() => onLogin()}>
+              Sign In
+            </button>
           </div>
-          <button type="submit" name="btn-login" onClick={() => onLogin()}>
-            Sign In
-          </button>
-        </div>
-        <div className="login-card-footer">
-          Don't have an account? <Link to={"/sign-up"}>Create now</Link>
+          <div className="login-card-footer">
+            Don't have an account? <Link to={"/sign-up"}>Create now</Link>
+          </div>
         </div>
       </div>
-    </div>
+      <Footer />
+      <NotificationContainer />
+    </>
   );
 };
 
