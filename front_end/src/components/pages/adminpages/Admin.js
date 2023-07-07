@@ -3,14 +3,13 @@ import React from "react";
 import LeftSidebar from "./parts/LeftSidebar";
 import Header from "./parts/Header";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { routes } from "../../../routes";
+import { adminRoutes } from "../../../routes";
 export default function Admin() {
   const reRenderContent = (paths) =>
     paths.map((path) => (
       <Route path={path.path} index={path.index} element={path.element} />
     ));
   return (
-    <>
       <BrowserRouter>
         <div>
           {/*  Body Wrapper */}
@@ -26,7 +25,7 @@ export default function Admin() {
             <LeftSidebar />
             <div className="body-wrapper">
             <Header />
-              <Routes>{reRenderContent(routes)}</Routes>
+              <Routes>{reRenderContent(adminRoutes)}</Routes>
             </div>
             
             
@@ -34,6 +33,6 @@ export default function Admin() {
           </div>
         </div>
       </BrowserRouter>
-    </>
+
   );
 }

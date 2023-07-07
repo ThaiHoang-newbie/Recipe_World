@@ -4,6 +4,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Header from "../pages/homepage/parts/Header";
 import Footer from "../pages/homepage/parts/Footer";
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 const Login = () => {
   const [dataForm, setDataForm] = useState({
     email: "",
@@ -31,15 +33,9 @@ const Login = () => {
   
         if (responseData.success === 1) {
           const { data, token } = responseData;
-  
-          if (data.email === "admin" && data.password === "admin") {
-            localStorage.setItem("isLoggedIn", "true");
-          }
-  
           sessionStorage.setItem("obtainer_id", data.id);
           sessionStorage.setItem("token", token);
-  
-          alert("Login successful!");
+          NotificationManager.success("Login successful!");
           setTimeout(() => {
             const prevPage = localStorage.getItem("prevPage");
             if (prevPage) {
@@ -50,10 +46,10 @@ const Login = () => {
             }
           }, 1000);
         } else {
-          alert("Wrong email or password!");
+          NotificationManager.error("Wrong email or password!");
         }
       } else {
-        alert("Login failed!");
+        NotificationManager.error("Login failed!");
       }
     }
   };
@@ -127,6 +123,7 @@ const Login = () => {
         </div>
       </div>
       <Footer />
+      <NotificationContainer />
     </>
   );
 };

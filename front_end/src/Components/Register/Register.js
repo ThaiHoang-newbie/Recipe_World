@@ -4,6 +4,8 @@ import "./Register.css";
 import Header from "../pages/homepage/parts/Header";
 import Footer from "../pages/homepage/parts/Footer";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 import {
   getStorage,
   ref,
@@ -181,12 +183,12 @@ const Register = () => {
         .then((res) => res.json())
         .then((json) => {
           if (json["success"] > 0) {
-            alert("Bạn đã đăng ký thành công!");
+            NotificationManager.success("Sign up successful!");
             setTimeout(() => {
               window.location = "http://localhost:3000/sign-in";
             }, 1000);
           } else {
-            alert(JSON.stringify(json.error));
+            NotificationManager.error(JSON.stringify(json.error));
           }
         });
 
@@ -546,6 +548,7 @@ const Register = () => {
         renderUploadAvatar}
       {checkForm.uploadAvatar && !checkForm.btnRegister && renderEventRegister}
       <Footer />
+      <NotificationContainer />
     </div>
   );
 };

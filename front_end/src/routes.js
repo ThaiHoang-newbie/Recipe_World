@@ -12,7 +12,7 @@ import Posting from "./components/Posting/Posting";
 import BlogPosts from "./components/Blogposts/BlogPosts";
 import Admin from "./components/pages/adminpages/Admin";
 
-export const routes = [
+export const homepageRoutes = [
   {
     path: '/',
     index: true,
@@ -58,6 +58,8 @@ export const routes = [
     index: false,
     element: <BlogPosts />
   },
+]
+export const adminRoutes = [
   {
     path: "/admin",
     index: false,

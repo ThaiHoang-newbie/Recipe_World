@@ -23,7 +23,7 @@ export default function Card({
         <div className="d-flex justify-content-between">
           <Link to={`/profile-page/${obtainer_id}`} className="food-card_author text-dark font-italic font-weight-light">{full_name}</Link>
           <div className="rating-box">
-           <small class="text-mute">{comment_count} comments</small>
+           <small className="text-mute">{comment_count} comments</small>
           </div>
         </div>
       </div>

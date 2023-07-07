@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\BuyController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostingController;
@@ -67,8 +68,8 @@ Route::get('/getPostByCategoryId/{id}', [ApiController::class, 'getPostByCategor
 // ----------------------------------------------------------------------------
 
 // Get all categories
-Route::get('/get-categories', [ApiController::class, 'getCategories']);
-Route::post('/categories', [ApiController::class, 'addCategories']);
+Route::get('/get-categories', [Controller::class, 'getCategories']);
+Route::post('/categories', [Controller::class, 'addCategories']);
 
 
 

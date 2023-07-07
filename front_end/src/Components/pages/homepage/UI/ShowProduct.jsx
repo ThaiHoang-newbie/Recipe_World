@@ -65,7 +65,7 @@ function ShowProduct() {
                 <div className="col-12">
                   {/* Cta Content */}
                   <div className="card-content-wrapper">
-                    <div class="card-content">
+                    <div className="card-content">
                       {visibleRecipes.map((recipe, index) => (
                         <Card
                           key={recipe.id}

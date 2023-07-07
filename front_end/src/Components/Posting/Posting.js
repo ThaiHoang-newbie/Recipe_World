@@ -8,6 +8,11 @@ import Footer from "../pages/homepage/parts/Footer";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./Posting.css";
 import axios from "axios";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import "react-notifications/lib/notifications.css";
 import { initializeApp } from "firebase/app";
 import {
   getStorage,
@@ -15,7 +20,13 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 function Posting() {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
@@ -25,6 +36,16 @@ function Posting() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [titleInputed, setTitleInputed] = useState("");
   const [uploadedImages, setUploadedImages] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [categoryName, setCategoryName] = useState("");
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -51,6 +72,7 @@ function Posting() {
   };
 
   const handleCategoryChange = (event) => {
+    console.log(event.target.value);
     setSelectedCategory(event.target.value);
   };
 
@@ -68,15 +90,15 @@ function Posting() {
       );
       if (response.data.message === "Successful") {
         fetchCategories();
-        alert("Add new category successful");
+        NotificationManager.success("Add new category successful");
+        setOpen(false);
       } else {
-        alert("This category already exists");
+        NotificationManager.error("This category already exists");
       }
     } catch (error) {
       console.error("Error creating category:", error);
     }
   };
-
   const firebaseConfig = {
     apiKey: "AIzaSyA4bFj14tVc9IT-5yL7tbvyvB2sCy7hbWM",
     authDomain: "recipeworld-8ecc6.firebaseapp.com",
@@ -149,7 +171,7 @@ function Posting() {
     const contentRaw = JSON.stringify(convertToRaw(contentState));
 
     if (!sessionStorage.getItem("obtainer_id")) {
-      alert("You must register to use this function");
+      NotificationManager.error("You must register to use this function");
       setTimeout(() => {
         window.location = "http://localhost:3000/login";
       }, 100);
@@ -157,22 +179,22 @@ function Posting() {
     }
 
     if (selectedCategory === "") {
-      alert("Please select a category");
+      NotificationManager.info("Please select a category");
       return;
     }
 
     if (titleInputed === "") {
-      alert("Please enter the title");
+      NotificationManager.info("Please enter the title");
       return;
     }
 
     if (contentState.hasText() === false) {
-      alert("Please enter some content");
+      NotificationManager.info("Please enter some content");
       return;
     }
 
     if (uploadedImages.length === 0) {
-      alert("Please upload at least one image");
+      NotificationManager.info("Please upload at least one image");
       return;
     }
 
@@ -197,73 +219,98 @@ function Posting() {
         <header className="App-header">Create your own new recipe</header>
         <div className="posting-content">
           <div className="edit-zone">
-          <div className="wrap-category mb-3">
-            <span htmlFor="category" className="form-label">
-              Select a category:
-            </span>
-            <select
-              id="category"
-              value={selectedCategory}
-              onChange={handleCategoryChange}
-              className="form-select"
-            >
-              <option value="">-- Select a category -- </option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-            <button
-              className="btn btn-success rounded-pill px-4 py-2 shadow-lg"
-              onClick={() =>
-                createCategory(prompt("Enter the new category name:"))
-              }
-            >
-              +
-            </button>
-          </div>
+            <div className="wrap-category mb-3">
+              <span htmlFor="category" className="form-label">
+                Select a category:
+              </span>
+              <select
+                id="category"
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                className="form-select"
+              >
+                <option value="">-- Select a category -- </option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+              <Button
+                className="btn btn-success rounded-pill px-4 py-2 shadow-lg"
+                variant="outlined"
+                onClick={handleClickOpen}
+              >
+                +
+              </Button>
+              <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>New Category</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Create your own category to make your recipe easy to find
+                    and easy to get hot
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Category"
+                    type="text"
+                    fullWidth
+                    variant="standard"
+                    value={categoryName}
+                    onChange={(e) => setCategoryName(e.target.value)}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Cancel</Button>
+                  <Button onClick={() => createCategory(categoryName)}>
+                    Create
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
 
-          <input
-            type="text"
-            placeholder="Title"
-            className="input-title"
-            onChange={handleTitleInputed}
-          />
+            <input
+              type="text"
+              placeholder="Title"
+              className="input-title"
+              onChange={handleTitleInputed}
+            />
 
-          <Editor
-            editorState={editorState}
-            placeholder="Content"
-            onEditorStateChange={setEditorState}
-            wrapperClassName="wrapper-class"
-            editorClassName="editor-class"
-            toolbarClassName="toolbar-class"
-            toolbar={{
-              options: ["inline", "blockType", "emoji", "image"],
-              inline: {
-                options: ["bold", "italic", "underline", "strikethrough"],
-              },
-              blockType: {
-                inDropdown: true,
-                options: ["Normal", "H1", "H2", "H3", "H4", "H5", "H6"],
-                className: "custom-dropdown",
-              },
-              emoji: {
-                className: "custom-emoji",
-              },
-              image: {
-                uploadCallback: handleImageUpload,
-                alt: { present: true, mandatory: false },
-                previewImage: true,
-                inputAccept:
-                  "image/gif,image/jpeg,image/jpg,image/png,image/svg",
-              },
-            }}
-            hashtag={{
-              separator: "",
-              trigger: "#",
-            }}
-          />
+            <Editor
+              editorState={editorState}
+              placeholder="Content"
+              onEditorStateChange={setEditorState}
+              wrapperClassName="wrapper-class"
+              editorClassName="editor-class"
+              toolbarClassName="toolbar-class"
+              toolbar={{
+                options: ["inline", "blockType", "emoji", "image"],
+                inline: {
+                  options: ["bold", "italic", "underline", "strikethrough"],
+                },
+                blockType: {
+                  inDropdown: true,
+                  options: ["Normal", "H1", "H2", "H3", "H4", "H5", "H6"],
+                  className: "custom-dropdown",
+                },
+                emoji: {
+                  className: "custom-emoji",
+                },
+                image: {
+                  uploadCallback: handleImageUpload,
+                  alt: { present: true, mandatory: false },
+                  previewImage: true,
+                  inputAccept:
+                    "image/gif,image/jpeg,image/jpg,image/png,image/svg",
+                },
+              }}
+              hashtag={{
+                separator: "",
+                trigger: "#",
+              }}
+            />
           </div>
 
           <div
@@ -272,7 +319,7 @@ function Posting() {
             onDrop={handleImageDrop}
           >
             <div className="form-upload my-4">
-              <div class="image-box">
+              <div className="image-box">
                 <input
                   type="file"
                   name="file"
@@ -280,7 +327,7 @@ function Posting() {
                   accept=".jpg"
                   hidden
                 />
-                <label for="fileInput" class="preview">
+                <label htmlFor="fileInput" className="preview">
                   <span>Drag and drop images here</span>
                 </label>
               </div>
@@ -311,6 +358,7 @@ function Posting() {
         </div>
       </div>
       <Footer />
+      <NotificationContainer />
     </>
   );
 }

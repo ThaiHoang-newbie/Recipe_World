@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import "react-notifications/lib/notifications.css";
 import axios from "axios";
 import {
   Dialog,
@@ -199,7 +204,9 @@ export default function Recipe() {
       .then((res) => {
         setOpen(false);
         setStatus(0); // Update status state after successful order
-        alert("Your order is ready, let's wait for the owner!!");
+        NotificationManager.info(
+          "Your order is ready, let's wait for the owner!!"
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -354,6 +361,7 @@ export default function Recipe() {
         </div>
       </div>
       <Footer />
+      <NotificationContainer />
     </>
   );
 }
