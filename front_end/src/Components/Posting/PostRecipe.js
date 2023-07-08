@@ -144,16 +144,18 @@ const PostRecipe = () => {
         imageFiles.forEach((file) => {
             handleImageUpload(file);
         });
+
     };
 
-    const saveData = async () => {
+    const saveData = async (e) => {
+        e.preventDefault()
         const name = document.getElementById("inputName").value;
         const price = document.getElementById("inputPrice").value;
-        const prepTime = document.getElementById("inputPrepTime").value;
-        const cookTime = document.getElementById("inputCookTime").value;
+        const preparetion_time = document.getElementById("inputPrepTime").value;
+        const cooking_time = document.getElementById("inputCookTime").value;
         const description = document.getElementById("inputDescription").value;
         const ingredients = document.getElementById("inputIngredients").value;
-        const instructions = document.getElementById("inputInstructions").value;
+        const instruction = document.getElementById("inputInstructions").value;
 
         if (!sessionStorage.getItem("obtainer_id")) {
             NotificationManager.error("You must register to use this function");
@@ -178,12 +180,12 @@ const PostRecipe = () => {
             return;
         }
 
-        if (prepTime === "") {
+        if (preparetion_time === "") {
             NotificationManager.info("Please enter the preparation time");
             return;
         }
 
-        if (cookTime === "") {
+        if (cooking_time === "") {
             NotificationManager.info("Please enter the cook time");
             return;
         }
@@ -198,7 +200,7 @@ const PostRecipe = () => {
             return;
         }
 
-        if (instructions === "") {
+        if (instruction === "") {
             NotificationManager.info("Please enter the instructions");
             return;
         }
@@ -208,21 +210,36 @@ const PostRecipe = () => {
             return;
         }
 
+        const imageFirst = uploadedImages[0].name;
+
+        const obtainer_id = sessionStorage.getItem("obtainer_id");
+
+        console.log("obtainer_id", obtainer_id);
+        console.log("category_id", selectedCategory);
+        console.log("name", name);
+        console.log("instruction", instruction);
+        console.log("preparetion_time", preparetion_time);
+        console.log("description", description);
+        console.log("ingredients", ingredients);
+        console.log("thumbnail", imageFirst);
+        console.log("price", price);
+
         try {
             const response = await axios.post("http://localhost:8000/api/add-post", {
+                obtainer_id,
+                category_id: selectedCategory,
                 name,
-                price,
-                prepTime,
-                cookTime,
+                instruction,
+                preparetion_time,
+                cooking_time,
                 description,
                 ingredients,
-                instructions,
-                category_id: selectedCategory,
-                images: uploadedImages.map((image) => image.name),
+                thumbnail: imageFirst,
+                price,
             });
             NotificationManager.success("Data saved successfully:");
         } catch (error) {
-            NotificationManager.error("Error saving data:", error);
+            console.log("Error saving data:", error);
         }
     };
 
