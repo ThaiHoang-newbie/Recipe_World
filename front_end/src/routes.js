@@ -8,14 +8,13 @@ import Categories from "./Components/pages/adminpages/UI/Categories";
 import Recipe from "./Components/Recipe/Recipe";
 import UserInfor from "./Components/UserInfor/UserInfor";
 import EditUserInfor from "./Components/UserInfor/EditUserInfor";
-import Posting from "./Components/Posting/Posting";
 import BlogPosts from "./Components/Blogposts/BlogPosts";
 import Admin from "./Components/pages/adminpages/Admin";
 import Content from "./Components/pages/adminpages/parts/Content";
 import ForgotPass from "./Components/ForgotPass/ForgotPass";
 import NewPass from "./Components/ForgotPass/NewPass";
-import PostRecipe from  "./Components/Posting/PostRecipe";
-
+import PostRecipe from "./Components/Posting/PostRecipe";
+import EditPost from "./Components/Posting/EditPost";
 export const routes = [
   {
     path: "/",
@@ -58,14 +57,14 @@ export const routes = [
     element: <EditUserInfor />,
   },
   {
-    path: "/posting",
-    index: false,
-    element: <Posting />,
-  },
-  {
     path: "/post-recipe",
     index: false,
     element: <PostRecipe />,
+  },
+  {
+    path: "/edit-recipe",
+    index: false,
+    element: <EditPost />,
   },
   {
     path: "/enter-email",

@@ -20,7 +20,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-
 const PostRecipe = () => {
     const [editorState, setEditorState] = useState(() =>
         EditorState.createEmpty()
@@ -30,6 +29,30 @@ const PostRecipe = () => {
     const [uploadedImages, setUploadedImages] = useState([]);
     const [open, setOpen] = React.useState(false);
     const [categoryName, setCategoryName] = useState("");
+
+    // const preparetion_time = document.getElementById("inputPrepTime").value;
+    // const cooking_time = document.getElementById("inputCookTime").value;
+
+
+    const [totalTime, setTotalTime] = useState("");
+    const [post, setPost] = useState({
+        preparetion_time: 0,
+        cooking_time: 0,
+    });
+
+    useEffect(() => {
+        const total =
+            parseFloat(post.preparetion_time) + parseFloat(post.cooking_time);
+        setTotalTime(total.toFixed(1) + "h");
+    }, [post.preparetion_time, post.cooking_time]);
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setPost((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -55,7 +78,6 @@ const PostRecipe = () => {
     };
 
     const handleCategoryChange = (event) => {
-        console.log(event.target.value);
         setSelectedCategory(event.target.value);
     };
 
@@ -70,7 +92,7 @@ const PostRecipe = () => {
             if (response.data.message === "Successful") {
                 fetchCategories();
                 NotificationManager.success("Add new category successful");
-                setCategoryName('');
+                setCategoryName("");
                 setOpen(false);
             } else {
                 NotificationManager.error("This category already exists");
@@ -79,6 +101,7 @@ const PostRecipe = () => {
             console.error("Error creating category:", error);
         }
     };
+
     const firebaseConfig = {
         apiKey: "AIzaSyA4bFj14tVc9IT-5yL7tbvyvB2sCy7hbWM",
         authDomain: "recipeworld-8ecc6.firebaseapp.com",
@@ -92,7 +115,6 @@ const PostRecipe = () => {
     const app = initializeApp(firebaseConfig);
     const storage = getStorage(app);
 
-    // Handle upload images
     const handleImageUpload = async (file) => {
         try {
             const metadata = {
@@ -144,11 +166,10 @@ const PostRecipe = () => {
         imageFiles.forEach((file) => {
             handleImageUpload(file);
         });
-
     };
 
     const saveData = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         const name = document.getElementById("inputName").value;
         const price = document.getElementById("inputPrice").value;
         const preparetion_time = document.getElementById("inputPrepTime").value;
@@ -214,19 +235,9 @@ const PostRecipe = () => {
 
         const obtainer_id = sessionStorage.getItem("obtainer_id");
 
-        console.log("obtainer_id", obtainer_id);
-        console.log("category_id", selectedCategory);
-        console.log("name", name);
-        console.log("instruction", instruction);
-        console.log("preparetion_time", preparetion_time);
-        console.log("description", description);
-        console.log("ingredients", ingredients);
-        console.log("thumbnail", imageFirst);
-        console.log("price", price);
-
         try {
             const response = await axios.post("http://localhost:8000/api/add-post", {
-                obtainer_id,
+                obtainer_id: obtainer_id,
                 category_id: selectedCategory,
                 name,
                 instruction,
@@ -252,7 +263,6 @@ const PostRecipe = () => {
                     <div className="col-12">
                         <h2 className="title_h2">Create Your Own Recipe</h2>
                         <form action id="form-add-recipe" className="parsley-form" data-parsley-validate>
-
                             <div className="row">
                                 <div className="col-lg-6">
                                     <div className="form-group">
@@ -272,13 +282,13 @@ const PostRecipe = () => {
                                 <div className="col-lg-4">
                                     <div className="form-group">
                                         <label htmlFor="inputPrepTime">Preparation Time</label>
-                                        <input type="number" min={0} className="form-control" placeholder="1h" id="inputPrepTime" name="prepTime" required defaultValue />
+                                        <input type="number" min={0} onChange={handleInputChange} className="form-control" step={0.1} placeholder="1h" id="inputPrepTime" name="prepTime" required defaultValue />
                                     </div>
                                 </div>
                                 <div className="col-lg-4">
                                     <div className="form-group">
                                         <label htmlFor="inputCookTime">Cook Time</label>
-                                        <input type="number" min={0} className="form-control" placeholder="0.5h" id="inputCookTime" name="cookTime" required defaultValue />
+                                        <input type="number" min={0} onChange={handleInputChange} className="form-control" step={0.1} placeholder="0.5h" id="inputCookTime" name="cookTime" required defaultValue />
                                     </div>
                                 </div>
                                 <div className="col-lg-4">
@@ -290,7 +300,7 @@ const PostRecipe = () => {
                                             id="inputTotalTime"
                                             name="totalTime"
                                             required
-                                            defaultValue="1.5h"
+                                            defaultValue="1h"
                                             disabled
                                         />
                                     </div>
@@ -413,6 +423,6 @@ const PostRecipe = () => {
             <NotificationContainer />
         </>
     );
-}
+};
 
 export default PostRecipe;

@@ -104,6 +104,9 @@ Route::post('posting', [PostingController::class, 'store']);
 // Add new post
 Route::post('add-post', [PostingController::class, 'addPost']);
 
+// Edit post
+Route::post('edit-post', [PostingController::class, 'editPost']);
+
 
 
 
@@ -142,6 +145,3 @@ Route::put('order/{id}', [BuyController::class, 'update']);
 Route::post('send-mail', [MailController::class, 'send']);
 
 Route::post('comparison', [MailController::class, 'comparison']);
-
-
-
