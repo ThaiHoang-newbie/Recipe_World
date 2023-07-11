@@ -1,0 +1,37 @@
+import React from "react";
+import "./App.css";
+
+import "@fortawesome/fontawesome-free";
+import LogRocket from "logrocket";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { routes } from "../../front_end/src/routes";
+function App() {
+  const currentPage = window.location.href;
+  const tailPage = currentPage.substring(currentPage.lastIndexOf("/") + 1);
+
+  LogRocket.init("hjb3fu/recipe-world");
+
+  console.log(tailPage);
+
+  const reRenderContent = (paths) =>
+    paths.map((path, index) => (
+      <Route
+        key={index}
+        path={path.path}
+        index={path.index}
+        element={path.element}
+      />
+    ));
+  return (
+    <div>
+      <Navbar></Navbar>
+      <HeroArea></HeroArea>
+      <TopCategory/>
+      <ShowProduct/>
+      <Products/>
+      <Footer/>
+    </div>
+  )
+}
+
+export default App;

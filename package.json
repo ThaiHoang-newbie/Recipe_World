@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@mui/material": "^5.13.7",
+    "react-bootstrap": "^2.8.0",
+    "react-notifications": "^1.7.4"
+  }
+}
