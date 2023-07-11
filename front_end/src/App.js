@@ -23,10 +23,15 @@ function App() {
       />
     ));
   return (
-    <BrowserRouter className="container-fluid">
-      <Routes>{reRenderContent(routes)}</Routes>
-    </BrowserRouter>
-  );
+    <div>
+      <Navbar></Navbar>
+      <HeroArea></HeroArea>
+      <TopCategory/>
+      <ShowProduct/>
+      <Products/>
+      <Footer/>
+    </div>
+  )
 }
 
 export default App;
